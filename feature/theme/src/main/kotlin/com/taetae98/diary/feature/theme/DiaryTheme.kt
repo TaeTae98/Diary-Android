@@ -23,6 +23,10 @@ object DiaryTheme {
         @Composable
         get() = primaryColor
 
+    val surfaceColor: Color
+        @Composable
+        get() = Color(0xFFFFFFFF)
+
     val colors: Colors
         @Composable
         get() = if (isSystemInDarkTheme()) {
@@ -31,6 +35,7 @@ object DiaryTheme {
             lightColors(
                 primary = primaryColor,
                 background = backgroundColor,
+                surface = surfaceColor
             )
         }
 

@@ -22,7 +22,7 @@ import com.taetae98.diary.feature.theme.DiaryTheme
 @Composable
 fun DiaryTopAppBar(
     modifier: Modifier = Modifier,
-    title: @Composable () -> Unit,
+    title: @Composable () -> Unit = {},
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     backgroundColor: Color = DiaryTheme.colors.primary,
@@ -44,9 +44,7 @@ fun DiaryTopAppBar(
     )
 }
 
-@Preview(
-    name = "DiaryTopAppBar"
-)
+@Preview
 @Composable
 private fun Preview() {
     DiaryTheme {

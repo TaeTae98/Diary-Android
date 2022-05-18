@@ -15,17 +15,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.taetae98.diary.feature.compose.DiaryTopAppBar
+import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
-import com.taetae98.resource.StringResource
+
+object MemoScreen {
+    const val ROUTE = "MemoScreen"
+}
 
 @Composable
 fun MemoScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController,
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = { MemoTopAppBar() }
+        topBar = { MemoTopAppBar(navController = navController) }
     ) {
         MemoLazyColumn(
             modifier = Modifier
@@ -37,14 +44,15 @@ fun MemoScreen(
 
 @Composable
 private fun MemoTopAppBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     DiaryTopAppBar(
         modifier = modifier,
         title = { Text(text = stringResource(id = StringResource.memo)) },
         actions = {
             IconButton(
-                onClick = {  }
+                onClick = { navController.navigate(MemoEditScreen.getAction()) }
             ) {
                 Icon(imageVector = Icons.Rounded.Add, contentDescription = stringResource(id = StringResource.add))
             }
@@ -70,12 +78,12 @@ private fun MemoLazyColumn(
     }
 }
 
-@Preview(
-    name = "MemoScreen"
-)
+@Preview
 @Composable
 private fun Preview() {
     DiaryTheme {
-        MemoScreen()
+        MemoScreen(
+            navController = rememberNavController()
+        )
     }
 }

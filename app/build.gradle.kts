@@ -3,6 +3,8 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -60,6 +62,15 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = Config.SOURCE_COMPATIBILITY
+        targetCompatibility = Config.TARGET_COMPATIBILITY
+    }
+
+    kotlinOptions {
+        jvmTarget = Config.JVM_TARGET
+    }
+
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
@@ -67,4 +78,7 @@ android {
 
 dependencies {
     implementation(project(":feature:main"))
+
+    implementation("com.google.dagger:hilt-android:2.41")
+    kapt("com.google.dagger:hilt-android-compiler:2.41")
 }

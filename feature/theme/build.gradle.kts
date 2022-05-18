@@ -1,3 +1,4 @@
 plugins {
-    id("dependency-config")
+    id("android-config")
+    id("compose-config")
 }
