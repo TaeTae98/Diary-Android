@@ -1,4 +1,4 @@
-package com.taetae98.diary
+package com.taetae98.diary.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

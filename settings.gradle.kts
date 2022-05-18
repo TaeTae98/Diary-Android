@@ -16,8 +16,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Diary"
 include(
-    ":app",
-    ":feature:resource", ":feature:common", ":feature:compose",
+    ":app", ":domain", ":data",
+    ":feature:resource", ":feature:common", ":feature:base", ":feature:compose",
     ":feature:theme",
     ":feature:main",
     ":feature:memo",

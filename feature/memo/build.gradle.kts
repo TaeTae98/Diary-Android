@@ -6,6 +6,9 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
     implementation(project(":feature:resource"))
     implementation(project(":feature:theme"))
     implementation(project(":feature:compose"))

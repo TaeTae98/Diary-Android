@@ -3,6 +3,8 @@ package com.taetae98.diary.feature.memo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.taetae98.diary.domain.MemoEntity
+import com.taetae98.diary.domain.MemoInsertUseCase
 import com.taetae98.diary.feature.common.Parameter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,7 +14,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MemoEditViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val memoInsertUseCase: MemoInsertUseCase,
 ) : ViewModel() {
     val title = MutableStateFlow("")
     val description = MutableStateFlow("")
@@ -42,6 +45,13 @@ class MemoEditViewModel @Inject constructor(
             if (title.value.isEmpty()) {
                 event.emit(MemoEditEvent.TitleEmpty)
             } else {
+                memoInsertUseCase(
+                    MemoEntity(
+                        title = title.value,
+                        description = description.value,
+                        password = if (hasPassword.value) password.value else null
+                    )
+                )
                 event.emit(MemoEditEvent.Success)
             }
         }
