@@ -15,8 +15,8 @@
             android:value="${NAVER_MAP_CLIENT_ID}" />
 
         <activity
-            android:name=".feature.main.MainActivity"
             android:exported="true"
+            android:name=".feature.main.MainActivity"
             android:theme="@style/Theme.Diary">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
