@@ -1,0 +1,70 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+}
+
+android {
+    compileSdk = Config.COMPILE_SDK
+
+    defaultConfig {
+        applicationId = Config.APPLICATION_ID
+        minSdk = Config.MIN_SDK
+        targetSdk = Config.TARGET_SDK
+        versionCode = Config.VERSION_CODE
+        versionName = Config.VERSION_NAME
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+
+        manifestPlaceholders["NAVER_MAP_CLIENT_ID"] = gradleLocalProperties(rootDir).getProperty("NAVER_MAP_CLIENT_ID")
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("keystore/debug.keystore")
+            keyAlias = gradleLocalProperties(rootDir).getProperty("DEBUG_KEY_ALIAS")
+            storePassword = gradleLocalProperties(rootDir).getProperty("DEBUG_KEY_STORE_PASSWORD")
+            keyPassword = gradleLocalProperties(rootDir).getProperty("DEBUG_KEY_PASSWORD")
+        }
+
+        create("release") {
+            storeFile = file("keystore/release.keystore")
+            keyAlias = gradleLocalProperties(rootDir).getProperty("RELEASE_KEY_ALIAS")
+            storePassword = gradleLocalProperties(rootDir).getProperty("RELEASE_KEY_STORE_PASSWORD")
+            keyPassword = gradleLocalProperties(rootDir).getProperty("RELEASE_KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        create("real") {
+            isDebuggable = true
+            isMinifyEnabled = false
+            applicationIdSuffix = ".real"
+            signingConfig = signingConfigs.getByName("release")
+        }
+        getByName("release") {
+            isDebuggable = false
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
+    packagingOptions {
+        resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+    }
+}
+
+dependencies {
+    implementation(project(":feature:main"))
+}
