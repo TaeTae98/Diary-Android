@@ -22,4 +22,8 @@ class MemoRepositoryImpl @Inject constructor(
     ) {
         memoRoomDataSource.findByTagIds()
     }.flow
+
+    override suspend fun findById(id: Int) = memoRoomDataSource.findById(id)
+
+    override suspend fun deleteById(id: Int) = memoRoomDataSource.deleteById(id)
 }

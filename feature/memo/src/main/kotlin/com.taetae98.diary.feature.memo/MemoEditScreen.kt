@@ -116,12 +116,21 @@ private fun CollectMemoEditEvent(
                         }
                     }
                 }
+                is MemoEditEvent.Error -> {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    launch {
+                        snackbarHostState.showSnackbar(
+                            message = "Error : ${it.throwable.message}"
+                        )
+                    }
+                }
                 is MemoEditEvent.TitleEmpty -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     launch {
                         snackbarHostState.showSnackbar(message = context.getString(StringResource.message_title_is_empty))
                     }
                 }
+                else -> Unit
             }
         }
     }

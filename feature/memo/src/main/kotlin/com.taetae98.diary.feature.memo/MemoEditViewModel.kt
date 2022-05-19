@@ -8,6 +8,7 @@ import com.taetae98.diary.domain.MemoInsertUseCase
 import com.taetae98.diary.feature.common.Parameter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ class MemoEditViewModel @Inject constructor(
     }
 
     fun edit() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (title.value.isEmpty()) {
                 event.emit(MemoEditEvent.TitleEmpty)
             } else {
@@ -51,8 +52,11 @@ class MemoEditViewModel @Inject constructor(
                         description = description.value,
                         password = if (hasPassword.value) password.value else null
                     )
-                )
-                event.emit(MemoEditEvent.Success)
+                ).onSuccess {
+                    event.emit(MemoEditEvent.Success)
+                }.onFailure {
+                    event.emit(MemoEditEvent.Error(it))
+                }
             }
         }
     }

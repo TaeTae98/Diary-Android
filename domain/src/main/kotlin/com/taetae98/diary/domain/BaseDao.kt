@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.base
+package com.taetae98.diary.domain
 
 import androidx.room.Dao
 import androidx.room.Insert
