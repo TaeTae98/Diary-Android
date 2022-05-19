@@ -106,6 +106,14 @@ private fun CollectMemoEditEvent(
                         navController.navigateUp()
                     } else {
                         memoEditViewModel.clear()
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        launch {
+                            snackbarHostState.showSnackbar(
+                                message = context.getString(
+                                    StringResource.add
+                                )
+                            )
+                        }
                     }
                 }
                 is MemoEditEvent.TitleEmpty -> {
@@ -154,13 +162,17 @@ private fun TitleInput(
     modifier: Modifier = Modifier,
     memoEditViewModel: MemoEditViewModel = hiltViewModel()
 ) {
-    val focusRequester = FocusRequester()
+    val focusRequester = remember { FocusRequester() }
+    var isError by remember { mutableStateOf(false) }
 
     DiaryTextField(
         modifier = modifier
             .focusRequester(focusRequester),
         value = memoEditViewModel.title.collectAsState().value,
-        onValueChange = { memoEditViewModel.setTitle(it) },
+        onValueChange = {
+            isError = false
+            memoEditViewModel.setTitle(it)
+        },
         label = { Text(text = stringResource(id = StringResource.title)) },
         trailingIcon = {
             IconButton(
@@ -175,12 +187,22 @@ private fun TitleInput(
                 )
             }
         },
+        isError = isError,
         singleLine = true,
         maxLines = 1,
     )
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+        memoEditViewModel.event.collect {
+            when (it) {
+                is MemoEditEvent.TitleEmpty -> {
+                    isError = true
+                    focusRequester.requestFocus()
+                }
+                else -> Unit
+            }
+        }
     }
 }
 
@@ -189,7 +211,7 @@ private fun DescriptionInput(
     modifier: Modifier = Modifier,
     memoEditViewModel: MemoEditViewModel = hiltViewModel()
 ) {
-    val focusRequester = FocusRequester()
+    val focusRequester = remember { FocusRequester() }
 
     DiaryTextField(
         modifier = modifier
@@ -272,7 +294,7 @@ private fun PasswordInput(
         return
     }
 
-    val focusRequester = FocusRequester()
+    val focusRequester = remember { FocusRequester() }
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     DiaryTextField(
