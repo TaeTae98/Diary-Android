@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 object MemoScreen {
-    const val ROUTE = "diary://memo-screen"
+    const val ROUTE = "${Const.DEEP_LINK_PREFIX}/memo-screen"
 }
 
 @Composable

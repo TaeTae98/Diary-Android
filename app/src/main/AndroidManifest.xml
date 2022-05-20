@@ -32,8 +32,12 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="diary"
-                    android:host="memo-screen" />
+                    android:scheme="https"
+                    android:host="diary" />
+
+                <data
+                    android:scheme="app"
+                    android:host="diary"/>
             </intent-filter>
         </activity>
 

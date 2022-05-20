@@ -8,6 +8,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.TaskStackBuilder
+import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.common.getDefaultName
 
 class RunOnUnlockReceiver : BroadcastReceiver() {
@@ -26,11 +27,11 @@ class RunOnUnlockReceiver : BroadcastReceiver() {
     private fun onScreenOff(context: Context) {
         Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("diary://memo-screen")
+            Uri.parse(Const.MAIN_APP_DEEP_LINK)
         ).also {
             TaskStackBuilder.create(context)
                 .addNextIntent(it)
-                .getPendingIntent(0, PendingIntent.FLAG_MUTABLE)
+                .getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
                 ?.send()
         }
     }
