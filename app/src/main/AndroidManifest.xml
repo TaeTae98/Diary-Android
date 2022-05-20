@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.taetae98.diary">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".app.DiaryApplication"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Diary">
+        android:label="@string/app_name">
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -16,14 +18,35 @@
 
         <activity
             android:exported="true"
-            android:name=".feature.main.MainActivity"
-            android:theme="@style/Theme.Diary">
+            android:name=".feature.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="diary"
+                    android:host="memo-screen" />
+            </intent-filter>
         </activity>
+
+        <service android:name=".app.service.RunOnUnlockService" />
+
+        <receiver
+            android:exported="true"
+            android:name=".app.receiver.RunOnUnlockReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

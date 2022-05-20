@@ -9,10 +9,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.taetae98.diary.domain.MemoEntity
+import com.taetae98.diary.domain.model.MemoEntity
 import com.taetae98.diary.feature.theme.DiaryTheme
 
 @Composable
@@ -52,8 +50,6 @@ private fun Memo(
     ) {
         Text(
             text = memoEntity.title,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
             maxLines = 1,
         )
     }

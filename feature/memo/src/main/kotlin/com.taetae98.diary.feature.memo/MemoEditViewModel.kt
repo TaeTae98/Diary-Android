@@ -3,8 +3,8 @@ package com.taetae98.diary.feature.memo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.MemoEntity
-import com.taetae98.diary.domain.MemoInsertUseCase
+import com.taetae98.diary.domain.model.MemoEntity
+import com.taetae98.diary.domain.usecase.memo.MemoInsertUseCase
 import com.taetae98.diary.feature.common.Parameter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -9,15 +9,16 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 object DiaryTheme {
     val primaryColor: Color
         @Composable
-        get() = if (isSystemInDarkTheme()) {
-            Color(0xFF3C5099)
-        } else {
-            Color(0xFF3C5099)
-        }
+        get() = Color(0xFF3C5099)
+
+    val onPrimaryColor: Color
+        @Composable
+        get() = Color(0xFFFFFFFF)
 
     val backgroundColor: Color
         @Composable
@@ -40,7 +41,8 @@ object DiaryTheme {
                 primary = primaryColor,
                 background = backgroundColor,
                 surface = surfaceColor,
-                onSurface = onSurfaceColor
+                onPrimary = onPrimaryColor,
+                onSurface = onSurfaceColor,
             )
         }
 
@@ -52,6 +54,12 @@ object DiaryTheme {
 fun DiaryTheme(
     content: @Composable () -> Unit
 ) {
+    rememberSystemUiController().apply {
+        setStatusBarColor(
+            color = DiaryTheme.primaryColor
+        )
+    }
+
     MaterialTheme(
         colors = DiaryTheme.colors,
         typography = DiaryTheme.typography,

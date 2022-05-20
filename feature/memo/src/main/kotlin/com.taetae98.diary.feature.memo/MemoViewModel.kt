@@ -2,10 +2,10 @@ package com.taetae98.diary.feature.memo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.MemoDeleteByIdUseCase
-import com.taetae98.diary.domain.MemoPagingByTagIdsUseCase
-import com.taetae98.diary.domain.MemoRelation
-import com.taetae98.diary.domain.MemoRelationRestoreUseCase
+import com.taetae98.diary.domain.usecase.memo.MemoDeleteByIdUseCase
+import com.taetae98.diary.domain.usecase.memo.MemoPagingByTagIdsUseCase
+import com.taetae98.diary.domain.model.MemoRelation
+import com.taetae98.diary.domain.usecase.memo.MemoRelationRestoreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers

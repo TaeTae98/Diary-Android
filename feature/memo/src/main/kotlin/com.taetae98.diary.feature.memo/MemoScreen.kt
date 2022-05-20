@@ -27,15 +27,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.compose.DiaryTopAppBar
-import com.taetae98.diary.feature.compose.DraggableCompose
+import com.taetae98.diary.feature.compose.draggable
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
+import kotlin.math.abs
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 object MemoScreen {
-    const val ROUTE = "MemoScreen"
+    const val ROUTE = "diary://memo-screen"
 }
 
 @Composable
@@ -84,11 +86,9 @@ private fun CollectEvent(
                 }
                 is MemoEvent.Error -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
-                    launch {
-                        snackbarHostState.showSnackbar(
-                            message = "Error : ${it.throwable.message}"
-                        )
-                    }
+                    snackbarHostState.showSnackbar(
+                        message = "Error : ${it.throwable.message}"
+                    )
                 }
             }
         }
@@ -132,22 +132,22 @@ private fun MemoLazyColumn(
             items = items,
             key = { it.id }
         ) {
-            DraggableCompose(
-                orientation = Orientation.Horizontal,
-                onDragStopped = { _ ->
-                    if (it != null) {
-                        memoViewModel.deleteMemo(it.id)
-                        true
-                    } else {
-                        false
-                    }
-                }
-            ) { modifier ->
-                MemoCompose(
-                    modifier = modifier.fillParentMaxWidth(),
-                    memoEntity = it
-                )
-            }
+            MemoCompose(
+                modifier = modifier
+                    .fillParentMaxWidth()
+                    .draggable(
+                        orientation = Orientation.Horizontal,
+                        onDragStopped = { velocity ->
+                            if (abs(velocity) >= Const.VELOCITY_BOUNDARY && it != null) {
+                                memoViewModel.deleteMemo(it.id)
+                                true
+                            } else {
+                                false
+                            }
+                        }
+                    ),
+                memoEntity = it
+            )
         }
     }
 }

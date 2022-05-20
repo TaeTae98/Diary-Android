@@ -2,7 +2,8 @@ package com.taetae98.diary.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.taetae98.diary.domain.MemoEntity
+import com.taetae98.diary.data.datasource.MemoRoomDataSource
+import com.taetae98.diary.domain.model.MemoEntity
 
 @Database(
     entities = [MemoEntity::class],

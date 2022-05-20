@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.taetae98.diary.feature.common.Parameter
 
@@ -19,7 +20,14 @@ fun NavGraphBuilder.memoGraph(
         startDestination = MemoScreen.ROUTE,
         route = MemoGraph.ROUTE
     ) {
-        composable(route = MemoScreen.ROUTE) {
+        composable(
+            route = MemoScreen.ROUTE,
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = MemoScreen.ROUTE
+                }
+            )
+        ) {
             MemoScreen(navController = navController)
         }
 

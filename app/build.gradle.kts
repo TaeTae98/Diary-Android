@@ -77,8 +77,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
+    implementation(project(":feature:resource"))
+    implementation(project(":feature:common"))
     implementation(project(":feature:main"))
 
+    implementation("androidx.navigation:navigation-compose:2.4.2")
     implementation("com.google.dagger:hilt-android:2.41")
     kapt("com.google.dagger:hilt-android-compiler:2.41")
 }

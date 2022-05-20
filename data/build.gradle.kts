@@ -2,6 +2,7 @@ plugins {
     id("android-config")
     id("hilt-config")
     id("room-config")
+    id("data-store-config")
 }
 
 android {
@@ -24,4 +25,5 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":feature:common"))
 }

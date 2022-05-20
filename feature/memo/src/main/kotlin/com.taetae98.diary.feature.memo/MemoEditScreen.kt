@@ -118,11 +118,9 @@ private fun CollectMemoEditEvent(
                 }
                 is MemoEditEvent.Error -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
-                    launch {
-                        snackbarHostState.showSnackbar(
-                            message = "Error : ${it.throwable.message}"
-                        )
-                    }
+                    snackbarHostState.showSnackbar(
+                        message = "Error : ${it.throwable.message}"
+                    )
                 }
                 is MemoEditEvent.TitleEmpty -> {
                     snackbarHostState.currentSnackbarData?.dismiss()

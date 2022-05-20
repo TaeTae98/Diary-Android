@@ -1,5 +1,5 @@
 package com.taetae98.diary.feature.resource
 
-import com.taetae98.resource.R
+import com.taetae98.diary.feature.resource.R
 
 typealias StringResource = R.string
