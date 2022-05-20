@@ -23,18 +23,18 @@ class SettingRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun isRunOnUnlockOptimized() = settingDataStoreDataSource.data.map {
-        (it[getIsRunOnUnlockOptimizedKey()] ?: false)
+    override fun isRunOnUnlockHideNotification() = settingDataStoreDataSource.data.map {
+        (it[getIsRunOnUnlockHideNotificationKey()] ?: false)
     }
 
-    override suspend fun setIsRunOnUnlockOptimized(value: Boolean) {
+    override suspend fun setIsRunOnUnlockHideNotification(value: Boolean) {
         settingDataStoreDataSource.edit {
-            it[getIsRunOnUnlockOptimizedKey()] = value
+            it[getIsRunOnUnlockHideNotificationKey()] = value
         }
     }
 
     companion object {
         private fun getIsRunOnUnlockKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK")
-        private fun getIsRunOnUnlockOptimizedKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK_OPTIMIZED")
+        private fun getIsRunOnUnlockHideNotificationKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK_HIDE_NOTIFICATION")
     }
 }

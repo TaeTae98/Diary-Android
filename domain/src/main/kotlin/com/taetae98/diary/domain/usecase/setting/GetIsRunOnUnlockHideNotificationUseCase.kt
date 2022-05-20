@@ -5,12 +5,12 @@ import com.taetae98.diary.domain.repository.SettingRepository
 import com.taetae98.diary.feature.common.getDefaultName
 import javax.inject.Inject
 
-class GetIsRunOnUnlockOptimizedUseCase @Inject constructor(
+class GetIsRunOnUnlockHideNotificationUseCase @Inject constructor(
     private val settingRepository: SettingRepository
 ) {
     operator fun invoke() = runCatching {
-        settingRepository.isRunOnUnlockOptimized()
+        settingRepository.isRunOnUnlockHideNotification()
     }.onFailure {
-        Log.e("Setting", GetIsRunOnUnlockOptimizedUseCase::class.getDefaultName(), it)
+        Log.e("Setting", GetIsRunOnUnlockHideNotificationUseCase::class.getDefaultName(), it)
     }
 }

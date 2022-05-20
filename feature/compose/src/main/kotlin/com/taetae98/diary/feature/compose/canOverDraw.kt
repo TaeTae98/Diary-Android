@@ -17,7 +17,6 @@ import androidx.lifecycle.LifecycleEventObserver
 fun canDrawOverlays(defaultValue: Boolean = false): Boolean {
     val context = LocalContext.current
     val lifecycle by rememberUpdatedState(LocalLifecycleOwner.current.lifecycle)
-
     var canDrawOverlays by remember { mutableStateOf(defaultValue) }
 
     DisposableEffect(lifecycle) {

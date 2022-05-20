@@ -1,6 +1,5 @@
 package com.taetae98.diary.feature.compose
 
-import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -36,7 +35,6 @@ fun Modifier.draggable(
             onDragStarted(it)
         },
         onDragStopped = {
-            Log.d("Draggable", "Velocity : $it")
             if (onDragStopped(it).isFalse()) {
                 offset = 0F
             }

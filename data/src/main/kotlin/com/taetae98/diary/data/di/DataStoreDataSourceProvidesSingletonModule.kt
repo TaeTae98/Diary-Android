@@ -6,15 +6,15 @@ import com.taetae98.diary.data.datasource.SettingDataStoreDataSource.Companion.S
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
-class DataStoreDataSourceProvidesViewModelModule {
+@InstallIn(SingletonComponent::class)
+class DataStoreDataSourceProvidesSingletonModule {
     @Provides
-    @ViewModelScoped
+    @Singleton
     @SettingDataStoreDataSource
     fun providesSettingDataStoreDataSource(
         @ApplicationContext

@@ -10,7 +10,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class ServiceBindsViewModelModule {
+abstract class CallBindsViewModelModule {
     @Binds
     @ViewModelScoped
     abstract fun bindsRunOnUnlockService(service: RunOnUnlockCallImpl): RunOnUnlockCall

@@ -7,23 +7,18 @@ import com.taetae98.diary.feature.common.getDefaultName
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
 
-class SetIsRunOnUnlockOptimizedUseCase @Inject constructor(
+class SetIsRunOnUnlockHideNotificationUseCase @Inject constructor(
     private val settingRepository: SettingRepository,
     private val runOnUnlockCall: RunOnUnlockCall
 ) {
     suspend operator fun invoke(value: Boolean) = runCatching {
+        settingRepository.setIsRunOnUnlockHideNotification(value)
         if (settingRepository.isRunOnUnlock().first()) {
-            if (value) {
-                runOnUnlockCall.startBackgroundService()
-            } else {
-                runOnUnlockCall.startForegroundService()
-            }
+            runOnUnlockCall.startService()
         } else {
             runOnUnlockCall.stopService()
         }
-
-        settingRepository.setIsRunOnUnlockOptimized(value)
     }.onFailure {
-        Log.e("Setting", SetIsRunOnUnlockOptimizedUseCase::class.getDefaultName(), it)
+        Log.e("Setting", SetIsRunOnUnlockHideNotificationUseCase::class.getDefaultName(), it)
     }
 }

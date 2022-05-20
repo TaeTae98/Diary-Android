@@ -6,21 +6,26 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.TaskStackBuilder
+import com.taetae98.diary.app.service.RunOnUnlockService
 import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.common.getDefaultName
 
 class RunOnUnlockReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         runCatching {
-            Log.d("RunOnUnlock", "Receiver : ${intent.action}")
             when (intent.action) {
+                Intent.ACTION_MY_PACKAGE_REPLACED, Intent.ACTION_BOOT_COMPLETED -> onInit(context)
                 Intent.ACTION_SCREEN_OFF -> onScreenOff(context)
             }
         }.onFailure {
-            Toast.makeText(context, "Error : $it", Toast.LENGTH_LONG).show()
             Log.e("RunOnUnlock", RunOnUnlockReceiver::class.getDefaultName(), it)
+        }
+    }
+
+    private fun onInit(context: Context) {
+        Intent(context, RunOnUnlockService::class.java).also {
+            context.startService(it)
         }
     }
 

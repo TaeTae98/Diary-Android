@@ -2,10 +2,10 @@ package com.taetae98.diary.feature.memo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.usecase.memo.MemoDeleteByIdUseCase
-import com.taetae98.diary.domain.usecase.memo.MemoPagingByTagIdsUseCase
+import com.taetae98.diary.domain.usecase.memo.DeleteMemoByIdUseCase
+import com.taetae98.diary.domain.usecase.memo.PagingMemoByTagIdsUseCase
 import com.taetae98.diary.domain.model.MemoRelation
-import com.taetae98.diary.domain.usecase.memo.MemoRelationRestoreUseCase
+import com.taetae98.diary.domain.usecase.memo.RestoreMemoRelationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MemoViewModel @Inject constructor(
-    private val memoPagingByTagIdsUseCase: MemoPagingByTagIdsUseCase,
-    private val memoDeleteByIdUseCase: MemoDeleteByIdUseCase,
-    private val memoRelationRestoreUseCase: MemoRelationRestoreUseCase,
+    private val pagingMemoByTagIdsUseCase: PagingMemoByTagIdsUseCase,
+    private val deleteMemoByIdUseCase: DeleteMemoByIdUseCase,
+    private val restoreMemoRelationUseCase: RestoreMemoRelationUseCase,
 ) : ViewModel() {
     val event = MutableSharedFlow<MemoEvent>()
 
-    fun getMemoByTagIds(ids: Collection<Int>) = memoPagingByTagIdsUseCase(ids).getOrElse {
+    fun getMemoByTagIds(ids: Collection<Int>) = pagingMemoByTagIdsUseCase(ids).getOrElse {
         viewModelScope.launch { event.emit(MemoEvent.Error(it)) }
         emptyFlow()
     }
@@ -29,7 +29,7 @@ class MemoViewModel @Inject constructor(
 
     fun deleteMemo(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            memoDeleteByIdUseCase(id).onSuccess {
+            deleteMemoByIdUseCase(id).onSuccess {
                 event.emit(MemoEvent.DeleteMemo(it))
             }.onFailure {
                 event.emit(MemoEvent.Error(it))
@@ -39,7 +39,7 @@ class MemoViewModel @Inject constructor(
 
     fun restore(relation: MemoRelation) {
         viewModelScope.launch(Dispatchers.IO) {
-            memoRelationRestoreUseCase(relation).onFailure {
+            restoreMemoRelationUseCase(relation).onFailure {
                 event.emit(MemoEvent.Error(it))
             }
         }

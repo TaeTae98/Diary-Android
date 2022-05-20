@@ -17,7 +17,7 @@ fun NavGraphBuilder.settingGraph(
         route = SettingGraph.ROUTE
     ) {
         composable(
-            route = SettingScreen.ROUTE
+            route = SettingScreen.ROUTE,
         ) {
             SettingScreen(navController = navController)
         }

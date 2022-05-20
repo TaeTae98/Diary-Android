@@ -1,17 +1,16 @@
 package com.taetae98.diary.domain.usecase.memo
 
 import android.util.Log
-import com.taetae98.diary.domain.model.MemoEntity
 import com.taetae98.diary.domain.repository.MemoRepository
 import com.taetae98.diary.feature.common.getDefaultName
 import javax.inject.Inject
 
-class MemoInsertUseCase @Inject constructor(
+class PagingMemoByTagIdsUseCase @Inject constructor(
     private val memoRepository: MemoRepository
 ) {
-    suspend operator fun invoke(entity: MemoEntity) = runCatching {
-        memoRepository.insert(entity)
+    operator fun invoke(ids: Collection<Int>) = runCatching {
+        memoRepository.findByTagIds(ids)
     }.onFailure {
-        Log.e("Memo", MemoInsertUseCase::class.getDefaultName(), it)
+        Log.e("Memo", PagingMemoByTagIdsUseCase::class.getDefaultName(), it)
     }
 }

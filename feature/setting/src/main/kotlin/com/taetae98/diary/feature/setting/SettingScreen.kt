@@ -60,7 +60,7 @@ fun SettingScreen(
         topBar = { SettingTopAppBar(navController = navController) }
     ) {
         Column {
-            RunOnUnlockLayout(
+            RunOnUnlockCompose(
                 modifier = Modifier
                     .padding(it)
                     .padding(8.dp)
@@ -115,14 +115,14 @@ private fun SettingTopAppBar(
 }
 
 @Composable
-private fun RunOnUnlockLayout(
+private fun RunOnUnlockCompose(
     modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
     ) {
         Column {
-            RunOnUnlockHeaderLayout()
+            RunOnUnlockLayout()
             Divider()
             RunOnUnlockOptimizationLayout()
         }
@@ -130,7 +130,7 @@ private fun RunOnUnlockLayout(
 }
 
 @Composable
-private fun RunOnUnlockHeaderLayout(
+private fun RunOnUnlockLayout(
     modifier: Modifier = Modifier,
 ) {
     Column(

@@ -15,11 +15,7 @@ class RunOnUnlockCallImpl @Inject constructor(
         context.stopService(Intent(context, RunOnUnlockService::class.java))
     }
 
-    override fun startForegroundService() {
-        context.startForegroundService(RunOnUnlockService.getIntent(context, false))
-    }
-
-    override fun startBackgroundService() {
-        context.startService(RunOnUnlockService.getIntent(context, true))
+    override fun startService() {
+        context.startService(Intent(context, RunOnUnlockService::class.java))
     }
 }

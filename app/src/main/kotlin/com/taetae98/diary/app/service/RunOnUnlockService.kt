@@ -1,21 +1,28 @@
 package com.taetae98.diary.app.service
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import com.taetae98.diary.app.notification.RunOnUnlockNotification
 import com.taetae98.diary.app.receiver.RunOnUnlockReceiver
+import com.taetae98.diary.domain.repository.SettingRepository
 import com.taetae98.diary.feature.common.getDefaultName
+import com.taetae98.diary.feature.common.isFalse
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RunOnUnlockService : Service() {
     private var runOnUnlockReceiver: RunOnUnlockReceiver? = null
+
+    @Inject
+    lateinit var settingRepository: SettingRepository
 
     @Inject
     lateinit var runOnUnlockNotification: RunOnUnlockNotification
@@ -28,29 +35,31 @@ class RunOnUnlockService : Service() {
             runOnUnlockReceiver = RunOnUnlockReceiver().also {
                 registerReceiver(
                     it,
-                    IntentFilter(Intent.ACTION_SCREEN_OFF)
+                    IntentFilter().apply {
+                        addAction(Intent.ACTION_SCREEN_OFF)
+                    }
                 )
             }
         }.onFailure {
             Log.e("RunOnUnlock", RunOnUnlockService::class.getDefaultName(), it)
-            Toast.makeText(this, "Error : ${it.message}", Toast.LENGTH_LONG).show()
         }
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        runCatching {
-            if (intent.getBooleanExtra(IS_BACKGROUND, true)) {
-                onBackgroundService()
-            } else {
-                onForegroundService()
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching {
+                when {
+                    isForegroundService() -> onForegroundService()
+                    isBackgroundService() -> onBackgroundService()
+                    else -> stopSelf()
+                }
+            }.onFailure {
+                Log.e("RunOnUnlock", RunOnUnlockService::class.getDefaultName(), it)
             }
-        }.onFailure {
-            Log.e("RunOnUnlock", RunOnUnlockService::class.getDefaultName(), it)
-            Toast.makeText(this, "Error : ${it.message}", Toast.LENGTH_LONG).show()
         }
 
-        return START_REDELIVER_INTENT
+        return START_STICKY_COMPATIBILITY
     }
 
     override fun onDestroy() {
@@ -59,7 +68,6 @@ class RunOnUnlockService : Service() {
             runOnUnlockReceiver?.let { unregisterReceiver(it) }
         }.onFailure {
             Log.e("RunOnUnlock", RunOnUnlockService::class.getDefaultName(), it)
-            Toast.makeText(this, "Error : ${it.message}", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -75,12 +83,17 @@ class RunOnUnlockService : Service() {
         )
     }
 
+    private suspend fun isForegroundService(): Boolean {
+        return settingRepository.isRunOnUnlock().first() &&
+                settingRepository.isRunOnUnlockHideNotification().first().isFalse()
+    }
+
+    private suspend fun isBackgroundService(): Boolean {
+        return settingRepository.isRunOnUnlock().first() &&
+                settingRepository.isRunOnUnlockHideNotification().first()
+    }
+
     companion object {
         private const val NOTIFICATION_ID = -100
-        private const val IS_BACKGROUND = "IS_BACKGROUND"
-
-        fun getIntent(context: Context, isBackground: Boolean = false) = Intent(
-            context, RunOnUnlockService::class.java
-        ).putExtra(IS_BACKGROUND, isBackground)
     }
 }

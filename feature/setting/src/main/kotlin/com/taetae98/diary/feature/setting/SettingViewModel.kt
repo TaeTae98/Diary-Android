@@ -2,9 +2,9 @@ package com.taetae98.diary.feature.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.usecase.setting.GetIsRunOnUnlockOptimizedUseCase
+import com.taetae98.diary.domain.usecase.setting.GetIsRunOnUnlockHideNotificationUseCase
 import com.taetae98.diary.domain.usecase.setting.GetIsRunOnUnlockUseCase
-import com.taetae98.diary.domain.usecase.setting.SetIsRunOnUnlockOptimizedUseCase
+import com.taetae98.diary.domain.usecase.setting.SetIsRunOnUnlockHideNotificationUseCase
 import com.taetae98.diary.domain.usecase.setting.SetIsRunOnUnlockUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,9 +17,9 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     getIsRunOnUnlockUseCase: GetIsRunOnUnlockUseCase,
-    getIsRunOnUnlockOptimizedUseCase: GetIsRunOnUnlockOptimizedUseCase,
+    getIsRunOnUnlockHideNotificationUseCase: GetIsRunOnUnlockHideNotificationUseCase,
     private val setIsRunOnUnlockUseCase: SetIsRunOnUnlockUseCase,
-    private val setIsRunOnUnlockOptimizedUseCase: SetIsRunOnUnlockOptimizedUseCase,
+    private val setIsRunOnUnlockHideNotificationUseCase: SetIsRunOnUnlockHideNotificationUseCase,
 ) : ViewModel() {
     val event = MutableSharedFlow<SettingEvent>()
 
@@ -34,7 +34,7 @@ class SettingViewModel @Inject constructor(
             false
         )
 
-    val isRunOnUnlockOptimized = getIsRunOnUnlockOptimizedUseCase()
+    val isRunOnUnlockOptimized = getIsRunOnUnlockHideNotificationUseCase()
         .getOrElse {
             viewModelScope.launch { event.emit(SettingEvent.Error(it)) }
             emptyFlow()
@@ -55,7 +55,7 @@ class SettingViewModel @Inject constructor(
 
     fun setIsRunOnUnlockOptimized(value: Boolean) {
         viewModelScope.launch {
-            setIsRunOnUnlockOptimizedUseCase(value).onFailure {
+            setIsRunOnUnlockHideNotificationUseCase(value).onFailure {
                 event.emit(SettingEvent.Error(it))
             }
         }
