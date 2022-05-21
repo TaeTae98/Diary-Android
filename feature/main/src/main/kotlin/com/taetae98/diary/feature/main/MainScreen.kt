@@ -18,9 +18,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.taetae98.diary.feature.common.isTrue
+import com.taetae98.diary.feature.location.LocationScreen
 import com.taetae98.diary.feature.location.locationGraph
 import com.taetae98.diary.feature.memo.MemoGraph
+import com.taetae98.diary.feature.memo.MemoScreen
 import com.taetae98.diary.feature.memo.memoGraph
+import com.taetae98.diary.feature.more.MoreScreen
 import com.taetae98.diary.feature.more.moreGraph
 import com.taetae98.diary.feature.theme.DiaryTheme
 
@@ -75,15 +78,20 @@ private fun MainBottomNavigation(
         MainNavigationItem.More
     )
 
-    BottomNavigation(
-        modifier = modifier,
-        backgroundColor = DiaryTheme.surfaceColor,
-    ) {
-        items.forEach {
-            BottomNavigationItem(
-                item = it,
-                navController = navController
-            )
+    val navigationVisibleRoute = listOf(MemoScreen.ROUTE, LocationScreen.ROUTE, MoreScreen.ROUTE)
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    if (backStackEntry?.destination?.route in navigationVisibleRoute) {
+        BottomNavigation(
+            modifier = modifier,
+            backgroundColor = DiaryTheme.surfaceColor,
+        ) {
+            items.forEach {
+                BottomNavigationItem(
+                    item = it,
+                    navController = navController
+                )
+            }
         }
     }
 }

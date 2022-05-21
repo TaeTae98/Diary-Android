@@ -34,5 +34,6 @@ include(
 
 include(
     ":feature:more",
-    ":feature:setting"
+    ":feature:setting",
+    ":feature:developer"
 )

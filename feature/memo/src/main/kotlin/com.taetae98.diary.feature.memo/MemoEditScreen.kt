@@ -2,51 +2,36 @@ package com.taetae98.diary.feature.memo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Clear
-import androidx.compose.material.icons.rounded.Visibility
-import androidx.compose.material.icons.rounded.VisibilityOff
-import androidx.compose.material.icons.rounded.VpnKey
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.taetae98.diary.feature.common.Parameter
-import com.taetae98.diary.feature.common.isFalse
-import com.taetae98.diary.feature.compose.DiaryTextField
-import com.taetae98.diary.feature.compose.DiaryTopAppBar
+import com.taetae98.diary.feature.compose.ClearInputCompose
+import com.taetae98.diary.feature.compose.PasswordInputCompose
+import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
+import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.resource.StringResource
-import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -91,6 +76,17 @@ fun MemoEditScreen(
 }
 
 @Composable
+private fun MemoEditTopAppBar(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
+    DiaryTopAppBar(
+        modifier = modifier,
+        navigationIcon = { DiaryTopAppBarNavigationIcon(navController = navController) }
+    )
+}
+
+@Composable
 private fun CollectMemoEditEvent(
     snackbarHostState: SnackbarHostState,
     navController: NavController,
@@ -125,31 +121,13 @@ private fun CollectMemoEditEvent(
                 is MemoEditEvent.TitleEmpty -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     launch {
-                        snackbarHostState.showSnackbar(message = context.getString(StringResource.message_title_is_empty))
+                        snackbarHostState.showSnackbar(message = context.getString(R.string.title_is_empty))
                     }
                 }
                 else -> Unit
             }
         }
     }
-}
-
-@Composable
-private fun MemoEditTopAppBar(
-    modifier: Modifier = Modifier,
-    navController: NavController
-) {
-    DiaryTopAppBar(
-        modifier = modifier,
-        navigationIcon = {
-            IconButton(onClick = { navController.navigateUp() }) {
-                Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(id = StringResource.memo)
-                )
-            }
-        }
-    )
 }
 
 @Composable
@@ -170,33 +148,19 @@ private fun TitleInput(
     memoEditViewModel: MemoEditViewModel = hiltViewModel()
 ) {
     val focusRequester = remember { FocusRequester() }
-    var isError by remember { mutableStateOf(false) }
+    val (isError, setIsError) = remember { mutableStateOf(false) }
 
-    DiaryTextField(
-        modifier = modifier
-            .focusRequester(focusRequester),
+    ClearInputCompose(
+        modifier = modifier.focusRequester(focusRequester),
         value = memoEditViewModel.title.collectAsState().value,
         onValueChange = {
-            isError = false
+            setIsError(false)
             memoEditViewModel.setTitle(it)
         },
-        label = { Text(text = stringResource(id = StringResource.title)) },
-        trailingIcon = {
-            IconButton(
-                onClick = {
-                    memoEditViewModel.setTitle("")
-                    focusRequester.requestFocus()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Clear,
-                    contentDescription = stringResource(id = StringResource.clear)
-                )
-            }
-        },
+        label = stringResource(id = StringResource.title),
         isError = isError,
         singleLine = true,
-        maxLines = 1,
+        maxLines = 1
     )
 
     LaunchedEffect(Unit) {
@@ -204,7 +168,7 @@ private fun TitleInput(
         memoEditViewModel.event.collect {
             when (it) {
                 is MemoEditEvent.TitleEmpty -> {
-                    isError = true
+                    setIsError(true)
                     focusRequester.requestFocus()
                 }
                 else -> Unit
@@ -218,112 +182,28 @@ private fun DescriptionInput(
     modifier: Modifier = Modifier,
     memoEditViewModel: MemoEditViewModel = hiltViewModel()
 ) {
-    val focusRequester = remember { FocusRequester() }
-
-    DiaryTextField(
-        modifier = modifier
-            .focusRequester(focusRequester),
+    ClearInputCompose(
+        modifier = modifier,
         value = memoEditViewModel.description.collectAsState().value,
-        onValueChange = { memoEditViewModel.setDescription(it) },
-        label = { Text(text = stringResource(id = StringResource.description)) },
-        trailingIcon = {
-            IconButton(
-                onClick = {
-                    memoEditViewModel.setDescription("")
-                    focusRequester.requestFocus()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Clear,
-                    contentDescription = stringResource(id = StringResource.clear)
-                )
-            }
-        },
-        maxLines = 10
+        onValueChange = memoEditViewModel::setDescription,
+        label = stringResource(id = StringResource.description),
+        singleLine = true,
+        maxLines = 1
     )
 }
 
 @Composable
 private fun PasswordLayout(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    memoEditViewModel: MemoEditViewModel = hiltViewModel()
 ) {
     Card(modifier = modifier) {
-        Column {
-            PasswordHeader()
-            PasswordInput(modifier = Modifier.fillMaxWidth())
-        }
-    }
-}
-
-@Composable
-private fun PasswordHeader(
-    modifier: Modifier = Modifier,
-    memoEditViewModel: MemoEditViewModel = hiltViewModel()
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier
-                .weight(1F)
-                .padding(8.dp),
-            text = stringResource(id = StringResource.password)
+        PasswordInputCompose(
+            hasPassword = memoEditViewModel.hasPassword.collectAsState().value,
+            onHasPasswordChanged = memoEditViewModel::setHasPassword,
+            password = memoEditViewModel.password.collectAsState().value,
+            onPasswordChanged = memoEditViewModel::setPassword
         )
-
-        IconButton(
-            onClick = {
-                memoEditViewModel.toggleHasPassword()
-            }
-        ) {
-            if (memoEditViewModel.hasPassword.collectAsState().value) {
-                Icon(
-                    tint = DiaryTheme.primaryColor,
-                    imageVector = Icons.Rounded.VpnKey,
-                    contentDescription = stringResource(id = StringResource.password)
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Rounded.VpnKey,
-                    contentDescription = stringResource(id = StringResource.password)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun PasswordInput(
-    modifier: Modifier = Modifier,
-    memoEditViewModel: MemoEditViewModel = hiltViewModel()
-) {
-    if (memoEditViewModel.hasPassword.collectAsState().value.isFalse()) {
-        return
-    }
-
-    val focusRequester = remember { FocusRequester() }
-    var isPasswordVisible by remember { mutableStateOf(false) }
-
-    DiaryTextField(
-        modifier = modifier.focusRequester(focusRequester),
-        value = memoEditViewModel.password.collectAsState().value,
-        onValueChange = { memoEditViewModel.setPassword(it) },
-        trailingIcon = {
-            IconButton(onClick = { isPasswordVisible = isPasswordVisible.not() }) {
-                Icon(
-                    imageVector = if (isPasswordVisible) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
-                    contentDescription = stringResource(id = if (isPasswordVisible) StringResource.show else StringResource.hide)
-                )
-            }
-        },
-        singleLine = true,
-        maxLines = 1,
-        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-    )
-
-    LaunchedEffect(memoEditViewModel.hasPassword.collectAsState().value) {
-        focusRequester.requestFocus()
     }
 }
 

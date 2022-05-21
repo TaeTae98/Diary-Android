@@ -7,6 +7,10 @@ import androidx.navigation.navigation
 
 object SettingGraph {
     const val ROUTE = "SettingGraph"
+
+    fun getAction(): String {
+        return ROUTE
+    }
 }
 
 fun NavGraphBuilder.settingGraph(

@@ -2,10 +2,10 @@ package com.taetae98.diary.feature.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.usecase.setting.GetIsRunOnUnlockHideNotificationUseCase
-import com.taetae98.diary.domain.usecase.setting.GetIsRunOnUnlockUseCase
-import com.taetae98.diary.domain.usecase.setting.SetIsRunOnUnlockHideNotificationUseCase
-import com.taetae98.diary.domain.usecase.setting.SetIsRunOnUnlockUseCase
+import com.taetae98.diary.domain.usecase.setting.IsRunOnUnlockEnableUseCase
+import com.taetae98.diary.domain.usecase.setting.IsRunOnUnlockNotificationVisibleUseCase
+import com.taetae98.diary.domain.usecase.setting.SetRunOnUnlockEnableUseCase
+import com.taetae98.diary.domain.usecase.setting.SetRunOnUnlockNotificationVisibleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,46 +16,44 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    getIsRunOnUnlockUseCase: GetIsRunOnUnlockUseCase,
-    getIsRunOnUnlockHideNotificationUseCase: GetIsRunOnUnlockHideNotificationUseCase,
-    private val setIsRunOnUnlockUseCase: SetIsRunOnUnlockUseCase,
-    private val setIsRunOnUnlockHideNotificationUseCase: SetIsRunOnUnlockHideNotificationUseCase,
+    isRunOnUnlockEnableUseCase: IsRunOnUnlockEnableUseCase,
+    isRunOnUnlockNotificationVisibleUseCase: IsRunOnUnlockNotificationVisibleUseCase,
+    private val setRunOnUnlockEnableUseCase: SetRunOnUnlockEnableUseCase,
+    private val setRunOnUnlockNotificationVisibleUseCase: SetRunOnUnlockNotificationVisibleUseCase,
 ) : ViewModel() {
     val event = MutableSharedFlow<SettingEvent>()
 
-    val isRunOnUnlock = getIsRunOnUnlockUseCase()
+    val isRunOnUnlockAvailable = isRunOnUnlockEnableUseCase()
         .getOrElse {
             viewModelScope.launch { event.emit(SettingEvent.Error(it)) }
             emptyFlow()
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Eagerly,
-            false
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false
         )
 
-    val isRunOnUnlockOptimized = getIsRunOnUnlockHideNotificationUseCase()
+    val isRunOnUnlockNotificationVisible = isRunOnUnlockNotificationVisibleUseCase()
         .getOrElse {
             viewModelScope.launch { event.emit(SettingEvent.Error(it)) }
             emptyFlow()
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Eagerly,
-            false
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false
         )
 
-    fun setIsRunOnUnlock(value: Boolean) {
+    fun setRunOnUnlockAvailable(isAvailable: Boolean) {
         viewModelScope.launch {
-            setIsRunOnUnlockUseCase(value).onFailure {
+            setRunOnUnlockEnableUseCase(SetRunOnUnlockEnableUseCase.IsEnable(isAvailable)).onFailure {
                 event.emit(SettingEvent.Error(it))
             }
         }
     }
 
-    fun setIsRunOnUnlockOptimized(value: Boolean) {
+    fun setRunOnUnlockNotificationVisible(isVisible: Boolean) {
         viewModelScope.launch {
-            setIsRunOnUnlockHideNotificationUseCase(value).onFailure {
+            setRunOnUnlockNotificationVisibleUseCase(SetRunOnUnlockNotificationVisibleUseCase.IsVisible(isVisible)).onFailure {
                 event.emit(SettingEvent.Error(it))
             }
         }

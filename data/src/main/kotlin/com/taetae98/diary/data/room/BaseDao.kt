@@ -7,4 +7,7 @@ import androidx.room.Insert
 interface BaseDao<T: Any> {
     @Insert
     suspend fun insert(entity: T): Long
+
+    @Insert
+    suspend fun insert(entity: Collection<T>): LongArray
 }

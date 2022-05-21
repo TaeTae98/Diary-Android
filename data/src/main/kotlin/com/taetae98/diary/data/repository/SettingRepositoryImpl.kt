@@ -13,28 +13,28 @@ class SettingRepositoryImpl @Inject constructor(
     @SettingDataStoreDataSource
     private val settingDataStoreDataSource: DataStore<Preferences>,
 ) : SettingRepository {
-    override fun isRunOnUnlock() = settingDataStoreDataSource.data.map {
-        it[getIsRunOnUnlockKey()] ?: false
+    override fun isRunOnUnlockEnable() = settingDataStoreDataSource.data.map {
+        it[getIsRunOnUnlockEnableKey()] ?: false
     }
 
-    override suspend fun setIsRunOnUnlock(value: Boolean) {
+    override suspend fun setRunOnUnlockEnable(isEnable: Boolean) {
         settingDataStoreDataSource.edit {
-            it[getIsRunOnUnlockKey()] = value
+            it[getIsRunOnUnlockEnableKey()] = isEnable
         }
     }
 
-    override fun isRunOnUnlockHideNotification() = settingDataStoreDataSource.data.map {
-        (it[getIsRunOnUnlockHideNotificationKey()] ?: false)
+    override fun isRunOnUnlockNotificationVisible() = settingDataStoreDataSource.data.map {
+        (it[getIsRunOnUnlockNotificationVisibleKey()] ?: false)
     }
 
-    override suspend fun setIsRunOnUnlockHideNotification(value: Boolean) {
+    override suspend fun setRunOnUnlockNotificationVisible(isVisible: Boolean) {
         settingDataStoreDataSource.edit {
-            it[getIsRunOnUnlockHideNotificationKey()] = value
+            it[getIsRunOnUnlockNotificationVisibleKey()] = isVisible
         }
     }
 
     companion object {
-        private fun getIsRunOnUnlockKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK")
-        private fun getIsRunOnUnlockHideNotificationKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK_HIDE_NOTIFICATION")
+        private fun getIsRunOnUnlockEnableKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK_ENABLE")
+        private fun getIsRunOnUnlockNotificationVisibleKey() = booleanPreferencesKey("IS_RUN_ON_UNLOCK_NOTIFICATION_VISIBLE")
     }
 }

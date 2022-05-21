@@ -1,9 +1,8 @@
 package com.taetae98.diary.data.di
 
 import android.content.Context
-import androidx.room.Room
-import com.taetae98.diary.data.BuildConfig
-import com.taetae98.diary.data.DiaryDatabase
+import com.taetae98.diary.data.datasource.DeveloperDataStoreDataSource
+import com.taetae98.diary.data.datasource.DeveloperDataStoreDataSource.Companion.DeveloperDataStoreDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,12 +12,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DiaryDatabaseProvidesSingletonModule {
+class DataStoreDataSourceProvidesViewModelModule {
     @Provides
     @Singleton
-    fun providesDiaryDatabase(
+    @DeveloperDataStoreDataSource
+    fun providesDeveloperDataStoreDataSource(
         @ApplicationContext
         context: Context
-    ) = Room.databaseBuilder(context, DiaryDatabase::class.java, BuildConfig.DIARY_DATABASE_NAME)
-        .build()
+    ) = context.DeveloperDataStoreDataSource
 }

@@ -18,12 +18,12 @@ class MemoEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val insertMemoUseCase: InsertMemoUseCase,
 ) : ViewModel() {
+    val event = MutableSharedFlow<MemoEditEvent>()
+
     val title = MutableStateFlow("")
     val description = MutableStateFlow("")
     val password = MutableStateFlow("")
     val hasPassword = MutableStateFlow(false)
-
-    val event = MutableSharedFlow<MemoEditEvent>()
 
     fun setTitle(value: String) {
         viewModelScope.launch { title.emit(value) }
@@ -37,8 +37,8 @@ class MemoEditViewModel @Inject constructor(
         viewModelScope.launch { password.emit(value) }
     }
 
-    fun toggleHasPassword() {
-        viewModelScope.launch { hasPassword.emit(hasPassword.value.not()) }
+    fun setHasPassword(value: Boolean) {
+        viewModelScope.launch { hasPassword.emit(value) }
     }
 
     fun edit() {

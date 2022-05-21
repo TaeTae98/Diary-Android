@@ -13,10 +13,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -32,19 +30,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.taetae98.diary.feature.common.isFalse
-import com.taetae98.diary.feature.compose.DiaryTopAppBar
-import com.taetae98.diary.feature.compose.canDrawOverlays
-import com.taetae98.diary.feature.compose.isBatteryOptimized
+import com.taetae98.diary.feature.compose.diary.DiarySwitch
+import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
+import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
+import com.taetae98.diary.feature.compose.variable.canDrawOverlays
+import com.taetae98.diary.feature.compose.variable.isBatteryOptimized
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlinx.coroutines.flow.collect
 
 object SettingScreen {
     const val ROUTE = "SettingScreen"
-
-    fun getAction(): String {
-        return ROUTE
-    }
 }
 
 @Composable
@@ -79,7 +75,7 @@ private fun CollectEvent(
 ) {
     LaunchedEffect(Unit) {
         settingViewModel.event.collect {
-            when(it) {
+            when (it) {
                 is SettingEvent.Error -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
@@ -100,16 +96,7 @@ private fun SettingTopAppBar(
         modifier = modifier,
         title = { Text(text = stringResource(id = StringResource.setting)) },
         navigationIcon = {
-            IconButton(
-                onClick = {
-                    navController.navigateUp()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(id = StringResource.back)
-                )
-            }
+            DiaryTopAppBarNavigationIcon(navController = navController)
         }
     )
 }
@@ -122,45 +109,29 @@ private fun RunOnUnlockCompose(
         modifier = modifier
     ) {
         Column {
-            RunOnUnlockLayout()
+            RunOnUnlockAvailable()
             Divider()
-            RunOnUnlockOptimizationLayout()
+            RunOnUnlockNotificationVisible()
         }
     }
 }
 
 @Composable
-private fun RunOnUnlockLayout(
+private fun RunOnUnlockAvailable(
     modifier: Modifier = Modifier,
+    settingViewModel: SettingViewModel = hiltViewModel()
 ) {
     Column(
         modifier = modifier,
     ) {
-        RunOnUnlock()
-        RunOnUnlockDescription()
-    }
-}
-
-@Composable
-private fun RunOnUnlock(
-    modifier: Modifier = Modifier,
-    settingViewModel: SettingViewModel = hiltViewModel()
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier
-                .weight(1F)
-                .padding(8.dp),
-            text = stringResource(id = StringResource.setting_run_on_unlock)
-        )
-        Switch(
-            checked = settingViewModel.isRunOnUnlock.collectAsState().value,
-            onCheckedChange = { settingViewModel.setIsRunOnUnlock(it) },
+        DiarySwitch(
+            text = stringResource(id = StringResource.run_on_unlock),
+            checked = settingViewModel.isRunOnUnlockAvailable.collectAsState().value && canDrawOverlays(defaultValue = false),
+            onCheckedChange = settingViewModel::setRunOnUnlockAvailable,
             enabled = canDrawOverlays(defaultValue = false)
         )
+
+        RunOnUnlockDescription()
     }
 }
 
@@ -180,7 +151,7 @@ private fun RunOnUnlockDescription(
                     .weight(1F)
                     .padding(8.dp)
             ) {
-                Text(text = stringResource(id = StringResource.setting_run_on_unlock_description))
+                Text(text = stringResource(id = R.string.run_on_unlock_description))
             }
             IconButton(
                 onClick = {
@@ -202,49 +173,29 @@ private fun RunOnUnlockDescription(
 }
 
 @Composable
-private fun RunOnUnlockOptimizationLayout(
+private fun RunOnUnlockNotificationVisible(
     modifier: Modifier = Modifier,
     settingViewModel: SettingViewModel = hiltViewModel()
 ) {
-    if (settingViewModel.isRunOnUnlock.collectAsState().value.isFalse()) {
+    if (settingViewModel.isRunOnUnlockAvailable.collectAsState().value.isFalse()) {
         return
     }
 
     Column(
         modifier = modifier
     ) {
-        RunOnUnlockOptimization()
-        RunOnUnlockOptimizationDescription()
+        DiarySwitch(
+            text = stringResource(id = R.string.run_on_unlock_hide_notification),
+            checked = settingViewModel.isRunOnUnlockNotificationVisible.collectAsState().value && isBatteryOptimized(defaultValue = true).isFalse(),
+            onCheckedChange = settingViewModel::setRunOnUnlockNotificationVisible,
+            enabled = isBatteryOptimized(defaultValue = true).isFalse()
+        )
+        HideRunOnUnlockNotificationDescription()
     }
 }
 
 @Composable
-private fun RunOnUnlockOptimization(
-    modifier: Modifier = Modifier,
-    settingViewModel: SettingViewModel = hiltViewModel()
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier
-                .weight(1F)
-                .padding(8.dp),
-            text = stringResource(id = StringResource.setting_run_on_unlock_hide_notification)
-        )
-        Switch(
-            checked = settingViewModel.isRunOnUnlockOptimized.collectAsState().value,
-            onCheckedChange = {
-                settingViewModel.setIsRunOnUnlockOptimized(it)
-            },
-            enabled = isBatteryOptimized(defaultValue = true).not()
-        )
-    }
-}
-
-@Composable
-private fun RunOnUnlockOptimizationDescription(
+private fun HideRunOnUnlockNotificationDescription(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -259,9 +210,9 @@ private fun RunOnUnlockOptimizationDescription(
                     .weight(1F)
                     .padding(8.dp)
             ) {
-                Text(text = stringResource(id = StringResource.setting_run_on_unlock_hide_notification_description))
-                Text(text = stringResource(id = StringResource.setting_run_on_unlock_hide_notification_description_hide_notification))
-                Text(text = stringResource(id = StringResource.setting_run_on_unlock_hide_notification_description_because_of_google_policy))
+                Text(text = stringResource(id = R.string.run_on_unlock_hide_notification_description))
+                Text(text = stringResource(id = R.string.run_on_unlock_hide_notification_description_hide_notification))
+                Text(text = stringResource(id = R.string.run_on_unlock_hide_notification_description_because_of_google_policy))
             }
             IconButton(
                 onClick = {

@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.compose
+package com.taetae98.diary.feature.compose.diary
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -17,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.taetae98.diary.feature.theme.DiaryTheme
 
 @Composable
@@ -53,11 +53,7 @@ private fun Preview() {
                 Text(text = "Preview")
             },
             navigationIcon = {
-                IconButton(
-                    onClick = { }
-                ) {
-                    Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
-                }
+                DiaryTopAppBarNavigationIcon(navController = rememberNavController())
             },
             actions = {
                 IconButton(

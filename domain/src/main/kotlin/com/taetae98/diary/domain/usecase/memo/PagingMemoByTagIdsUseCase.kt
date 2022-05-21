@@ -1,16 +1,19 @@
 package com.taetae98.diary.domain.usecase.memo
 
-import android.util.Log
+import androidx.paging.PagingData
+import com.taetae98.diary.domain.model.MemoEntity
+import com.taetae98.diary.domain.repository.ExceptionRepository
 import com.taetae98.diary.domain.repository.MemoRepository
-import com.taetae98.diary.feature.common.getDefaultName
+import com.taetae98.diary.domain.usecase.ParamUseCase
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class PagingMemoByTagIdsUseCase @Inject constructor(
-    private val memoRepository: MemoRepository
-) {
-    operator fun invoke(ids: Collection<Int>) = runCatching {
-        memoRepository.findByTagIds(ids)
-    }.onFailure {
-        Log.e("Memo", PagingMemoByTagIdsUseCase::class.getDefaultName(), it)
-    }
+    exceptionRepository: ExceptionRepository,
+    private val memoRepository: MemoRepository,
+) : ParamUseCase<PagingMemoByTagIdsUseCase.IDS, Flow<PagingData<MemoEntity>>>(exceptionRepository) {
+    @JvmInline
+    value class IDS(val ids: Collection<Int>)
+
+    override fun execute(parameter: IDS) = memoRepository.findByTagIds(parameter.ids)
 }

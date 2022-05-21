@@ -25,7 +25,7 @@ class RunOnUnlockNotification @Inject constructor(
         RunOnUnlockNotification::class.getDefaultName(),
         NotificationManagerCompat.IMPORTANCE_MIN
     ).setName(
-        context.getString(StringResource.setting_run_on_unlock)
+        context.getString(StringResource.run_on_unlock)
     ).setShowBadge(
         false
     ).build().also {
@@ -38,7 +38,7 @@ class RunOnUnlockNotification @Inject constructor(
     ).setSmallIcon(
         DrawableResource.ic_round_bolt_24
     ).setContentTitle(
-        context.getString(StringResource.setting_run_on_unlock)
+        context.getString(StringResource.run_on_unlock)
     ).setContentIntent(
         TaskStackBuilder.create(context)
             .addNextIntent(

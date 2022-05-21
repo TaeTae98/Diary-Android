@@ -28,8 +28,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.taetae98.diary.feature.common.Const
-import com.taetae98.diary.feature.compose.DiaryTopAppBar
-import com.taetae98.diary.feature.compose.draggable
+import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
+import com.taetae98.diary.feature.compose.modifier.draggable
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlin.math.abs
@@ -125,7 +125,7 @@ private fun MemoLazyColumn(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(4.dp),
+        contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(

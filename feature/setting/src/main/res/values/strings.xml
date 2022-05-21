@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="run_on_unlock_description">This function need android permission</string>
+
+    <string name="run_on_unlock_hide_notification">Hide notification</string>
+    <string name="run_on_unlock_hide_notification_description">This function need ignore battery optimization</string>
+    <string name="run_on_unlock_hide_notification_description_hide_notification">* Just used to hide notification</string>
+    <string name="run_on_unlock_hide_notification_description_because_of_google_policy">* It is essential because of Google policy.</string>
+</resources>

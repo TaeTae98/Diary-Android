@@ -2,9 +2,10 @@ package com.taetae98.diary.feature.memo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import com.taetae98.diary.domain.model.MemoRelation
 import com.taetae98.diary.domain.usecase.memo.DeleteMemoByIdUseCase
 import com.taetae98.diary.domain.usecase.memo.PagingMemoByTagIdsUseCase
-import com.taetae98.diary.domain.model.MemoRelation
 import com.taetae98.diary.domain.usecase.memo.RestoreMemoRelationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,15 +22,15 @@ class MemoViewModel @Inject constructor(
 ) : ViewModel() {
     val event = MutableSharedFlow<MemoEvent>()
 
-    fun getMemoByTagIds(ids: Collection<Int>) = pagingMemoByTagIdsUseCase(ids).getOrElse {
+    fun getMemoByTagIds(ids: Collection<Int>) = pagingMemoByTagIdsUseCase(PagingMemoByTagIdsUseCase.IDS(ids)).getOrElse {
         viewModelScope.launch { event.emit(MemoEvent.Error(it)) }
         emptyFlow()
-    }
+    }.cachedIn(viewModelScope)
 
 
     fun deleteMemo(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteMemoByIdUseCase(id).onSuccess {
+            deleteMemoByIdUseCase(DeleteMemoByIdUseCase.ID(id)).onSuccess {
                 event.emit(MemoEvent.DeleteMemo(it))
             }.onFailure {
                 event.emit(MemoEvent.Error(it))

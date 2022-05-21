@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.taetae98.diary.feature.developer.developerGraph
 import com.taetae98.diary.feature.setting.settingGraph
 
 object MoreGraph {
@@ -24,5 +25,6 @@ fun NavGraphBuilder.moreGraph(
         }
 
         settingGraph(navController = navController)
+        developerGraph(navController = navController)
     }
 }

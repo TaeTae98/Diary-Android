@@ -4,7 +4,9 @@
     <string name="location">Location</string>
     <string name="more">More</string>
     <string name="setting">Setting</string>
+    <string name="developer">Developer</string>
 
+    <string name="ok">OK</string>
     <string name="add">Add</string>
     <string name="clear">Clear</string>
     <string name="edit">Edit</string>
@@ -12,17 +14,14 @@
     <string name="show">Show</string>
     <string name="hide">Hide</string>
     <string name="back">Back</string>
+    <string name="enable">Enable</string>
 
+    <string name="email">Email</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="password">Password</string>
 
-    <string name="setting_run_on_unlock">Run on unlock</string>
-    <string name="setting_run_on_unlock_description">This function need android permission</string>
+    <string name="run_on_unlock">Run on unlock</string>
 
-    <string name="setting_run_on_unlock_hide_notification">Hide notification</string>
-    <string name="setting_run_on_unlock_hide_notification_description">This function need ignore battery optimization</string>
-    <string name="setting_run_on_unlock_hide_notification_description_hide_notification">* Just used to hide notification</string>
-    <string name="setting_run_on_unlock_hide_notification_description_because_of_google_policy">* It is essential because of Google policy.</string>
-    <string name="message_title_is_empty">Title is empty</string>
+    <string name="developer_email">rkdxowhd98@gmail.com</string>
 </resources>

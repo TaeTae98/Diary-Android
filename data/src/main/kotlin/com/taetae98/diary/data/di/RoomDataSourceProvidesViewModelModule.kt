@@ -1,6 +1,6 @@
 package com.taetae98.diary.data.di
 
-import com.taetae98.diary.data.DiaryDatabase
+import com.taetae98.diary.data.database.DiaryDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.taetae98.diary.data
+package com.taetae98.diary.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,13 +1,11 @@
-package com.taetae98.diary.feature.compose
+package com.taetae98.diary.feature.compose.modifier
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.offset
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
@@ -21,9 +19,9 @@ fun Modifier.draggable(
     onDrag: (Float) -> Unit = {},
     onDragStopped: (Float) -> Boolean = { false },
 ) = composed {
-    var offset by remember { mutableStateOf(0F) }
+    val (offset, setOffset) = remember { mutableStateOf(0F) }
     val draggableState = rememberDraggableState {
-        offset += it
+        setOffset(offset + it)
         onDrag(offset)
     }
 
@@ -36,7 +34,7 @@ fun Modifier.draggable(
         },
         onDragStopped = {
             if (onDragStopped(it).isFalse()) {
-                offset = 0F
+                setOffset(0F)
             }
         }
     ).offset {

@@ -14,4 +14,5 @@ dependencies {
     implementation(project(":feature:compose"))
 
     implementation(project(":feature:setting"))
+    implementation(project(":feature:developer"))
 }
