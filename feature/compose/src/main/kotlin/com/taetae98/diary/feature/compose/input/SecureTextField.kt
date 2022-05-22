@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.compose
+package com.taetae98.diary.feature.compose.input
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -21,7 +21,7 @@ import com.taetae98.diary.feature.compose.diary.DiaryTextField
 import com.taetae98.diary.feature.resource.StringResource
 
 @Composable
-fun SecureInputCompose(
+fun SecureTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
@@ -31,7 +31,7 @@ fun SecureInputCompose(
     maxLine: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
 ) {
-    SecureInputCompose(
+    SecureTextField(
         modifier = modifier,
         value = TextFieldValue(
             text = value,
@@ -47,7 +47,7 @@ fun SecureInputCompose(
 }
 
 @Composable
-fun SecureInputCompose(
+fun SecureTextField(
     modifier: Modifier = Modifier,
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,

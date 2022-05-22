@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.taetae98.diary.feature.compose.PasswordDialog
+import com.taetae98.diary.feature.compose.input.PasswordDialog
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.developer.DeveloperGraph
 import com.taetae98.diary.feature.resource.StringResource

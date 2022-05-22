@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.taetae98.diary.feature.common.Parameter
-import com.taetae98.diary.feature.compose.ClearInputCompose
-import com.taetae98.diary.feature.compose.PasswordInputCompose
+import com.taetae98.diary.feature.compose.input.ClearTextField
+import com.taetae98.diary.feature.compose.input.PasswordInputCompose
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.resource.StringResource
@@ -150,7 +150,7 @@ private fun TitleInput(
     val focusRequester = remember { FocusRequester() }
     val (isError, setIsError) = remember { mutableStateOf(false) }
 
-    ClearInputCompose(
+    ClearTextField(
         modifier = modifier.focusRequester(focusRequester),
         value = memoEditViewModel.title.collectAsState().value,
         onValueChange = {
@@ -182,7 +182,7 @@ private fun DescriptionInput(
     modifier: Modifier = Modifier,
     memoEditViewModel: MemoEditViewModel = hiltViewModel()
 ) {
-    ClearInputCompose(
+    ClearTextField(
         modifier = modifier,
         value = memoEditViewModel.description.collectAsState().value,
         onValueChange = memoEditViewModel::setDescription,

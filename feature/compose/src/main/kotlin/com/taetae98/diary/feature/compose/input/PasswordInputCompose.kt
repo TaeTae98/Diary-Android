@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.compose
+package com.taetae98.diary.feature.compose.input
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -130,7 +130,7 @@ private fun PasswordInput(
 
     val focusRequester = remember { FocusRequester() }
 
-    SecureInputCompose(
+    SecureTextField(
         modifier = modifier
             .focusRequester(focusRequester),
         value = password,

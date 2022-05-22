@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.compose
+package com.taetae98.diary.feature.compose.input
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -15,7 +15,7 @@ import com.taetae98.diary.feature.compose.diary.DiaryTextField
 import com.taetae98.diary.feature.resource.StringResource
 
 @Composable
-fun ClearInputCompose(
+fun ClearTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,

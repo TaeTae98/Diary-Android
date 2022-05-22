@@ -30,4 +30,5 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
+    implementation("com.google.android.material:material:1.6.0")
 }

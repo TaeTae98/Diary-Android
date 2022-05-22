@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.compose
+package com.taetae98.diary.feature.compose.input
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,7 +41,7 @@ fun PasswordDialog(
     ) {
         Card {
             Column {
-                SecureInputCompose(
+                SecureTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
