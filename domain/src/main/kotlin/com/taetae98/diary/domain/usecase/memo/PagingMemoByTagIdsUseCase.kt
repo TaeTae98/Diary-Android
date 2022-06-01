@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.Flow
 class PagingMemoByTagIdsUseCase @Inject constructor(
     exceptionRepository: ExceptionRepository,
     private val memoRepository: MemoRepository,
-) : ParamUseCase<PagingMemoByTagIdsUseCase.IDS, Flow<PagingData<MemoEntity>>>(exceptionRepository) {
+) : ParamUseCase<PagingMemoByTagIdsUseCase.Ids, Flow<PagingData<MemoEntity>>>(exceptionRepository) {
     @JvmInline
-    value class IDS(val ids: Collection<Int>)
+    value class Ids(val ids: Collection<Long>)
 
-    override fun execute(parameter: IDS) = memoRepository.pagingByTagIds(parameter.ids)
+    override fun execute(parameter: Ids) = memoRepository.pagingByTagIds(parameter.ids)
 }

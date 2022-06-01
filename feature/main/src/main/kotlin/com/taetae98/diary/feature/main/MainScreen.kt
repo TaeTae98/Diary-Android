@@ -18,13 +18,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.taetae98.diary.feature.common.isTrue
-import com.taetae98.diary.feature.location.locationGraph
-import com.taetae98.diary.feature.location.screen.LocationScreen
 import com.taetae98.diary.feature.memo.MemoGraph
-import com.taetae98.diary.feature.memo.MemoScreen
 import com.taetae98.diary.feature.memo.memoGraph
+import com.taetae98.diary.feature.memo.screen.MemoScreen
 import com.taetae98.diary.feature.more.MoreScreen
 import com.taetae98.diary.feature.more.moreGraph
+import com.taetae98.diary.feature.place.placeGraph
+import com.taetae98.diary.feature.place.screen.PlaceScreen
 import com.taetae98.diary.feature.theme.DiaryTheme
 
 object MainScreen {
@@ -62,7 +62,7 @@ private fun MainNavHost(
         route = MainScreen.ROUTE
     ) {
         memoGraph(navController = navController)
-        locationGraph(navController = navController)
+        placeGraph(navController = navController)
         moreGraph(navController = navController)
     }
 }
@@ -74,11 +74,11 @@ private fun MainBottomNavigation(
 ) {
     val items = listOf(
         MainNavigationItem.Memo,
-        MainNavigationItem.Location,
+        MainNavigationItem.Place,
         MainNavigationItem.More
     )
 
-    val navigationVisibleRoute = listOf(MemoScreen.ROUTE, LocationScreen.ROUTE, MoreScreen.ROUTE)
+    val navigationVisibleRoute = listOf(MemoScreen.ROUTE, PlaceScreen.ROUTE, MoreScreen.ROUTE)
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     if (backStackEntry?.destination?.route in navigationVisibleRoute) {

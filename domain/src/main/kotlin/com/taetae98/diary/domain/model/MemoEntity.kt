@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
 )
 data class MemoEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Long = 0,
     val title: String = "",
     val description: String = "",
     val password: String? = null,

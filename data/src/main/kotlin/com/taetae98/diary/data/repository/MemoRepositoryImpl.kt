@@ -12,17 +12,16 @@ class MemoRepositoryImpl @Inject constructor(
 ) : MemoRepository {
     override suspend fun insert(entity: MemoEntity) = memoRoomDataSource.insert(entity)
 
-    override fun pagingByTagIds(ids: Collection<Int>) = Pager(
+    override fun pagingByTagIds(ids: Collection<Long>) = Pager(
         config = PagingConfig(
             pageSize = 20,
-            prefetchDistance = 50,
             maxSize = 1000
         )
     ) {
         memoRoomDataSource.findByTagIds()
     }.flow
 
-    override suspend fun findById(id: Int) = memoRoomDataSource.findById(id)
+    override suspend fun findById(id: Long) = memoRoomDataSource.findById(id)
 
-    override suspend fun deleteById(id: Int) = memoRoomDataSource.deleteById(id)
+    override suspend fun deleteById(id: Long) = memoRoomDataSource.deleteById(id)
 }

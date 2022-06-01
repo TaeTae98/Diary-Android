@@ -12,8 +12,8 @@ interface MemoRoomDataSource : BaseDao<MemoEntity> {
     fun findByTagIds(): PagingSource<Int, MemoEntity>
 
     @Query("SELECT * FROM MemoEntity WHERE id = :id")
-    fun findById(id: Int): MemoEntity
+    fun findById(id: Long): MemoEntity
 
     @Query("DELETE FROM MemoEntity WHERE id = :id")
-    suspend fun deleteById(id: Int): Int
+    suspend fun deleteById(id: Long): Int
 }

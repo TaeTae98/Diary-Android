@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="memo">Memo</string>
-    <string name="location">Location</string>
+    <string name="place">Place</string>
     <string name="more">More</string>
     <string name="setting">Setting</string>
     <string name="developer">Developer</string>

@@ -11,6 +11,6 @@ dependencies {
     implementation(project(":feature:theme"))
 
     implementation(project(":feature:memo"))
-    implementation(project(":feature:location"))
+    implementation(project(":feature:place"))
     implementation(project(":feature:more"))
 }

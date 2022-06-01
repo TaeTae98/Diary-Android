@@ -37,17 +37,16 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.taetae98.diary.domain.exception.KnownIssueException
-import com.taetae98.diary.domain.model.ExceptionEntity
 import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.compose.modifier.draggable
 import com.taetae98.diary.feature.developer.R
 import com.taetae98.diary.feature.developer.event.ExceptionLogEvent
+import com.taetae98.diary.feature.developer.model.ExceptionLogUiState
 import com.taetae98.diary.feature.developer.viewmodel.ExceptionLogViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
-import java.text.SimpleDateFormat
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -101,7 +100,7 @@ private fun CollectEvent(
                             duration = SnackbarDuration.Long
                         ).also { result ->
                             if (result == SnackbarResult.ActionPerformed) {
-                                exceptionLogViewModel.restore(it.collection)
+                                it.onRestore()
                             }
                         }
                     }
@@ -158,6 +157,7 @@ private fun ActionCompose(
                 .heightIn(48.dp)
         ) {
             Box(
+                modifier = Modifier.padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = "Throw")
@@ -181,41 +181,41 @@ private fun ExceptionLogColumn(
             items = lazyPagingItems,
             key = { it.id }
         ) {
-            ExceptionLog(
+            ExceptionLogCompose(
                 modifier = Modifier.draggable(
                     orientation = Orientation.Horizontal,
                     onDragStopped = { velocity ->
-                        if (velocity >= Const.VELOCITY_BOUNDARY && it != null) {
-                            exceptionLogViewModel.deleteById(it.id)
+                        if (velocity >= Const.VELOCITY_BOUNDARY) {
+                            it?.let { it.onDelete() }
                             true
                         } else {
                             false
                         }
                     }
                 ),
-                entity = it
+                uiState = it
             )
         }
     }
 }
 
 @Composable
-private fun ExceptionLog(
+private fun ExceptionLogCompose(
     modifier: Modifier = Modifier,
-    entity: ExceptionEntity?
+    uiState: ExceptionLogUiState?
 ) {
     Card(
         modifier = modifier
     ) {
-        if (entity == null) {
+        if (uiState == null) {
             Loading()
         } else {
             Column {
-                Text(text = "Cause : ${entity.cause}")
-                Text(text = entity.type)
-                Text(text = SimpleDateFormat.getInstance().format(entity.createdAt))
+                Text(text = uiState.cause)
+                Text(text = uiState.type)
+                Text(text = uiState.createdAt)
                 Divider()
-                Text(text = entity.stackTrace)
+                Text(text = uiState.stackTrace)
             }
         }
     }

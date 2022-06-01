@@ -32,7 +32,7 @@ include(
 
 include(
     ":feature:main",
-    ":feature:memo", ":feature:location",
+    ":feature:memo", ":feature:place",
 )
 
 include(

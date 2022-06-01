@@ -9,7 +9,7 @@ class DeleteExceptionByIdUseCase @Inject constructor(
     private val exceptionRepository: ExceptionRepository
 ) : SuspendParamUseCase<DeleteExceptionByIdUseCase.Id, ExceptionRelation>(exceptionRepository) {
     @JvmInline
-    value class Id(val id: Int)
+    value class Id(val id: Long)
 
     override suspend fun execute(parameter: Id) = ExceptionRelation(
         entity = exceptionRepository.findById(parameter.id)

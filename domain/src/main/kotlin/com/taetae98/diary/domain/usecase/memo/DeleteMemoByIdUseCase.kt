@@ -9,12 +9,12 @@ import javax.inject.Inject
 class DeleteMemoByIdUseCase @Inject constructor(
     exceptionRepository: ExceptionRepository,
     private val memoRepository: MemoRepository,
-) : SuspendParamUseCase<DeleteMemoByIdUseCase.ID, MemoRelation>(exceptionRepository) {
+) : SuspendParamUseCase<DeleteMemoByIdUseCase.Id, MemoRelation>(exceptionRepository) {
 
     @JvmInline
-    value class ID(val id: Int)
+    value class Id(val id: Long)
 
-    override suspend fun execute(parameter: ID) = MemoRelation(
+    override suspend fun execute(parameter: Id) = MemoRelation(
         memoEntity = memoRepository.findById(parameter.id)
     ).also {
         memoRepository.deleteById(parameter.id)

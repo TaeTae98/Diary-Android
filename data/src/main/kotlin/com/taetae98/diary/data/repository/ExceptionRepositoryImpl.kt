@@ -25,9 +25,9 @@ class ExceptionRepositoryImpl @Inject constructor(
 
     override suspend fun findAll() = exceptionRoomDataSource.findAll()
 
-    override suspend fun findById(id: Int) = exceptionRoomDataSource.findById(id)
+    override suspend fun findById(id: Long) = exceptionRoomDataSource.findById(id)
 
-    override suspend fun deleteById(id: Int) = exceptionRoomDataSource.deleteById(id)
+    override suspend fun deleteById(id: Long) = exceptionRoomDataSource.deleteById(id)
 
     override suspend fun deleteAll() = exceptionRoomDataSource.deleteAll()
 }

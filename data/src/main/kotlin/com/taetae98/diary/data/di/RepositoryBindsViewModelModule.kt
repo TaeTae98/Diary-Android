@@ -1,11 +1,11 @@
 package com.taetae98.diary.data.di
 
 import com.taetae98.diary.data.repository.DeveloperRepositoryImpl
-import com.taetae98.diary.data.repository.LocationSearchQueryRepositoryImpl
 import com.taetae98.diary.data.repository.MemoRepositoryImpl
+import com.taetae98.diary.data.repository.PlaceSearchQueryRepositoryImpl
 import com.taetae98.diary.domain.repository.DeveloperRepository
-import com.taetae98.diary.domain.repository.LocationSearchQueryRepository
 import com.taetae98.diary.domain.repository.MemoRepository
+import com.taetae98.diary.domain.repository.PlaceSearchQueryRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,5 +25,5 @@ abstract class RepositoryBindsViewModelModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindsLocationSearchRepository(repository: LocationSearchQueryRepositoryImpl): LocationSearchQueryRepository
+    abstract fun bindsPlaceSearchRepository(repository: PlaceSearchQueryRepositoryImpl): PlaceSearchQueryRepository
 }

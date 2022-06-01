@@ -10,6 +10,8 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.common.Parameter
+import com.taetae98.diary.feature.memo.screen.MemoEditScreen
+import com.taetae98.diary.feature.memo.screen.MemoScreen
 
 object MemoGraph {
     const val ROUTE = "MemoGraph"

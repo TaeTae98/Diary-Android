@@ -23,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.taetae98.diary.feature.compose.input.PasswordInputCompose
 import com.taetae98.diary.feature.compose.diary.DiarySwitch
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
+import com.taetae98.diary.feature.compose.input.PasswordInputCompose
 import com.taetae98.diary.feature.developer.R
 import com.taetae98.diary.feature.developer.event.DeveloperEvent
 import com.taetae98.diary.feature.developer.viewmodel.DeveloperViewModel
@@ -137,7 +137,7 @@ private fun ExceptionLog(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(start = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

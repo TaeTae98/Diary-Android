@@ -14,7 +14,7 @@ import com.taetae98.diary.feature.common.getDefaultName
 )
 data class ExceptionEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
     val cause: String?,
     val stackTrace: String,
     val type: String,

@@ -11,7 +11,7 @@ interface ExceptionRepository {
     suspend fun findAll(): List<ExceptionEntity>
     fun pagingAll(): Flow<PagingData<ExceptionEntity>>
 
-    suspend fun findById(id: Int): ExceptionEntity
-    suspend fun deleteById(id: Int): Int
+    suspend fun findById(id: Long): ExceptionEntity
+    suspend fun deleteById(id: Long): Int
     suspend fun deleteAll(): Int
 }

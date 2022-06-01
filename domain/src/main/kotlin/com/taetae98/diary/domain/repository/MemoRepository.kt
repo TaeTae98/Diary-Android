@@ -5,9 +5,9 @@ import com.taetae98.diary.domain.model.MemoEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MemoRepository {
-    fun pagingByTagIds(ids: Collection<Int>): Flow<PagingData<MemoEntity>>
+    fun pagingByTagIds(ids: Collection<Long>): Flow<PagingData<MemoEntity>>
 
-    suspend fun findById(id: Int): MemoEntity
+    suspend fun findById(id: Long): MemoEntity
     suspend fun insert(entity: MemoEntity): Long
-    suspend fun deleteById(id: Int): Int
+    suspend fun deleteById(id: Long): Int
 }

@@ -6,9 +6,9 @@ import androidx.compose.material.icons.rounded.Article
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.taetae98.diary.feature.location.LocationGraph
 import com.taetae98.diary.feature.memo.MemoGraph
 import com.taetae98.diary.feature.more.MoreGraph
+import com.taetae98.diary.feature.place.PlaceGraph
 import com.taetae98.diary.feature.resource.StringResource
 
 sealed class MainNavigationItem(
@@ -23,9 +23,9 @@ sealed class MainNavigationItem(
         imageVector = Icons.Rounded.Article
     )
 
-    object Location : MainNavigationItem(
-        route = LocationGraph.ROUTE,
-        stringRes = StringResource.location,
+    object Place : MainNavigationItem(
+        route = PlaceGraph.ROUTE,
+        stringRes = StringResource.place,
         imageVector = Icons.Rounded.LocationOn
     )
 
