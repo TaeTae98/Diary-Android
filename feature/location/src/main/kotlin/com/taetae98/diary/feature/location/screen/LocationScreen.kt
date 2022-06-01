@@ -1,6 +1,5 @@
-package com.taetae98.diary.feature.location
+package com.taetae98.diary.feature.location.screen
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -9,6 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.taetae98.diary.feature.compose.diary.DiaryMap
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
+import com.taetae98.diary.feature.compose.map.MapType
 import com.taetae98.diary.feature.resource.StringResource
 
 object LocationScreen {
@@ -25,7 +25,7 @@ fun LocationScreen(
         topBar = { LocationTopAppBar() }
     ) {
         DiaryMap(
-            modifier = Modifier.padding(it)
+            onNaverMapSearch = { navController.navigate(LocationSearchScreen.getAction(MapType.NAVER)) }
         )
     }
 }

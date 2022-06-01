@@ -12,7 +12,7 @@ class MemoRepositoryImpl @Inject constructor(
 ) : MemoRepository {
     override suspend fun insert(entity: MemoEntity) = memoRoomDataSource.insert(entity)
 
-    override fun findByTagIds(ids: Collection<Int>) = Pager(
+    override fun pagingByTagIds(ids: Collection<Int>) = Pager(
         config = PagingConfig(
             pageSize = 20,
             prefetchDistance = 50,

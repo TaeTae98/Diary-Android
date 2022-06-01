@@ -15,5 +15,5 @@ class PagingMemoByTagIdsUseCase @Inject constructor(
     @JvmInline
     value class IDS(val ids: Collection<Int>)
 
-    override fun execute(parameter: IDS) = memoRepository.findByTagIds(parameter.ids)
+    override fun execute(parameter: IDS) = memoRepository.pagingByTagIds(parameter.ids)
 }

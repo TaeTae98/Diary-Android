@@ -146,7 +146,7 @@ private fun MemoLazyColumn(
                             }
                         }
                     ),
-                memoEntity = it
+                uiState = it
             )
         }
     }

@@ -84,6 +84,7 @@ dependencies {
     implementation(project(":feature:common"))
     implementation(project(":feature:main"))
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
     implementation("com.google.dagger:hilt-android:2.41")
     kapt("com.google.dagger:hilt-android-compiler:2.41")
 }

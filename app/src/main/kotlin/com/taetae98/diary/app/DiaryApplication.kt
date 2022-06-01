@@ -21,7 +21,7 @@ class DiaryApplication : Application() {
 
     private fun initExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 exceptionRepository.insert(throwable)
                 exitProcess(0)
             }

@@ -11,25 +11,16 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.taetae98.diary.feature.common.Permission
-import com.taetae98.diary.feature.common.isFalse
 
 @Composable
-fun isBatteryOptimized(): Boolean {
+fun canAccessFineLocation(): Boolean {
     val context = LocalContext.current
     val lifecycle by rememberUpdatedState(LocalLifecycleOwner.current.lifecycle)
-    val (isBatteryOptimized, setIsBatteryOptimized) = remember {
-        mutableStateOf(
-            Permission.isIgnoringBatteryOptimizations(context).isFalse()
-        )
-    }
+    val (canAccessFineLocation, setCanAccessFineLocation) = remember { mutableStateOf(Permission.canAccessFineLocation(context)) }
     val observer = remember {
         LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_START -> {
-                    setIsBatteryOptimized(
-                        Permission.isIgnoringBatteryOptimizations(context).isFalse()
-                    )
-                }
+                Lifecycle.Event.ON_START -> setCanAccessFineLocation(Permission.canAccessFineLocation(context))
                 else -> Unit
             }
         }
@@ -42,5 +33,5 @@ fun isBatteryOptimized(): Boolean {
         }
     }
 
-    return isBatteryOptimized
+    return canAccessFineLocation
 }

@@ -1,8 +1,5 @@
 package com.taetae98.diary.feature.setting
 
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.taetae98.diary.feature.common.Setting
 import com.taetae98.diary.feature.common.isFalse
 import com.taetae98.diary.feature.compose.diary.DiarySwitch
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
@@ -126,9 +124,9 @@ private fun RunOnUnlockAvailable(
     ) {
         DiarySwitch(
             text = stringResource(id = StringResource.run_on_unlock),
-            checked = settingViewModel.isRunOnUnlockAvailable.collectAsState().value && canDrawOverlays(defaultValue = false),
+            checked = settingViewModel.isRunOnUnlockAvailable.collectAsState().value && canDrawOverlays(),
             onCheckedChange = settingViewModel::setRunOnUnlockAvailable,
-            enabled = canDrawOverlays(defaultValue = false)
+            enabled = canDrawOverlays()
         )
 
         RunOnUnlockDescription()
@@ -141,7 +139,7 @@ private fun RunOnUnlockDescription(
 ) {
     val context = LocalContext.current
 
-    if (canDrawOverlays(defaultValue = true).isFalse()) {
+    if (canDrawOverlays().isFalse()) {
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
@@ -155,12 +153,7 @@ private fun RunOnUnlockDescription(
             }
             IconButton(
                 onClick = {
-                    Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:${context.packageName}")
-                    ).also {
-                        context.startActivity(it)
-                    }
+                    Setting.openManageOverlay(context)
                 }
             ) {
                 Icon(
@@ -186,9 +179,9 @@ private fun RunOnUnlockNotificationVisible(
     ) {
         DiarySwitch(
             text = stringResource(id = R.string.run_on_unlock_hide_notification),
-            checked = settingViewModel.isRunOnUnlockNotificationVisible.collectAsState().value && isBatteryOptimized(defaultValue = true).isFalse(),
+            checked = settingViewModel.isRunOnUnlockNotificationVisible.collectAsState().value && isBatteryOptimized().isFalse(),
             onCheckedChange = settingViewModel::setRunOnUnlockNotificationVisible,
-            enabled = isBatteryOptimized(defaultValue = true).isFalse()
+            enabled = isBatteryOptimized().isFalse()
         )
         HideRunOnUnlockNotificationDescription()
     }
@@ -200,7 +193,7 @@ private fun HideRunOnUnlockNotificationDescription(
 ) {
     val context = LocalContext.current
 
-    if (isBatteryOptimized(defaultValue = false)) {
+    if (isBatteryOptimized()) {
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
@@ -215,13 +208,7 @@ private fun HideRunOnUnlockNotificationDescription(
                 Text(text = stringResource(id = R.string.run_on_unlock_hide_notification_description_because_of_google_policy))
             }
             IconButton(
-                onClick = {
-                    Intent(
-                        Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS,
-                    ).also {
-                        context.startActivity(it)
-                    }
-                }
+                onClick = { Setting.openIgnoreBatteryOptimization(context) }
             ) {
                 Icon(
                     imageVector = Icons.Rounded.ChevronRight,

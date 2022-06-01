@@ -18,8 +18,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.taetae98.diary.feature.common.isTrue
-import com.taetae98.diary.feature.location.LocationScreen
 import com.taetae98.diary.feature.location.locationGraph
+import com.taetae98.diary.feature.location.screen.LocationScreen
 import com.taetae98.diary.feature.memo.MemoGraph
 import com.taetae98.diary.feature.memo.MemoScreen
 import com.taetae98.diary.feature.memo.memoGraph

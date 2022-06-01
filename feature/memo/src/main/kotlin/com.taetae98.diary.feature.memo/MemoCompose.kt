@@ -10,21 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.taetae98.diary.domain.model.MemoEntity
+import com.taetae98.diary.feature.memo.model.MemoUiState
 import com.taetae98.diary.feature.theme.DiaryTheme
 
 @Composable
 fun MemoCompose(
     modifier: Modifier = Modifier,
-    memoEntity: MemoEntity? = null
+    uiState: MemoUiState? = null
 ) {
     Card(
         modifier = modifier.heightIn(min = 60.dp),
     ) {
-        if (memoEntity == null) {
+        if (uiState == null) {
             Loading()
         } else {
-            Memo(memoEntity = memoEntity)
+            UiState(uiState = uiState)
         }
     }
 }
@@ -40,16 +40,16 @@ private fun Loading(
 }
 
 @Composable
-private fun Memo(
+private fun UiState(
     modifier: Modifier = Modifier,
-    memoEntity: MemoEntity
+    uiState: MemoUiState
 ) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = memoEntity.title,
+            text = uiState.title,
             maxLines = 1,
         )
     }

@@ -1,8 +1,11 @@
 package com.taetae98.diary.feature.compose.input
 
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.runtime.Composable
@@ -21,8 +24,11 @@ fun ClearTextField(
     onValueChange: (String) -> Unit,
     label: String? = null,
     isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = false,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    colors: TextFieldColors = DiaryTextField.colors()
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -54,7 +60,10 @@ fun ClearTextField(
             }
         },
         isError = isError,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
         singleLine = singleLine,
         maxLines = maxLines,
+        colors = colors
     )
 }

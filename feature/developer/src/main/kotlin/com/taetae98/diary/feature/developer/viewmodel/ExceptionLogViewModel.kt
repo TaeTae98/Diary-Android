@@ -21,9 +21,10 @@ class ExceptionLogViewModel @Inject constructor(
     private val deleteExceptionByIdUseCase: DeleteExceptionByIdUseCase,
     private val restoreExceptionRelationUseCase: RestoreExceptionRelationUseCase,
     private val deleteAllExceptionUseCase: DeleteAllExceptionUseCase,
-): ViewModel() {
+) : ViewModel() {
     val event = MutableSharedFlow<ExceptionLogEvent>()
     val paging = pagingExceptionUseCase().getOrElse {
+        viewModelScope.launch { event.emit(ExceptionLogEvent.Error(it)) }
         emptyFlow()
     }.cachedIn(viewModelScope)
 

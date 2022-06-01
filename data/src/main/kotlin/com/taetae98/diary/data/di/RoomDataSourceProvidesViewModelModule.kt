@@ -15,4 +15,10 @@ class RoomDataSourceProvidesViewModelModule {
     fun providesMemoRoomDataSource(
         diaryDatabase: DiaryDatabase
     ) = diaryDatabase.memoRoomDataSource()
+
+    @Provides
+    @ViewModelScoped
+    fun providesLocationSearchQueryRoomDataStore(
+        diaryDatabase: DiaryDatabase
+    ) = diaryDatabase.locationSearchQueryRoomDataSource()
 }
