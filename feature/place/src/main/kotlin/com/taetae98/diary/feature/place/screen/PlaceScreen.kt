@@ -25,7 +25,7 @@ fun PlaceScreen(
         topBar = { PlaceTopAppBar() }
     ) {
         DiaryMap(
-            onNaverMapSearch = { navController.navigate(PlaceSearchScreen.getAction(MapType.NAVER)) }
+            onNaverMapSearch = { navController.navigate(PlaceSearchingScreen.getAction(MapType.NAVER)) }
         )
     }
 }

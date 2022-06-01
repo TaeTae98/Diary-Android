@@ -8,6 +8,7 @@ import androidx.paging.map
 import com.taetae98.diary.domain.usecase.place.DeletePlaceSearchQueryUseCase
 import com.taetae98.diary.domain.usecase.place.InsertPlaceSearchQueryUseCase
 import com.taetae98.diary.domain.usecase.place.PagingPlaceSearchQueryUseCase
+import com.taetae98.diary.feature.compose.map.MapType
 import com.taetae98.diary.feature.place.event.PlaceSearchEvent
 import com.taetae98.diary.feature.place.model.PlaceSearchUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +27,7 @@ class PlaceSearchViewModel @Inject constructor(
     private val deletePlaceSearchQueryUseCase: DeletePlaceSearchQueryUseCase
 ) : ViewModel() {
     val event = MutableSharedFlow<PlaceSearchEvent>()
-    val input = MutableStateFlow(savedStateHandle[QUERY] ?: "")
+    val input = MutableStateFlow(savedStateHandle[INPUT] ?: getMapType().name)
     val paging = pagingPlaceSearchQueryUseCase().getOrElse {
         viewModelScope.launch { event.emit(PlaceSearchEvent.Error(it)) }
         emptyFlow()
@@ -57,6 +58,10 @@ class PlaceSearchViewModel @Inject constructor(
         }
     }
 
+    fun getMapType(): MapType {
+        return savedStateHandle[MAP_TYPE] ?: MapType.NONE
+    }
+
     private fun delete(id: Long) {
         viewModelScope.launch {
             deletePlaceSearchQueryUseCase(
@@ -71,10 +76,11 @@ class PlaceSearchViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        savedStateHandle[QUERY] = input.value
+        savedStateHandle[INPUT] = input.value
     }
 
     companion object {
-        private const val QUERY = "QUERY"
+        private const val INPUT = "INPUT"
+        private const val MAP_TYPE = "MAP_TYPE"
     }
 }

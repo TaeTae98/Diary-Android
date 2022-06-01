@@ -1,5 +1,6 @@
 package com.taetae98.diary.feature.place.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,8 +35,8 @@ import com.taetae98.diary.feature.place.compose.PlaceSearchCompose
 import com.taetae98.diary.feature.place.viewmodel.PlaceSearchViewModel
 import com.taetae98.diary.feature.theme.DiaryTheme
 
-object PlaceSearchScreen {
-    private const val ROUTE_PATH = "PlaceSearchScreen"
+object PlaceSearchingScreen {
+    private const val ROUTE_PATH = "PlaceSearchingScreen"
 
     const val ROUTE = "$ROUTE_PATH/{${Parameter.MAP_TYPE}}"
 
@@ -45,7 +46,7 @@ object PlaceSearchScreen {
 }
 
 @Composable
-fun PlaceSearchScreen(
+fun PlaceSearchingScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
 ) {
@@ -53,7 +54,10 @@ fun PlaceSearchScreen(
         modifier = modifier,
         topBar = { PlaceSearchTopBar(navController = navController) }
     ) {
-        Content(modifier = Modifier.padding(it))
+        Content(
+            modifier = Modifier.padding(it),
+            navController = navController
+        )
     }
 }
 
@@ -79,6 +83,7 @@ private fun PlaceSearchTopBar(
                 ),
                 keyboardActions = KeyboardActions {
                     placeSearchViewModel.search()
+                    navController.navigate(PlaceSearchScreen.getAction(placeSearchViewModel.getMapType()))
                 },
                 singleLine = true,
                 maxLines = 1,
@@ -101,6 +106,7 @@ private fun PlaceSearchTopBar(
 @Composable
 private fun Content(
     modifier: Modifier = Modifier,
+    navController: NavController,
     placeSearchViewModel: PlaceSearchViewModel = hiltViewModel()
 ) {
     val lazyItems = placeSearchViewModel.paging.collectAsLazyPagingItems()
@@ -114,17 +120,24 @@ private fun Content(
             key = { it.id }
         ) {
             PlaceSearchCompose(
-                modifier = Modifier.draggable(
-                    orientation = Orientation.Horizontal,
-                    onDragStopped = { velocity ->
-                        if (velocity >= Const.VELOCITY_BOUNDARY) {
-                            it?.let { it.onDelete() }
-                            true
-                        } else {
-                            false
+                modifier = Modifier
+                    .draggable(
+                        orientation = Orientation.Horizontal,
+                        onDragStopped = { velocity ->
+                            if (velocity >= Const.VELOCITY_BOUNDARY) {
+                                it?.let { it.onDelete() }
+                                true
+                            } else {
+                                false
+                            }
                         }
-                    }
-                ),
+                    )
+                    .clickable {
+                        it?.let {
+                            placeSearchViewModel.search(it.query)
+                            navController.navigate(PlaceSearchScreen.getAction(placeSearchViewModel.getMapType()))
+                        }
+                    },
                 uiState = it
             )
         }
