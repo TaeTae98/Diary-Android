@@ -1,13 +1,19 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("android-config")
     id("hilt-config")
-    id("room-config")
     id("data-store-config")
+    id("room-config")
+    id("retrofit-config")
+    id("serialization-config")
 }
 
 android {
     defaultConfig {
         buildConfigField("String", "DIARY_DATABASE_NAME", "\"diary_database.db\"")
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${gradleLocalProperties(rootDir).getProperty("NAVER_CLIENT_ID")}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${gradleLocalProperties(rootDir).getProperty("NAVER_CLIENT_SECRET")}\"")
 
         javaCompileOptions {
             annotationProcessorOptions {

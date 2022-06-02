@@ -17,7 +17,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.taetae98.diary.feature.common.isTrue
+import com.taetae98.diary.feature.common.util.isTrue
 import com.taetae98.diary.feature.memo.MemoGraph
 import com.taetae98.diary.feature.memo.memoGraph
 import com.taetae98.diary.feature.memo.screen.MemoScreen

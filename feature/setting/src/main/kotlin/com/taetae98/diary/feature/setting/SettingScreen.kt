@@ -27,7 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.taetae98.diary.feature.common.Setting
-import com.taetae98.diary.feature.common.isFalse
+import com.taetae98.diary.feature.common.util.isFalse
 import com.taetae98.diary.feature.compose.diary.DiarySwitch
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon

@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import com.taetae98.diary.feature.common.Const
-import com.taetae98.diary.feature.common.getDefaultName
+import com.taetae98.diary.feature.common.util.getDefaultName
 import com.taetae98.diary.feature.resource.DrawableResource
 import com.taetae98.diary.feature.resource.StringResource
 import dagger.hilt.android.qualifiers.ApplicationContext

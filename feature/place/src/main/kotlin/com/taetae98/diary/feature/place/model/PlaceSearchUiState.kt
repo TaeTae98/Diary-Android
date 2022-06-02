@@ -1,21 +1,15 @@
 package com.taetae98.diary.feature.place.model
 
-import com.taetae98.diary.domain.model.PlaceSearchEntity
-import java.text.SimpleDateFormat
+import com.taetae98.diary.domain.model.PlaceEntity
 
 data class PlaceSearchUiState(
-    val id: Long,
-    val query: String,
-    val searchedAt: String,
-    val onDelete: () -> Unit
+    val entity: PlaceEntity,
+    val onClick: () -> Unit
 ) {
     companion object {
-        fun from(entity: PlaceSearchEntity, onDelete: () -> Unit) =
-            PlaceSearchUiState(
-                id = entity.id,
-                query = entity.query,
-                searchedAt = SimpleDateFormat.getDateInstance().format(entity.searchedAt),
-                onDelete = onDelete
-            )
+        fun from(entity: PlaceEntity, onClick: () -> Unit) = PlaceSearchUiState(
+            entity = entity,
+            onClick = onClick
+        )
     }
 }

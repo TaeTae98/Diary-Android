@@ -5,40 +5,37 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.taetae98.diary.domain.usecase.place.DeletePlaceSearchQueryUseCase
-import com.taetae98.diary.domain.usecase.place.InsertPlaceSearchQueryUseCase
-import com.taetae98.diary.domain.usecase.place.PagingPlaceSearchQueryUseCase
-import com.taetae98.diary.feature.compose.map.MapType
+import com.taetae98.diary.domain.usecase.place.PagingPlaceSearchUseCase
+import com.taetae98.diary.feature.common.Const
+import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.place.event.PlaceSearchEvent
 import com.taetae98.diary.feature.place.model.PlaceSearchUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class PlaceSearchViewModel @Inject constructor(
-    pagingPlaceSearchQueryUseCase: PagingPlaceSearchQueryUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val insertPlaceSearchQueryUseCase: InsertPlaceSearchQueryUseCase,
-    private val deletePlaceSearchQueryUseCase: DeletePlaceSearchQueryUseCase
+    private val pagingPlaceSearchUseCase: PagingPlaceSearchUseCase,
 ) : ViewModel() {
     val event = MutableSharedFlow<PlaceSearchEvent>()
-    val input = MutableStateFlow(savedStateHandle[INPUT] ?: getMapType().name)
-    val paging = pagingPlaceSearchQueryUseCase().getOrElse {
-        viewModelScope.launch { event.emit(PlaceSearchEvent.Error(it)) }
-        emptyFlow()
-    }.map { pagingData ->
-        pagingData.map {
-            PlaceSearchUiState.from(
-                entity = it,
-                onDelete = { delete(it.id) }
-            )
-        }
-    }.cachedIn(viewModelScope)
+
+    val input = MutableStateFlow(savedStateHandle[Parameter.INPUT] ?: "")
+    val query = input
+        .debounce(Const.USER_INPUT_DELAY)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = input.value
+        )
 
     fun setInput(value: String) {
         viewModelScope.launch {
@@ -46,41 +43,31 @@ class PlaceSearchViewModel @Inject constructor(
         }
     }
 
-    fun search(query: String = input.value) {
-        viewModelScope.launch {
-            insertPlaceSearchQueryUseCase(
-                InsertPlaceSearchQueryUseCase.Query(query)
-            ).onSuccess {
-                event.emit(PlaceSearchEvent.Search(query))
-            }.onFailure {
+    fun search(query: String = input.value) =
+        pagingPlaceSearchUseCase(
+            PagingPlaceSearchUseCase.Query(
+                query = query
+            )
+        ).getOrElse {
+            viewModelScope.launch {
                 event.emit(PlaceSearchEvent.Error(it))
             }
-        }
-    }
-
-    fun getMapType(): MapType {
-        return savedStateHandle[MAP_TYPE] ?: MapType.NONE
-    }
-
-    private fun delete(id: Long) {
-        viewModelScope.launch {
-            deletePlaceSearchQueryUseCase(
-                DeletePlaceSearchQueryUseCase.Id(id)
-            ).onSuccess {
-                event.emit(PlaceSearchEvent.Delete(it))
-            }.onFailure {
-                event.emit(PlaceSearchEvent.Error(it))
+            emptyFlow()
+        }.map { pagingData ->
+            pagingData.map {
+                PlaceSearchUiState.from(
+                    entity = it,
+                    onClick = {
+                        viewModelScope.launch {
+                            event.emit(PlaceSearchEvent.Search(it))
+                        }
+                    }
+                )
             }
-        }
-    }
+        }.cachedIn(viewModelScope)
 
     override fun onCleared() {
         super.onCleared()
-        savedStateHandle[INPUT] = input.value
-    }
-
-    companion object {
-        private const val INPUT = "INPUT"
-        private const val MAP_TYPE = "MAP_TYPE"
+        savedStateHandle[Parameter.INPUT] = input.value
     }
 }

@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.common
+package com.taetae98.diary.feature.common.util
 
 import kotlin.reflect.KClass
 

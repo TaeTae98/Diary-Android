@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
-import com.taetae98.diary.feature.common.isFalse
+import com.taetae98.diary.feature.common.util.isFalse
 
 fun Modifier.draggable(
     orientation: Orientation,

@@ -7,7 +7,7 @@ import android.os.IBinder
 import com.taetae98.diary.app.notification.RunOnUnlockNotification
 import com.taetae98.diary.app.receiver.RunOnUnlockReceiver
 import com.taetae98.diary.domain.repository.SettingRepository
-import com.taetae98.diary.feature.common.isFalse
+import com.taetae98.diary.feature.common.util.isFalse
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope

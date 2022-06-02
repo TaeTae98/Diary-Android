@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.taetae98.diary.feature.common.Permission
-import com.taetae98.diary.feature.common.isFalse
+import com.taetae98.diary.feature.common.util.isFalse
 
 @Composable
 fun isBatteryOptimized(): Boolean {

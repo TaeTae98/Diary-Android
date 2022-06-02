@@ -3,7 +3,7 @@ package com.taetae98.diary.domain.model
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.taetae98.diary.feature.common.getDefaultName
+import com.taetae98.diary.feature.common.util.getDefaultName
 
 @Entity(
     indices = [
