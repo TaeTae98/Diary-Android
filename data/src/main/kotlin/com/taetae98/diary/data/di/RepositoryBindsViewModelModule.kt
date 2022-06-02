@@ -2,9 +2,11 @@ package com.taetae98.diary.data.di
 
 import com.taetae98.diary.data.repository.DeveloperRepositoryImpl
 import com.taetae98.diary.data.repository.MemoRepositoryImpl
+import com.taetae98.diary.data.repository.PlaceRepositoryImpl
 import com.taetae98.diary.data.repository.PlaceSearchRepositoryImpl
 import com.taetae98.diary.domain.repository.DeveloperRepository
 import com.taetae98.diary.domain.repository.MemoRepository
+import com.taetae98.diary.domain.repository.PlaceRepository
 import com.taetae98.diary.domain.repository.PlaceSearchRepository
 import dagger.Binds
 import dagger.Module
@@ -22,6 +24,10 @@ abstract class RepositoryBindsViewModelModule {
     @Binds
     @ViewModelScoped
     abstract fun bindsDeveloperRepository(repository: DeveloperRepositoryImpl): DeveloperRepository
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindsPlaceRepository(repository: PlaceRepositoryImpl): PlaceRepository
 
     @Binds
     @ViewModelScoped

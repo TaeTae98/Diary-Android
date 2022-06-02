@@ -9,7 +9,7 @@ import com.taetae98.diary.domain.usecase.place.PagingPlaceSearchUseCase
 import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.place.event.PlaceSearchEvent
-import com.taetae98.diary.feature.place.model.PlaceSearchUiState
+import com.taetae98.diary.feature.place.model.PlaceUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,6 +40,7 @@ class PlaceSearchViewModel @Inject constructor(
     fun setInput(value: String) {
         viewModelScope.launch {
             input.emit(value)
+            savedStateHandle[Parameter.INPUT] = value
         }
     }
 
@@ -55,7 +56,7 @@ class PlaceSearchViewModel @Inject constructor(
             emptyFlow()
         }.map { pagingData ->
             pagingData.map {
-                PlaceSearchUiState.from(
+                PlaceUiState.from(
                     entity = it,
                     onClick = {
                         viewModelScope.launch {
@@ -65,9 +66,4 @@ class PlaceSearchViewModel @Inject constructor(
                 )
             }
         }.cachedIn(viewModelScope)
-
-    override fun onCleared() {
-        super.onCleared()
-        savedStateHandle[Parameter.INPUT] = input.value
-    }
 }

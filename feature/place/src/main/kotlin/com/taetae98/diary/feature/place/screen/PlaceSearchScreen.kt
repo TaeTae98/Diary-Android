@@ -10,7 +10,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,7 +26,7 @@ import com.taetae98.diary.feature.compose.diary.DiaryTextField
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.compose.input.ClearTextField
-import com.taetae98.diary.feature.place.compose.PlaceSearchCompose
+import com.taetae98.diary.feature.place.compose.PlaceCompose
 import com.taetae98.diary.feature.place.event.PlaceSearchEvent
 import com.taetae98.diary.feature.place.viewmodel.PlaceSearchViewModel
 import com.taetae98.diary.feature.theme.DiaryTheme
@@ -61,7 +64,7 @@ private fun CollectEvent(
         placeSearchViewModel.event.collect {
             when(it) {
                 is PlaceSearchEvent.Search -> {
-                    navController.setResult(Parameter.PLACE_SEARCH_ENTITY, it.entity)
+                    navController.setResult(Parameter.PLACE, it.entity)
                     navController.navigateUp()
                 }
                 else -> Unit
@@ -76,6 +79,7 @@ private fun PlaceSearchTopBar(
     navController: NavController,
     placeSearchViewModel: PlaceSearchViewModel = hiltViewModel()
 ) {
+    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
     DiaryTopAppBar(
@@ -83,6 +87,7 @@ private fun PlaceSearchTopBar(
         title = {
             ClearTextField(
                 modifier = Modifier
+                    .focusRequester(focusRequester)
                     .fillMaxWidth(),
                 value = placeSearchViewModel.input.collectAsState().value,
                 onValueChange = placeSearchViewModel::setInput,
@@ -101,6 +106,10 @@ private fun PlaceSearchTopBar(
         },
         backgroundColor = DiaryTheme.surfaceColor
     )
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 @Composable
@@ -120,7 +129,7 @@ private fun Content(
         items(
             items = lazyPagingItems,
         ) {
-            PlaceSearchCompose(
+            PlaceCompose(
                 uiState = it,
             )
         }

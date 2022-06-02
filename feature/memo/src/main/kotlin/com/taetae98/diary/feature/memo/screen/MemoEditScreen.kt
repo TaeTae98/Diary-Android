@@ -41,10 +41,10 @@ import kotlinx.coroutines.launch
 object MemoEditScreen {
     private const val ROUTE_PATH = "MemoEditScreen"
 
-    const val ROUTE = "$ROUTE_PATH?${Parameter.MEMO_ID}={${Parameter.MEMO_ID}}"
+    const val ROUTE = "$ROUTE_PATH?${Parameter.ID}={${Parameter.ID}}"
 
     fun getAction(memoId: Int = 0): String {
-        return "$ROUTE_PATH?${Parameter.MEMO_ID}=$memoId"
+        return "$ROUTE_PATH?${Parameter.ID}=$memoId"
     }
 }
 

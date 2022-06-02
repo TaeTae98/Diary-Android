@@ -38,6 +38,7 @@ class NaverMapView(
                 onMapClickListener(
                     PlaceEntity(
                         title = symbol.caption,
+                        link = "https://search.naver.com/search.naver?query=${symbol.caption}",
                         latitude = symbol.position.latitude,
                         longitude = symbol.position.longitude
                     )

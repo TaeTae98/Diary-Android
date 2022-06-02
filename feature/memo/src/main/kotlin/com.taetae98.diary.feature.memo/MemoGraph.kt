@@ -43,7 +43,7 @@ fun NavGraphBuilder.memoGraph(
         composable(
             route = MemoEditScreen.ROUTE,
             arguments = listOf(
-                navArgument(Parameter.MEMO_ID) {
+                navArgument(Parameter.ID) {
                     type = NavType.IntType
                     defaultValue = 0
                 }

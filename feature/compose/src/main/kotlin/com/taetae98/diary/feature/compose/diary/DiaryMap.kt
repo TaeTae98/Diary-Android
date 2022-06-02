@@ -37,7 +37,9 @@ fun DiaryMap(
     pin: PlaceEntity? = null,
     onPinClickListener: (PlaceEntity) -> Unit = {},
     onMapClickListener: (PlaceEntity) -> Unit = {},
-    onSearch: (() -> Unit)? = null
+    onSearch: (() -> Unit)? = null,
+    isGestureEnable: Boolean = true,
+    isLocationButtonEnable: Boolean = true
 ) {
     val context = LocalContext.current
     val (canAccessLocationState, setCanAccessLocation) = remember {
@@ -72,7 +74,8 @@ fun DiaryMap(
                 pin = pin,
                 onPinClickListener = onPinClickListener,
                 onMapClickListener = onMapClickListener,
-                isLocationButtonEnabled = canAccessLocation,
+                isGestureEnable = isGestureEnable,
+                isLocationButtonEnable = isLocationButtonEnable && canAccessLocation,
             )
 
             if (canAccessLocation.isFalse()) {

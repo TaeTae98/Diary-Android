@@ -51,7 +51,7 @@ class MemoEditViewModel @Inject constructor(
                     MemoEntity(
                         title = title.value,
                         description = description.value,
-                        password = if (hasPassword.value) password.value else null
+                        password = password.value.takeIf { hasPassword.value }
                     )
                 ).onSuccess {
                     event.emit(MemoEditEvent.Success)
@@ -72,6 +72,6 @@ class MemoEditViewModel @Inject constructor(
     }
 
     fun isEditMode(): Boolean {
-        return (savedStateHandle.get<Int>(Parameter.MEMO_ID) ?: 0) != 0
+        return (savedStateHandle.get<Int>(Parameter.ID) ?: 0) != 0
     }
 }

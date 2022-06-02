@@ -2,8 +2,12 @@ package com.taetae98.diary.feature.place
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.taetae98.diary.feature.common.Parameter
+import com.taetae98.diary.feature.place.screen.PlaceDetailScreen
 import com.taetae98.diary.feature.place.screen.PlaceScreen
 import com.taetae98.diary.feature.place.screen.PlaceSearchScreen
 
@@ -12,7 +16,7 @@ object PlaceGraph {
 }
 
 fun NavGraphBuilder.placeGraph(
-    navController: NavController
+    navController: NavController,
 ) {
     navigation(
         startDestination = PlaceScreen.ROUTE,
@@ -29,6 +33,17 @@ fun NavGraphBuilder.placeGraph(
             route = PlaceSearchScreen.ROUTE,
         ) {
             PlaceSearchScreen(navController = navController)
+        }
+
+        composable(
+            route = PlaceDetailScreen.ROUTE,
+            arguments = listOf(
+                navArgument(Parameter.ID) {
+                    type = NavType.LongType
+                },
+            )
+        ) {
+            PlaceDetailScreen(navController = navController)
         }
     }
 }

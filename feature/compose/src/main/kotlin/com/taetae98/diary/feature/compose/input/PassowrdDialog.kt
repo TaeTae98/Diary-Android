@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.taetae98.diary.feature.resource.StringResource
+import kotlinx.coroutines.delay
 
 @Composable
 fun PasswordDialog(
@@ -78,6 +79,8 @@ fun PasswordDialog(
     }
 
     LaunchedEffect(Unit) {
+        // TODO 해결책 찾기
+        delay(100L)
         focusRequester.requestFocus()
     }
 }
