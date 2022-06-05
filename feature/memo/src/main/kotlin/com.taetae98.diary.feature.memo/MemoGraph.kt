@@ -8,10 +8,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import com.taetae98.diary.feature.common.Const
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
-import com.taetae98.diary.feature.memo.screen.MemoEditScreen
+import com.taetae98.diary.feature.memo.screen.MemoDetailScreen
 import com.taetae98.diary.feature.memo.screen.MemoScreen
+import com.taetae98.diary.feature.memo.screen.PlaceSelectScreen
 
 object MemoGraph {
     const val ROUTE = "MemoGraph"
@@ -21,19 +22,19 @@ fun NavGraphBuilder.memoGraph(
     navController: NavController
 ) {
     navigation(
-        startDestination = MemoScreen.ROUTE,
+        startDestination = DeepLink.Memo.MEMO_URL,
         route = MemoGraph.ROUTE
     ) {
         composable(
-            route = MemoScreen.ROUTE,
+            route = DeepLink.Memo.MEMO_URL,
             deepLinks = listOf(
                 navDeepLink {
                     action = Intent.ACTION_VIEW
-                    uriPattern = MemoScreen.ROUTE
+                    uriPattern = DeepLink.Memo.MEMO_URL
                 },
                 navDeepLink {
                     action = Intent.ACTION_VIEW
-                    uriPattern = Const.MAIN_APP_DEEP_LINK
+                    uriPattern = DeepLink.APP_DEEP_LINK
                 }
             )
         ) {
@@ -41,15 +42,21 @@ fun NavGraphBuilder.memoGraph(
         }
 
         composable(
-            route = MemoEditScreen.ROUTE,
+            route = DeepLink.Memo.MEMO_DETAIL_URL,
             arguments = listOf(
                 navArgument(Parameter.ID) {
-                    type = NavType.IntType
-                    defaultValue = 0
+                    type = NavType.LongType
+                    defaultValue = 0L
                 }
             )
         ) {
-            MemoEditScreen(navController = navController)
+            MemoDetailScreen(navController = navController)
+        }
+        
+        composable(
+            route = DeepLink.Memo.PLACE_SELECT_URL
+        ) {
+            PlaceSelectScreen(navController = navController)
         }
     }
 }

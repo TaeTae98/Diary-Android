@@ -17,10 +17,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.util.isTrue
 import com.taetae98.diary.feature.memo.MemoGraph
 import com.taetae98.diary.feature.memo.memoGraph
-import com.taetae98.diary.feature.memo.screen.MemoScreen
 import com.taetae98.diary.feature.more.MoreScreen
 import com.taetae98.diary.feature.more.moreGraph
 import com.taetae98.diary.feature.place.placeGraph
@@ -78,7 +78,7 @@ private fun MainBottomNavigation(
         MainNavigationItem.More
     )
 
-    val navigationVisibleRoute = listOf(MemoScreen.ROUTE, PlaceScreen.ROUTE, MoreScreen.ROUTE)
+    val navigationVisibleRoute = listOf(DeepLink.Memo.MEMO_URL, PlaceScreen.ROUTE, MoreScreen.ROUTE)
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     if (backStackEntry?.destination?.route in navigationVisibleRoute) {

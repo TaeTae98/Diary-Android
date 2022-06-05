@@ -1,26 +1,33 @@
 package com.taetae98.diary.feature.compose.map
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
-import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMapOptions
-import com.naver.maps.map.UiSettings
 import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.feature.compose.sideeffct.OnLifecycle
 import com.taetae98.diary.feature.compose.variable.canAccessLocation
 import com.taetae98.diary.feature.compose.view.NaverMapView
 
 @Composable
 fun NaverMap(
     modifier: Modifier = Modifier,
-    pin: PlaceEntity? = null,
+    pin: Collection<PlaceEntity> = emptyList(),
+    camera: PlaceEntity? = pin.lastOrNull(),
     onPinClickListener: (PlaceEntity) -> Unit = {},
     onMapClickListener: (PlaceEntity) -> Unit = {},
     isGestureEnable: Boolean = true,
     isLocationButtonEnable: Boolean = canAccessLocation(),
 ) {
+    val (naverMapView, setNaverMapView) = remember { mutableStateOf<NaverMapView?>(null) }
+    val bundle = remember { Bundle() }
+
     AndroidView(
         modifier = modifier,
         factory = { context ->
@@ -28,7 +35,7 @@ fun NaverMap(
                 context = context,
                 options = NaverMapOptions()
                     .camera(
-                        pin?.let {
+                        camera?.let {
                             CameraPosition(
                                 LatLng(it.latitude, it.longitude),
                                 14.0
@@ -39,30 +46,28 @@ fun NaverMap(
                     .indoorLevelPickerEnabled(true),
                 onPinClickListener = onPinClickListener,
                 onMapClickListener = onMapClickListener,
-            )
+            ).also {
+                setNaverMapView(it)
+            }
         },
         update = { view ->
             view.setPin(pin)
-            view.getMapAsync { map ->
-                map.uiSettings.init(
-                    isGestureEnable = isGestureEnable,
-                    isLocationButtonEnabled = isLocationButtonEnable
-                )
-                map.locationTrackingMode = if (pin == null) {
-                    LocationTrackingMode.Follow
-                } else {
-                    LocationTrackingMode.None
-                }
-            }
+            camera?.let { view.moveCamera(LatLng(it.latitude, it.longitude)) }
+            view.setLocationTrackingMode(camera == null)
+            view.setGestureEnable(isGestureEnable)
+            view.setLocationButtonEnable(isLocationButtonEnable)
         }
     )
-}
 
-private fun UiSettings.init(isGestureEnable: Boolean, isLocationButtonEnabled: Boolean) {
-    isStopGesturesEnabled = isGestureEnable
-    isRotateGesturesEnabled = isGestureEnable
-    isScrollGesturesEnabled = isGestureEnable
-    isTiltGesturesEnabled = isGestureEnable
-    isZoomGesturesEnabled = isGestureEnable
-    this.isLocationButtonEnabled = isLocationButtonEnabled
+    OnLifecycle(naverMapView) {
+        when (it) {
+            Lifecycle.Event.ON_CREATE -> naverMapView?.onCreate(bundle)
+            Lifecycle.Event.ON_START -> naverMapView?.onStart()
+            Lifecycle.Event.ON_RESUME -> naverMapView?.onResume()
+            Lifecycle.Event.ON_PAUSE -> naverMapView?.onPause()
+            Lifecycle.Event.ON_STOP -> naverMapView?.onStop()
+            Lifecycle.Event.ON_DESTROY -> naverMapView?.onDestroy()
+            else -> Unit
+        }
+    }
 }

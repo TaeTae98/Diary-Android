@@ -1,5 +1,6 @@
 package com.taetae98.diary.feature.memo.compose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
@@ -19,7 +20,14 @@ fun MemoPreviewCompose(
     uiState: MemoPreviewUiState? = null
 ) {
     Card(
-        modifier = modifier.height(60.dp),
+        modifier = modifier
+            .height(60.dp)
+            .clickable(
+                enabled = uiState != null,
+                onClickLabel = uiState?.title,
+            ) {
+                uiState?.onClick?.invoke()
+            },
     ) {
         if (uiState == null) Loading()
         else UiState(uiState = uiState)

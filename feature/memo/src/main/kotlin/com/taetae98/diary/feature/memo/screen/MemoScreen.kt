@@ -1,12 +1,12 @@
 package com.taetae98.diary.feature.memo.screen
 
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
@@ -17,6 +17,8 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -27,21 +29,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.taetae98.diary.feature.common.Const
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
-import com.taetae98.diary.feature.compose.modifier.draggable
+import com.taetae98.diary.feature.compose.input.PasswordDialog
+import com.taetae98.diary.feature.compose.modifier.swipeable
 import com.taetae98.diary.feature.memo.compose.MemoPreviewCompose
 import com.taetae98.diary.feature.memo.event.MemoEvent
 import com.taetae98.diary.feature.memo.viewmodel.MemoViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
-import kotlin.math.abs
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-
-object MemoScreen {
-    const val ROUTE = "${Const.DEEP_LINK_PREFIX}/memo-screen"
-}
 
 @Composable
 fun MemoScreen(
@@ -53,37 +50,41 @@ fun MemoScreen(
     Scaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
-        topBar = { MemoTopAppBar(navController = navController) }
+        topBar = { MemoTopAppBar() },
+        floatingActionButton = { AddButton(navController = navController) }
     ) {
         MemoLazyColumn(
             modifier = Modifier.padding(it)
         )
     }
 
-    CollectEvent(snackbarHostState = scaffoldState.snackbarHostState)
+    CollectEvent(
+        snackbarHostState = scaffoldState.snackbarHostState,
+        navController = navController
+    )
 }
 
 @Composable
 private fun CollectEvent(
     snackbarHostState: SnackbarHostState,
+    navController: NavController,
     memoViewModel: MemoViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val (event, setEvent) = remember { mutableStateOf<MemoEvent.SecurityAction?>(null) }
 
     LaunchedEffect(Unit) {
         memoViewModel.event.collect {
-            when(it) {
-                is MemoEvent.DeleteMemo -> {
+            when (it) {
+                is MemoEvent.Delete -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
-                    launch {
-                        snackbarHostState.showSnackbar(
-                            message = it.relation.memoEntity.title,
-                            actionLabel = context.getString(StringResource.restore),
-                            duration = SnackbarDuration.Long
-                        ).also { result ->
-                            if (result == SnackbarResult.ActionPerformed) {
-                                it.onRestore()
-                            }
+                    snackbarHostState.showSnackbar(
+                        message = it.relation.memo.title,
+                        actionLabel = context.getString(StringResource.restore),
+                        duration = SnackbarDuration.Short
+                    ).also { result ->
+                        if (result == SnackbarResult.ActionPerformed) {
+                            it.onRestore()
                         }
                     }
                 }
@@ -93,32 +94,57 @@ private fun CollectEvent(
                         message = "Error : ${it.throwable.message}"
                     )
                 }
+                is MemoEvent.Detail -> {
+                    navController.navigate(DeepLink.Memo.getMemoDetailAction(id = it.id))
+                }
+                is MemoEvent.SecurityAction -> {
+                    setEvent(it)
+                }
             }
         }
+    }
+
+    if (event != null) {
+        PasswordDialog(
+            password = event.password,
+            onSuccess = {
+                event.onAction()
+                setEvent(null)
+            },
+            onDismissRequest = { setEvent(null) }
+        )
     }
 }
 
 @Composable
 private fun MemoTopAppBar(
     modifier: Modifier = Modifier,
-    navController: NavController
 ) {
     DiaryTopAppBar(
         modifier = modifier,
         title = { Text(text = stringResource(id = StringResource.memo)) },
-        actions = {
-            IconButton(
-                onClick = { navController.navigate(MemoEditScreen.getAction()) }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = stringResource(id = StringResource.add)
-                )
-            }
-        }
     )
 }
 
+@Composable
+private fun AddButton(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
+    FloatingActionButton(
+        modifier = modifier,
+        onClick = {
+            navController.navigate(DeepLink.Memo.getMemoDetailAction())
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.Add,
+            contentDescription = stringResource(id = StringResource.add)
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MemoLazyColumn(
     modifier: Modifier = Modifier,
@@ -138,17 +164,11 @@ private fun MemoLazyColumn(
             MemoPreviewCompose(
                 modifier = modifier
                     .fillParentMaxWidth()
-                    .draggable(
-                        orientation = Orientation.Horizontal,
-                        onDragStopped = { velocity ->
-                            if (abs(velocity) >= Const.VELOCITY_BOUNDARY) {
-                                it?.let { it.onDelete() }
-                                true
-                            } else {
-                                false
-                            }
-                        }
-                    ),
+                    .swipeable(
+                        enabled = it != null
+                    ) { _, targetValue ->
+                        if (targetValue != 0) it?.onDelete?.invoke()
+                    },
                 uiState = it
             )
         }

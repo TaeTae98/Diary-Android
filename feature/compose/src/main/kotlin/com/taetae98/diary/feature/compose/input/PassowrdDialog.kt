@@ -79,7 +79,7 @@ fun PasswordDialog(
     }
 
     LaunchedEffect(Unit) {
-        // TODO 해결책 찾기
+        // TODO 포커스 안잡히는 에러, 해결책 찾기
         delay(100L)
         focusRequester.requestFocus()
     }

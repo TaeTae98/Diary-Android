@@ -53,7 +53,7 @@ fun SettingScreen(
         scaffoldState = scaffoldState,
         topBar = { SettingTopAppBar(navController = navController) }
     ) {
-        Column {
+        Column(modifier = Modifier.padding(it)) {
             RunOnUnlockCompose(
                 modifier = Modifier
                     .padding(it)

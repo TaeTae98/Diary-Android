@@ -34,7 +34,8 @@ import com.taetae98.diary.feature.resource.StringResource
 @Composable
 fun DiaryMap(
     modifier: Modifier = Modifier,
-    pin: PlaceEntity? = null,
+    pin: Collection<PlaceEntity> = emptyList(),
+    camera: PlaceEntity? = pin.lastOrNull(),
     onPinClickListener: (PlaceEntity) -> Unit = {},
     onMapClickListener: (PlaceEntity) -> Unit = {},
     onSearch: (() -> Unit)? = null,
@@ -68,10 +69,11 @@ fun DiaryMap(
         modifier = modifier,
         floatingActionButton = { onSearch?.let { SearchButton(onSearch = onSearch) } }
     ) {
-        Box(modifier = modifier) {
+        Box(modifier = Modifier.padding(it)) {
             NaverMap(
                 modifier = modifier,
                 pin = pin,
+                camera = camera,
                 onPinClickListener = onPinClickListener,
                 onMapClickListener = onMapClickListener,
                 isGestureEnable = isGestureEnable,
@@ -82,7 +84,7 @@ fun DiaryMap(
                 DiaryFloatingButton(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(8.dp)
+                        .padding(12.dp)
                         .clickable { Setting.openApplicationDetails(context) },
                     text = stringResource(id = StringResource.permission),
                     icon = Icons.Rounded.LocationOn
@@ -91,7 +93,7 @@ fun DiaryMap(
                 DiaryFloatingButton(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(8.dp)
+                        .padding(12.dp)
                         .clickable { Setting.openApplicationDetails(context) },
                     text = stringResource(id = StringResource.fine_location),
                     icon = Icons.Rounded.GpsFixed

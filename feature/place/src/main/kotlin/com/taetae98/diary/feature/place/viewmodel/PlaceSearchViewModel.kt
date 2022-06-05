@@ -62,6 +62,9 @@ class PlaceSearchViewModel @Inject constructor(
                         viewModelScope.launch {
                             event.emit(PlaceSearchEvent.Search(it))
                         }
+                    },
+                    onDelete = {
+
                     }
                 )
             }

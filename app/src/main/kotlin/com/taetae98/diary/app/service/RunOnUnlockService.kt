@@ -25,7 +25,7 @@ class RunOnUnlockService : Service() {
     @Inject
     lateinit var runOnUnlockNotification: RunOnUnlockNotification
 
-    override fun onBind(intent: Intent): IBinder? = null
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -37,7 +37,7 @@ class RunOnUnlockService : Service() {
         )
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         CoroutineScope(Dispatchers.IO).launch {
             when {

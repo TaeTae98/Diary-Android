@@ -19,37 +19,33 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.taetae98.diary.domain.model.PlaceEntity
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.common.util.getResult
 import com.taetae98.diary.feature.common.util.removeResult
+import com.taetae98.diary.feature.common.util.setResult
 import com.taetae98.diary.feature.compose.diary.DiaryMap
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.compose.input.ClearTextField
 import com.taetae98.diary.feature.compose.input.PasswordInputCompose
+import com.taetae98.diary.feature.compose.sideeffct.OnLifecycle
 import com.taetae98.diary.feature.place.R
 import com.taetae98.diary.feature.place.event.PlaceDetailEvent
 import com.taetae98.diary.feature.place.viewmodel.PlaceDetailViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
-object PlaceDetailScreen {
-    private const val ROUTE_PATH = "PlaceDetailScreen"
-
-    const val ROUTE = "$ROUTE_PATH/{${Parameter.ID}}"
-
-    fun getAction(id: Long = 0): String {
-        return "$ROUTE_PATH/$id"
-    }
-}
 
 @Composable
 fun PlaceDetailScreen(
@@ -70,7 +66,7 @@ fun PlaceDetailScreen(
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            PlaceLayout()
+            PlaceLayout(snackbarHostState = scaffoldState.snackbarHostState)
             PasswordLayout()
             MapLayout()
         }
@@ -92,7 +88,10 @@ private fun CollectEvent(
     LaunchedEffect(Unit) {
         placeDetailViewModel.event.collect {
             when (it) {
-                PlaceDetailEvent.Edit -> navController.navigateUp()
+                is PlaceDetailEvent.Edit -> {
+                    navController.setResult(Parameter.PLACE, it.entity)
+                    navController.navigateUp()
+                }
                 PlaceDetailEvent.NoPlace -> snackbarHostState.showSnackbar(
                     message = context.getString(R.string.select_place),
                 )
@@ -104,13 +103,22 @@ private fun CollectEvent(
                         )
                     }
                 }
+                else -> Unit
             }
         }
     }
 
-    navController.getResult<PlaceEntity>(Parameter.PLACE).value?.let {
-        placeDetailViewModel.update(it)
-        navController.removeResult(Parameter.PLACE)
+    val entity = navController.getResult<PlaceEntity>(Parameter.PLACE).value
+    OnLifecycle { event ->
+        when(event) {
+            Lifecycle.Event.ON_START -> {
+                entity?.let {
+                    placeDetailViewModel.update(it)
+                    navController.removeResult(Parameter.PLACE)
+                }
+            }
+            else -> Unit
+        }
     }
 }
 
@@ -139,13 +147,14 @@ private fun PlaceEditTopBar(
 
 @Composable
 private fun PlaceLayout(
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
     ) {
         Column {
-            TitleInput()
+            TitleInput(snackbarHostState = snackbarHostState)
             AddressInput()
             Divider()
             LinkInput()
@@ -156,17 +165,40 @@ private fun PlaceLayout(
 
 @Composable
 private fun TitleInput(
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     placeDetailViewModel: PlaceDetailViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
+
     ClearTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
         value = placeDetailViewModel.title.collectAsState().value,
         onValueChange = placeDetailViewModel::setTitle,
         label = stringResource(id = StringResource.title),
         singleLine = true,
         maxLines = 1
     )
+
+    LaunchedEffect(Unit) {
+        placeDetailViewModel.event.collect {
+            when (it) {
+                is PlaceDetailEvent.NoTitle -> {
+                    focusRequester.requestFocus()
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    launch {
+                        snackbarHostState.showSnackbar(
+                            message = context.getString(StringResource.title_is_empty)
+                        )
+                    }
+                }
+                else -> Unit
+            }
+        }
+    }
 }
 
 @Composable
@@ -236,10 +268,8 @@ private fun MapLayout(
         modifier = modifier
     ) {
         DiaryMap(
-            pin = placeDetailViewModel.pin.collectAsState().value,
-            onMapClickListener = {
-                placeDetailViewModel.update(it)
-            }
+            pin = placeDetailViewModel.pin.collectAsState().value?.let { listOf(it) } ?: emptyList(),
+            onMapClickListener = { placeDetailViewModel.update(it) }
         )
     }
 }

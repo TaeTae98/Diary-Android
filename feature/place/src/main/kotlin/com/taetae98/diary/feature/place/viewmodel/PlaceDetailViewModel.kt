@@ -14,9 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -38,29 +35,16 @@ class PlaceDetailViewModel @Inject constructor(
     val hasPassword = MutableStateFlow(savedStateHandle[Parameter.HAS_PASSWORD] ?: false)
     val password = MutableStateFlow(savedStateHandle[Parameter.PASSWORD] ?: "")
 
-    val pin = latitude.zip(longitude) { latitude, longitude ->
-        PlaceEntity(
-            latitude = latitude,
-            longitude = longitude
-        ).takeIf {
-            latitude != 0.0 && longitude != 0.0
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        null
-    )
+    val pin = MutableStateFlow<PlaceEntity?>(savedStateHandle[Parameter.PLACE])
 
     init {
         if (savedStateHandle.get<Boolean>(Parameter.IS_INITIALIZED).isNullOrFalse()) {
-            savedStateHandle.get<Long>(Parameter.ID)?.let {
-                viewModelScope.launch {
-                    findPlaceByIdUseCase(FindPlaceByIdUseCase.Id(it)).onSuccess {
-                        update(it)
-                        savedStateHandle[Parameter.IS_INITIALIZED] = true
-                    }.onFailure {
-                        event.emit(PlaceDetailEvent.Error(it))
-                    }
+            viewModelScope.launch {
+                findPlaceByIdUseCase(FindPlaceByIdUseCase.Id(id.value)).onSuccess {
+                    update(it)
+                    savedStateHandle[Parameter.IS_INITIALIZED] = true
+                }.onFailure {
+                    event.emit(PlaceDetailEvent.Error(it))
                 }
             }
         }
@@ -126,6 +110,17 @@ class PlaceDetailViewModel @Inject constructor(
         }
     }
 
+    private fun setPin(value: PlaceEntity?) {
+        if (value?.latitude == 0.0 && value.longitude == 0.0) {
+            return
+        }
+
+        viewModelScope.launch {
+            pin.emit(value)
+            savedStateHandle[Parameter.PLACE] = value
+        }
+    }
+
     fun update(entity: PlaceEntity) {
         setTitle(entity.title)
         setAddress(entity.address)
@@ -135,28 +130,36 @@ class PlaceDetailViewModel @Inject constructor(
         setPassword(entity.password ?: "")
         setLatitude(entity.latitude)
         setLongitude(entity.longitude)
+        setPin(entity)
     }
 
     fun edit() {
+        if (title.value.isEmpty()) {
+            viewModelScope.launch { event.emit(PlaceDetailEvent.NoTitle) }
+            return
+        }
+
         if (hasPlace().isFalse()) {
             viewModelScope.launch { event.emit(PlaceDetailEvent.NoPlace) }
             return
         }
 
         viewModelScope.launch {
+            val entity = PlaceEntity(
+                id = id.value,
+                title = title.value,
+                address = address.value,
+                link = link.value.takeIf { it.isNotBlank() },
+                description = description.value,
+                password = password.value.takeIf { hasPassword.value },
+                latitude = latitude.value,
+                longitude = longitude.value
+            )
+
             insertPlaceUseCase(
-                PlaceEntity(
-                    id = id.value,
-                    title = title.value,
-                    address = address.value,
-                    link = link.value.takeIf { it.isNotBlank() },
-                    description = description.value,
-                    password = password.value.takeIf { hasPassword.value },
-                    latitude = latitude.value,
-                    longitude = longitude.value
-                )
+                entity
             ).onSuccess {
-                event.emit(PlaceDetailEvent.Edit)
+                event.emit(PlaceDetailEvent.Edit(entity.copy(id = it)))
             }.onFailure {
                 event.emit(PlaceDetailEvent.Error(it))
             }

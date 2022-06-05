@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.place.screen.PlaceDetailScreen
 import com.taetae98.diary.feature.place.screen.PlaceScreen
@@ -36,7 +37,7 @@ fun NavGraphBuilder.placeGraph(
         }
 
         composable(
-            route = PlaceDetailScreen.ROUTE,
+            route = DeepLink.Place.PLACE_DETAIL_URL,
             arguments = listOf(
                 navArgument(Parameter.ID) {
                     type = NavType.LongType

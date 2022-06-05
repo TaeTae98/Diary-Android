@@ -26,7 +26,7 @@ import com.taetae98.diary.feature.compose.diary.DiaryTextField
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.compose.input.ClearTextField
-import com.taetae98.diary.feature.place.compose.PlaceCompose
+import com.taetae98.diary.feature.place.compose.PlacePreviewCompose
 import com.taetae98.diary.feature.place.event.PlaceSearchEvent
 import com.taetae98.diary.feature.place.viewmodel.PlaceSearchViewModel
 import com.taetae98.diary.feature.theme.DiaryTheme
@@ -129,7 +129,7 @@ private fun Content(
         items(
             items = lazyPagingItems,
         ) {
-            PlaceCompose(
+            PlacePreviewCompose(
                 uiState = it,
             )
         }

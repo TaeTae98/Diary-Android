@@ -16,7 +16,7 @@ data class ExceptionLogUiState(
             id = entity.id,
             type = entity.type,
             cause = "Cause : ${entity.cause}",
-            createdAt = SimpleDateFormat.getDateInstance().format(entity.createdAt),
+            createdAt = SimpleDateFormat.getInstance().format(entity.createdAt),
             stackTrace = entity.stackTrace,
             onDelete = onDelete
         )

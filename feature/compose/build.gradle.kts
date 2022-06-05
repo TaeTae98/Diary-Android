@@ -2,6 +2,7 @@ plugins {
     id("android-config")
     id("compose-config")
     id("navigation-config")
+    id("hilt-config")
     id("map-config")
 }
 

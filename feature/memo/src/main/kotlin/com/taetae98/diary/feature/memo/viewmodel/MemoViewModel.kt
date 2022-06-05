@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.taetae98.diary.domain.model.MemoRelation
+import com.taetae98.diary.domain.model.memo.MemoRelation
 import com.taetae98.diary.domain.usecase.memo.DeleteMemoByIdUseCase
 import com.taetae98.diary.domain.usecase.memo.PagingMemoByTagIdsUseCase
 import com.taetae98.diary.domain.usecase.memo.RestoreMemoRelationUseCase
@@ -34,7 +34,34 @@ class MemoViewModel @Inject constructor(
             pagingData.map {
                 MemoPreviewUiState.from(
                     entity = it,
-                    onDelete = { delete(it.id) }
+                    onClick = {
+                        viewModelScope.launch {
+                            val password = it.password
+                            if (password == null) {
+                                event.emit(MemoEvent.Detail(it.id))
+                            } else {
+                                event.emit(
+                                    MemoEvent.SecurityAction(password = password) {
+                                        viewModelScope.launch { event.emit(MemoEvent.Detail(it.id)) }
+                                    }
+                                )
+                            }
+                        }
+                    },
+                    onDelete = {
+                        viewModelScope.launch {
+                            val password = it.password
+                            if (password == null) {
+                                delete(it.id)
+                            } else {
+                                event.emit(
+                                    MemoEvent.SecurityAction(password = password) {
+                                        delete(it.id)
+                                    }
+                                )
+                            }
+                        }
+                    }
                 )
             }
         }.cachedIn(viewModelScope)
@@ -44,10 +71,9 @@ class MemoViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             deleteMemoByIdUseCase(DeleteMemoByIdUseCase.Id(id)).onSuccess {
                 event.emit(
-                    MemoEvent.DeleteMemo(
-                        relation = it,
-                        onRestore = { restore(it) }
-                    )
+                    MemoEvent.Delete(it) {
+                        restore(it)
+                    }
                 )
             }.onFailure {
                 event.emit(MemoEvent.Error(it))

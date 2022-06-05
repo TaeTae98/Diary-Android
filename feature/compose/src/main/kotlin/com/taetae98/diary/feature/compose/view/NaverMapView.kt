@@ -3,9 +3,11 @@ package com.taetae98.diary.feature.compose.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.view.MotionEvent
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.overlay.Marker
@@ -21,53 +23,110 @@ class NaverMapView(
     private val onPinClickListener: (PlaceEntity) -> Unit = {},
     onMapClickListener: (PlaceEntity) -> Unit = {},
 ) : MapView(context, options) {
-    private var pin: Marker? = null
+    private var marker: Collection<Marker> = emptyList()
 
     init {
         getMapAsync {
-            it.locationSource = FusedLocationSource(context as Activity, 0)
-            it.setOnMapClickListener { _, latLng ->
-                onMapClickListener(
-                    PlaceEntity(
-                        latitude = latLng.latitude,
-                        longitude = latLng.longitude
+            runCatching {
+                it.locationSource = FusedLocationSource(context as Activity, 0)
+                it.setOnMapClickListener { _, latLng ->
+                    onMapClickListener(
+                        PlaceEntity(
+                            latitude = latLng.latitude,
+                            longitude = latLng.longitude
+                        )
                     )
-                )
-            }
-            it.setOnSymbolClickListener { symbol ->
-                onMapClickListener(
-                    PlaceEntity(
-                        title = symbol.caption,
-                        link = "https://search.naver.com/search.naver?query=${symbol.caption}",
-                        latitude = symbol.position.latitude,
-                        longitude = symbol.position.longitude
+                }
+                it.setOnSymbolClickListener { symbol ->
+                    onMapClickListener(
+                        PlaceEntity(
+                            title = symbol.caption,
+                            link = "https://search.naver.com/search.naver?query=${symbol.caption}",
+                            latitude = symbol.position.latitude,
+                            longitude = symbol.position.longitude
+                        )
                     )
-                )
-                true
+                    true
+                }
             }
         }
     }
 
-    fun setPin(placeEntity: PlaceEntity?) {
-        pin?.map = null
-        placeEntity?.let { entity ->
+    fun setPin(pin: Collection<PlaceEntity>) = runCatching {
+        marker.forEach { it.detach() }
+        marker = pin.map { entity ->
             val latLng = LatLng(entity.latitude, entity.longitude)
             Marker(latLng).apply {
-                getMapAsync {
-                    map = it
-                    it.moveCamera(
-                        CameraUpdate
-                            .scrollTo(latLng)
-                            .animate(CameraAnimation.Easing, 1000)
-                    )
-                }
+                attach()
                 setOnClickListener {
                     onPinClickListener(entity)
                     true
                 }
-            }.also {
-                pin = it
             }
         }
+    }
+
+    fun setGestureEnable(enable: Boolean) = runCatching {
+        getMapAsync {
+            it.uiSettings.apply {
+                isStopGesturesEnabled = enable
+                isRotateGesturesEnabled = enable
+                isScrollGesturesEnabled = enable
+                isTiltGesturesEnabled = enable
+                isZoomGesturesEnabled = enable
+            }
+        }
+    }
+
+    fun setLocationButtonEnable(enable: Boolean) = runCatching {
+        getMapAsync {
+            it.uiSettings.isLocationButtonEnabled = enable
+        }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN -> parent.requestDisallowInterceptTouchEvent(true)
+            MotionEvent.ACTION_UP -> parent.requestDisallowInterceptTouchEvent(false)
+        }
+
+        return super.dispatchTouchEvent(event)
+    }
+
+    fun setLocationTrackingMode(isFollow: Boolean) {
+        getMapAsync { map ->
+            runCatching {
+                map.locationTrackingMode = if (isFollow) {
+                    LocationTrackingMode.Follow
+                } else {
+                    LocationTrackingMode.None
+                }
+            }
+        }
+    }
+
+    fun moveCamera(latLng: LatLng) {
+        getMapAsync {
+            runCatching {
+                it.moveCamera(
+                    CameraUpdate
+                        .scrollTo(latLng)
+                        .animate(CameraAnimation.Easing, 1000)
+                )
+            }
+        }
+    }
+
+    private fun Marker.attach() {
+        getMapAsync {
+            runCatching {
+                map = it
+
+            }
+        }
+    }
+
+    private fun Marker.detach() = runCatching {
+        map = null
     }
 }

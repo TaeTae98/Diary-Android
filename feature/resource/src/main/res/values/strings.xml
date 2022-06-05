@@ -29,6 +29,7 @@
 
     <string name="run_on_unlock">Run on unlock</string>
     <string name="fine_location">Fine Location</string>
+    <string name="title_is_empty">Title is empty</string>
 
     <string name="developer_email">rkdxowhd98@gmail.com</string>
 </resources>

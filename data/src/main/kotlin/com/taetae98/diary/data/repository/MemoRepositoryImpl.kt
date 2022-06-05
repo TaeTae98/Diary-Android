@@ -3,7 +3,8 @@ package com.taetae98.diary.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.taetae98.diary.data.datasource.MemoRoomDataSource
-import com.taetae98.diary.domain.model.MemoEntity
+import com.taetae98.diary.domain.model.memo.MemoEntity
+import com.taetae98.diary.domain.model.memo.MemoRelation
 import com.taetae98.diary.domain.repository.MemoRepository
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class MemoRepositoryImpl @Inject constructor(
         memoRoomDataSource.findByTagIds()
     }.flow
 
-    override suspend fun findById(id: Long) = memoRoomDataSource.findById(id)
+    override suspend fun findRelationById(id: Long) = memoRoomDataSource.findRelationById(id) ?: MemoRelation()
 
     override suspend fun deleteById(id: Long) = memoRoomDataSource.deleteById(id)
 }

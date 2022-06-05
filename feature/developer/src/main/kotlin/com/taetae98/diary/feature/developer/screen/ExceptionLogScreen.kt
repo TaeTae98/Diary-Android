@@ -1,7 +1,6 @@
 package com.taetae98.diary.feature.developer.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,10 +14,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -37,10 +36,9 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.taetae98.diary.domain.exception.KnownIssueException
-import com.taetae98.diary.feature.common.Const
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
-import com.taetae98.diary.feature.compose.modifier.draggable
+import com.taetae98.diary.feature.compose.modifier.swipeable
 import com.taetae98.diary.feature.developer.R
 import com.taetae98.diary.feature.developer.event.ExceptionLogEvent
 import com.taetae98.diary.feature.developer.model.ExceptionLogUiState
@@ -48,7 +46,6 @@ import com.taetae98.diary.feature.developer.viewmodel.ExceptionLogViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 object ExceptionLogScreen {
     const val ROUTE = "ExceptionLogScreen"
@@ -93,15 +90,12 @@ private fun CollectEvent(
             when (it) {
                 is ExceptionLogEvent.DeleteExceptionLog -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
-                    launch {
-                        snackbarHostState.showSnackbar(
-                            message = it.collection.firstOrNull()?.entity?.cause ?: "",
-                            actionLabel = context.getString(StringResource.restore),
-                            duration = SnackbarDuration.Long
-                        ).also { result ->
-                            if (result == SnackbarResult.ActionPerformed) {
-                                it.onRestore()
-                            }
+                    snackbarHostState.showSnackbar(
+                        message = it.collection.firstOrNull()?.entity?.cause ?: "",
+                        actionLabel = context.getString(StringResource.restore),
+                    ).also { result ->
+                        if (result == SnackbarResult.ActionPerformed) {
+                            it.onRestore()
                         }
                     }
                 }
@@ -166,6 +160,7 @@ private fun ActionCompose(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ExceptionLogColumn(
     modifier: Modifier = Modifier,
@@ -182,17 +177,12 @@ private fun ExceptionLogColumn(
             key = { it.id }
         ) {
             ExceptionLogCompose(
-                modifier = Modifier.draggable(
-                    orientation = Orientation.Horizontal,
-                    onDragStopped = { velocity ->
-                        if (velocity >= Const.VELOCITY_BOUNDARY) {
-                            it?.let { it.onDelete() }
-                            true
-                        } else {
-                            false
-                        }
-                    }
-                ),
+                modifier = Modifier
+                    .swipeable(
+                        enabled = it != null
+                    ) { _, targetValue ->
+                        if (targetValue != 0) it?.onDelete?.invoke()
+                    },
                 uiState = it
             )
         }

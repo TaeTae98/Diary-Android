@@ -7,7 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
 import com.taetae98.diary.app.service.RunOnUnlockService
-import com.taetae98.diary.feature.common.Const
+import com.taetae98.diary.feature.common.DeepLink
 
 class RunOnUnlockReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -26,7 +26,7 @@ class RunOnUnlockReceiver : BroadcastReceiver() {
     private fun onScreenOff(context: Context) {
         Intent(
             Intent.ACTION_VIEW,
-            Uri.parse(Const.MAIN_APP_DEEP_LINK)
+            Uri.parse(DeepLink.APP_DEEP_LINK)
         ).also {
             TaskStackBuilder.create(context)
                 .addNextIntent(it)

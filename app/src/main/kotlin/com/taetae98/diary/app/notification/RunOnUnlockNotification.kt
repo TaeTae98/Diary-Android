@@ -8,7 +8,7 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
-import com.taetae98.diary.feature.common.Const
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.util.getDefaultName
 import com.taetae98.diary.feature.resource.DrawableResource
 import com.taetae98.diary.feature.resource.StringResource
@@ -44,7 +44,7 @@ class RunOnUnlockNotification @Inject constructor(
             .addNextIntent(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(Const.MAIN_APP_DEEP_LINK)
+                    Uri.parse(DeepLink.APP_DEEP_LINK)
                 )
             )
             .getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
