@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.developer.screen.DeveloperScreen
 import com.taetae98.diary.feature.developer.screen.ExceptionLogScreen
 
@@ -19,17 +20,17 @@ fun NavGraphBuilder.developerGraph(
     navController: NavController,
 ) {
     navigation(
-        startDestination = DeveloperScreen.ROUTE,
+        startDestination = DeepLink.Developer.DEVELOPER_URL,
         route = DeveloperGraph.ROUTE
     ) {
         composable(
-            route = DeveloperScreen.ROUTE
+            route = DeepLink.Developer.DEVELOPER_URL
         ) {
             DeveloperScreen(navController = navController)
         }
 
         composable(
-            route = ExceptionLogScreen.ROUTE
+            route = DeepLink.Developer.EXCEPTION_LOG_URL
         ) {
             ExceptionLogScreen(navController = navController)
         }

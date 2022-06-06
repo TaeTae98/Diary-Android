@@ -23,6 +23,25 @@ object DeepLink {
         private const val PLACE_DETAIL_URL_PREFIX = "$PLACE_URL/detail"
         const val PLACE_DETAIL_URL = "$PLACE_DETAIL_URL_PREFIX/{${Parameter.ID}}"
 
+        const val PLACE_SEARCH_URL = "$PLACE_URL/search"
+
         fun getPlaceDetailAction(id: Long = 0L) = "$PLACE_DETAIL_URL_PREFIX/$id"
+    }
+
+    object File {
+        const val FILE_URL = "$APP_URL/file"
+    }
+
+    object Setting {
+        const val SETTING_URL = "$APP_URL/setting"
+    }
+
+    object Developer {
+        const val DEVELOPER_URL = "$APP_URL/developer"
+        const val EXCEPTION_LOG_URL = "$DEVELOPER_URL/exception/log"
+    }
+
+    object More {
+        const val MORE_URL = "$APP_URL/more"
     }
 }

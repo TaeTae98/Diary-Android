@@ -34,10 +34,6 @@ import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.setting.SettingGraph
 import com.taetae98.diary.feature.theme.DiaryTheme
 
-object MoreScreen {
-    const val ROUTE = "MoreScreen"
-}
-
 @Composable
 fun MoreScreen(
     modifier: Modifier = Modifier,

@@ -2,6 +2,7 @@
 <resources>
     <string name="memo">Memo</string>
     <string name="place">Place</string>
+    <string name="file">File</string>
     <string name="more">More</string>
     <string name="setting">Setting</string>
     <string name="developer">Developer</string>

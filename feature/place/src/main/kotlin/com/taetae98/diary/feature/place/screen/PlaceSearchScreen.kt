@@ -32,12 +32,6 @@ import com.taetae98.diary.feature.place.viewmodel.PlaceSearchViewModel
 import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlinx.coroutines.flow.collect
 
-object PlaceSearchScreen {
-    const val ROUTE = "PlaceSearchScreen"
-
-    fun getAction() = ROUTE
-}
-
 @Composable
 fun PlaceSearchScreen(
     modifier: Modifier = Modifier,

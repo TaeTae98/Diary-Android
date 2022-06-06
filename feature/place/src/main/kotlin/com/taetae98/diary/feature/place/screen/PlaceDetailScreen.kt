@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.common.util.getResult
 import com.taetae98.diary.feature.common.util.removeResult
@@ -133,7 +134,7 @@ private fun PlaceEditTopBar(
         actions = {
             IconButton(
                 onClick = {
-                    navController.navigate(PlaceSearchScreen.getAction())
+                    navController.navigate(DeepLink.Place.PLACE_SEARCH_URL)
                 }
             ) {
                 Icon(

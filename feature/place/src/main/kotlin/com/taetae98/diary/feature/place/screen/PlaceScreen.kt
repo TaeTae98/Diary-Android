@@ -8,7 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -36,10 +35,6 @@ import com.taetae98.diary.feature.place.event.PlaceEvent
 import com.taetae98.diary.feature.place.viewmodel.PlaceViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import kotlinx.coroutines.flow.collect
-
-object PlaceScreen {
-    const val ROUTE = "PlaceScreen"
-}
 
 @Composable
 fun PlaceScreen(
@@ -85,7 +80,6 @@ private fun CollectEvent(
                     snackbarHostState.showSnackbar(
                         message = it.relation.place.title,
                         actionLabel = context.getString(StringResource.restore),
-                        duration = SnackbarDuration.Long
                     ).also { result ->
                         if (result == SnackbarResult.ActionPerformed) {
                             it.onRestore()

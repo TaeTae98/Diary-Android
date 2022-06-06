@@ -47,13 +47,6 @@ import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlinx.coroutines.flow.collect
 
-object ExceptionLogScreen {
-    const val ROUTE = "ExceptionLogScreen"
-
-    fun getAction(): String {
-        return ROUTE
-    }
-}
 
 @Composable
 fun ExceptionLogScreen(

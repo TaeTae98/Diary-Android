@@ -20,18 +20,18 @@ fun NavGraphBuilder.placeGraph(
     navController: NavController,
 ) {
     navigation(
-        startDestination = PlaceScreen.ROUTE,
+        startDestination = DeepLink.Place.PLACE_URL,
         route = PlaceGraph.ROUTE
     ) {
 
         composable(
-            route = PlaceScreen.ROUTE
+            route = DeepLink.Place.PLACE_URL
         ) {
             PlaceScreen(navController = navController)
         }
 
         composable(
-            route = PlaceSearchScreen.ROUTE,
+            route = DeepLink.Place.PLACE_SEARCH_URL,
         ) {
             PlaceSearchScreen(navController = navController)
         }

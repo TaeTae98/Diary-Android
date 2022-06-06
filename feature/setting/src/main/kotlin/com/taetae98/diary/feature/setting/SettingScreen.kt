@@ -37,10 +37,6 @@ import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
 import kotlinx.coroutines.flow.collect
 
-object SettingScreen {
-    const val ROUTE = "SettingScreen"
-}
-
 @Composable
 fun SettingScreen(
     modifier: Modifier = Modifier,

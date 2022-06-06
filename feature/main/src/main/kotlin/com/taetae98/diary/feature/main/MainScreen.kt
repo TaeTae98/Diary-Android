@@ -19,18 +19,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.util.isTrue
+import com.taetae98.diary.feature.file.fileGraph
 import com.taetae98.diary.feature.memo.MemoGraph
 import com.taetae98.diary.feature.memo.memoGraph
-import com.taetae98.diary.feature.more.MoreScreen
 import com.taetae98.diary.feature.more.moreGraph
 import com.taetae98.diary.feature.place.placeGraph
-import com.taetae98.diary.feature.place.screen.PlaceScreen
 import com.taetae98.diary.feature.theme.DiaryTheme
-
-object MainScreen {
-    const val ROUTE = "MainScreen"
-}
-
 
 @Composable
 fun MainScreen(
@@ -59,10 +53,11 @@ private fun MainNavHost(
         modifier = modifier,
         navController = navController,
         startDestination = MemoGraph.ROUTE,
-        route = MainScreen.ROUTE
+        route = DeepLink.APP_URL
     ) {
         memoGraph(navController = navController)
         placeGraph(navController = navController)
+        fileGraph(navController = navController)
         moreGraph(navController = navController)
     }
 }
@@ -75,10 +70,16 @@ private fun MainBottomNavigation(
     val items = listOf(
         MainNavigationItem.Memo,
         MainNavigationItem.Place,
-        MainNavigationItem.More
+        MainNavigationItem.File,
+        MainNavigationItem.More,
     )
 
-    val navigationVisibleRoute = listOf(DeepLink.Memo.MEMO_URL, PlaceScreen.ROUTE, MoreScreen.ROUTE)
+    val navigationVisibleRoute = listOf(
+        DeepLink.Memo.MEMO_URL,
+        DeepLink.Place.PLACE_URL,
+        DeepLink.More.MORE_URL,
+        DeepLink.File.FILE_URL
+    )
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     if (backStackEntry?.destination?.route in navigationVisibleRoute) {

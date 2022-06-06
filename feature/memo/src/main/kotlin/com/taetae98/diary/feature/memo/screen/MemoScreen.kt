@@ -8,7 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -81,7 +80,6 @@ private fun CollectEvent(
                     snackbarHostState.showSnackbar(
                         message = it.relation.memo.title,
                         actionLabel = context.getString(StringResource.restore),
-                        duration = SnackbarDuration.Short
                     ).also { result ->
                         if (result == SnackbarResult.ActionPerformed) {
                             it.onRestore()

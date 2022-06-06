@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.compose.diary.DiarySwitch
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
@@ -32,10 +33,6 @@ import com.taetae98.diary.feature.developer.event.DeveloperEvent
 import com.taetae98.diary.feature.developer.viewmodel.DeveloperViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import kotlinx.coroutines.flow.collect
-
-object DeveloperScreen {
-    const val ROUTE = "DeveloperScreen"
-}
 
 @Composable
 fun DeveloperScreen(
@@ -151,7 +148,7 @@ private fun ExceptionLog(
             )
             IconButton(
                 onClick = {
-                    navController.navigate(ExceptionLogScreen.getAction())
+                    navController.navigate(DeepLink.Developer.EXCEPTION_LOG_URL)
                 }
             ) {
                 Icon(

@@ -69,6 +69,7 @@ android {
 
     kotlinOptions {
         jvmTarget = Config.JVM_TARGET
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
 
     packagingOptions {
