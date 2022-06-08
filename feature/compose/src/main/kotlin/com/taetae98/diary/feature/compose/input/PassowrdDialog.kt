@@ -78,6 +78,12 @@ fun PasswordDialog(
         }
     }
 
+//    OnLifecycle {
+//        when(it) {
+//            Lifecycle.Event.ON_RESUME -> focusRequester.requestFocus()
+//            else -> Unit
+//        }
+//    }
     LaunchedEffect(Unit) {
         // TODO 포커스 안잡히는 에러, 해결책 찾기
         delay(100L)

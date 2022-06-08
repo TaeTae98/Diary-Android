@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.taetae98.diary.data.room.BaseDao
-import com.taetae98.diary.domain.model.PlaceEntity
-import com.taetae98.diary.domain.model.PlaceRelation
+import com.taetae98.diary.domain.model.place.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceRelation
 
 @Dao
 interface PlaceRoomDataSource : BaseDao<PlaceEntity> {

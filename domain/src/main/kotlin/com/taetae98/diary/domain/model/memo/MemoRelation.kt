@@ -3,7 +3,7 @@ package com.taetae98.diary.domain.model.memo
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 
 data class MemoRelation(
     @Embedded

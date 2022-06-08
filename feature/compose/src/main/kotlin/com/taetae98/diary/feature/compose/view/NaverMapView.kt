@@ -12,7 +12,7 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 
 @SuppressLint("ViewConstructor")
 class NaverMapView(

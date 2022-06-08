@@ -16,7 +16,7 @@ class MemoRepositoryImpl @Inject constructor(
     override fun pagingByTagIds(ids: Collection<Long>) = Pager(
         config = PagingConfig(
             pageSize = 20,
-            maxSize = 1000
+            maxSize = 300
         )
     ) {
         memoRoomDataSource.findByTagIds()

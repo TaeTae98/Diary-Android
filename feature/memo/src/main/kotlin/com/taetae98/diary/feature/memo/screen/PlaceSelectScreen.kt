@@ -32,7 +32,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.common.util.getResult

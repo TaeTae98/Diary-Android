@@ -1,7 +1,7 @@
 package com.taetae98.diary.feature.place.event
 
-import com.taetae98.diary.domain.model.PlaceEntity
-import com.taetae98.diary.domain.model.PlaceRelation
+import com.taetae98.diary.domain.model.place.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceRelation
 
 sealed class PlaceEvent {
     data class SecurityAction(

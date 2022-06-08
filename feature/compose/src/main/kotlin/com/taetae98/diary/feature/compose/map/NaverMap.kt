@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.NaverMapOptions
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.feature.compose.sideeffct.OnLifecycle
 import com.taetae98.diary.feature.compose.variable.canAccessLocation
 import com.taetae98.diary.feature.compose.view.NaverMapView

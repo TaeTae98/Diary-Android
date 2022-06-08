@@ -3,7 +3,7 @@ package com.taetae98.diary.feature.place.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.domain.usecase.place.FindPlaceByIdUseCase
 import com.taetae98.diary.domain.usecase.place.InsertPlaceUseCase
 import com.taetae98.diary.feature.common.Parameter

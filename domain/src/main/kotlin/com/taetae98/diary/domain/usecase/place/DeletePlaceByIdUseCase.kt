@@ -1,6 +1,6 @@
 package com.taetae98.diary.domain.usecase.place
 
-import com.taetae98.diary.domain.model.PlaceRelation
+import com.taetae98.diary.domain.model.place.PlaceRelation
 import com.taetae98.diary.domain.repository.ExceptionRepository
 import com.taetae98.diary.domain.repository.PlaceRepository
 import com.taetae98.diary.domain.usecase.SuspendParamUseCase

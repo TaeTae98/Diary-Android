@@ -1,4 +1,4 @@
-package com.taetae98.diary.domain.model
+package com.taetae98.diary.domain.model.place
 
 import androidx.room.Embedded
 import androidx.room.Junction

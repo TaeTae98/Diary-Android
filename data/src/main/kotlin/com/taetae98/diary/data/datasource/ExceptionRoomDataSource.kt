@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import com.taetae98.diary.data.room.BaseDao
-import com.taetae98.diary.domain.model.ExceptionEntity
+import com.taetae98.diary.domain.model.exception.ExceptionEntity
 
 @Dao
 interface ExceptionRoomDataSource : BaseDao<ExceptionEntity> {

@@ -21,6 +21,7 @@ class DatabaseProvidesSingletonModule {
         @ApplicationContext
         context: Context
     ) = Room.databaseBuilder(context, DiaryDatabase::class.java, BuildConfig.DIARY_DATABASE_NAME)
+        .fallbackToDestructiveMigration()
         .build()
 
     @Provides
@@ -29,7 +30,7 @@ class DatabaseProvidesSingletonModule {
         @ApplicationContext
         context: Context
     ) = Room.databaseBuilder(context, ExceptionDatabase::class.java, "diary_exception.db")
-        .allowMainThreadQueries()
         .fallbackToDestructiveMigration()
+        .allowMainThreadQueries()
         .build()
 }

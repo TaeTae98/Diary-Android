@@ -1,6 +1,6 @@
 package com.taetae98.diary.feature.developer.event
 
-import com.taetae98.diary.domain.model.ExceptionRelation
+import com.taetae98.diary.domain.model.exception.ExceptionRelation
 
 sealed class ExceptionLogEvent {
     data class DeleteExceptionLog(

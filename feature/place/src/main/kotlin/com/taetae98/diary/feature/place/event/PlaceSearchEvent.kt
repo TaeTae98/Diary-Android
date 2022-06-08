@@ -1,7 +1,7 @@
 package com.taetae98.diary.feature.place.event
 
 import android.os.Parcelable
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import kotlinx.parcelize.Parcelize
 
 sealed class PlaceSearchEvent {

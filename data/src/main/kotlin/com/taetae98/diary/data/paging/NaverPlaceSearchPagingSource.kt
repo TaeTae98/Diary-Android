@@ -3,7 +3,7 @@ package com.taetae98.diary.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.taetae98.diary.data.datasource.NaverPlaceSearchRetrofitDataSource
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 
 class NaverPlaceSearchPagingSource(
     private val query: String,

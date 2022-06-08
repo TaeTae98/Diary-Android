@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.taetae98.diary.domain.model.PlaceRelation
+import com.taetae98.diary.domain.model.place.PlaceRelation
 import com.taetae98.diary.domain.usecase.place.DeletePlaceByIdUseCase
 import com.taetae98.diary.domain.usecase.place.PagingPlaceByTagIdsUseCase
 import com.taetae98.diary.domain.usecase.place.RestorePlaceRelationUseCase

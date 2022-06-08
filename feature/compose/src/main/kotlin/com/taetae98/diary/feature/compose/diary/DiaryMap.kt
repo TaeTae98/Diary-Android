@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.feature.common.Permission
 import com.taetae98.diary.feature.common.Setting
 import com.taetae98.diary.feature.common.util.isFalse

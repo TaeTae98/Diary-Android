@@ -3,7 +3,7 @@ package com.taetae98.diary.feature.memo.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.domain.model.memo.MemoEntity
 import com.taetae98.diary.domain.model.memo.MemoRelation
 import com.taetae98.diary.domain.usecase.memo.FindMemoRelationByIdUseCase

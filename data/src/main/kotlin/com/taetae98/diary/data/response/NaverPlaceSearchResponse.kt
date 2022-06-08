@@ -2,7 +2,7 @@ package com.taetae98.diary.data.response
 
 import com.taetae98.diary.data.converter.GeoTrans
 import com.taetae98.diary.data.converter.GeoTransPoint
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import kotlinx.serialization.Serializable
 
 @Serializable

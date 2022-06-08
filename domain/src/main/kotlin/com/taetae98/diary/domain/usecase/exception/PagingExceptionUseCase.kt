@@ -1,7 +1,7 @@
 package com.taetae98.diary.domain.usecase.exception
 
 import androidx.paging.PagingData
-import com.taetae98.diary.domain.model.ExceptionEntity
+import com.taetae98.diary.domain.model.exception.ExceptionEntity
 import com.taetae98.diary.domain.repository.ExceptionRepository
 import com.taetae98.diary.domain.usecase.UseCase
 import javax.inject.Inject

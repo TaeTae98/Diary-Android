@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
 @Module
@@ -20,7 +20,7 @@ class RetrofitDataSourceProvidesViewModelModule {
         return Retrofit.Builder()
             .baseUrl("https://openapi.naver.com/v1/search/")
             .addConverterFactory(
-                json.asConverterFactory(MediaType.get("application/json"))
+                json.asConverterFactory("application/json".toMediaType())
             )
             .build()
             .create(NaverPlaceSearchRetrofitDataSource::class.java)

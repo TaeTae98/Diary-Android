@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.taetae98.diary.domain.model.ExceptionRelation
+import com.taetae98.diary.domain.model.exception.ExceptionRelation
 import com.taetae98.diary.domain.usecase.exception.DeleteAllExceptionUseCase
 import com.taetae98.diary.domain.usecase.exception.DeleteExceptionByIdUseCase
 import com.taetae98.diary.domain.usecase.exception.PagingExceptionUseCase

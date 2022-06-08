@@ -7,6 +7,7 @@ plugins {
     id("room-config")
     id("retrofit-config")
     id("serialization-config")
+    id("security-config")
 }
 
 android {

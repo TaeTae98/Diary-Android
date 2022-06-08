@@ -1,6 +1,6 @@
 package com.taetae98.diary.domain.usecase.exception
 
-import com.taetae98.diary.domain.model.ExceptionRelation
+import com.taetae98.diary.domain.model.exception.ExceptionRelation
 import com.taetae98.diary.domain.repository.ExceptionRepository
 import com.taetae98.diary.domain.usecase.SuspendUseCase
 import javax.inject.Inject

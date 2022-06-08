@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
-import com.taetae98.diary.domain.model.PlaceEntity
+import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.common.util.getResult
@@ -55,7 +55,6 @@ import com.taetae98.diary.feature.compose.sideeffct.OnLifecycle
 import com.taetae98.diary.feature.memo.event.MemoDetailEvent
 import com.taetae98.diary.feature.memo.viewmodel.MemoDetailViewModel
 import com.taetae98.diary.feature.resource.StringResource
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
@@ -301,10 +300,10 @@ private fun PlaceAddButton(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    // TODO default padding remove
     Button(
         modifier = modifier
             .fillMaxWidth()
+            .heightIn(min = 48.dp)
             .padding(0.dp),
         onClick = {
             navController.navigate(DeepLink.Memo.getPlaceSelectAction())

@@ -1,6 +1,7 @@
 package com.taetae98.diary.data.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 
@@ -14,4 +15,7 @@ interface BaseDao<T: Any> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg entity: T)
+
+    @Delete
+    suspend fun delete(entity: T): Int
 }
