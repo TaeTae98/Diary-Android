@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-data class FileEntity(
+data class FileEntity(a
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val folderId: Long? = null,
