@@ -1,10 +1,13 @@
 package com.taetae98.diary.domain.model.file
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     indices = [
         Index(value = ["path"], unique = true)
@@ -29,7 +32,7 @@ data class FileEntity(
     val path: String = "",
     val state: State = State.WRITING,
     val updatedAt: Long = System.currentTimeMillis()
-) {
+) : Parcelable {
     enum class State {
         WRITING, NORMAL
     }
@@ -37,7 +40,7 @@ data class FileEntity(
     fun isImage() = path
         .substringAfterLast(".")
         .lowercase()
-        .matches(Regex("(jpg)|(png)|(gif)"))
+        .matches(Regex("(jpg)|(jpeg)|(png)|(gif)"))
 
     fun isVideo() = path
         .substringAfterLast(".")

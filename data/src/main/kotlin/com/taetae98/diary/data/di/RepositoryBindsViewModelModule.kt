@@ -2,12 +2,14 @@ package com.taetae98.diary.data.di
 
 import com.taetae98.diary.data.repository.DeveloperRepositoryImpl
 import com.taetae98.diary.data.repository.FileRepositoryImpl
+import com.taetae98.diary.data.repository.FolderRepositoryImpl
 import com.taetae98.diary.data.repository.MemoPlaceRepositoryImpl
 import com.taetae98.diary.data.repository.MemoRepositoryImpl
 import com.taetae98.diary.data.repository.PlaceRepositoryImpl
 import com.taetae98.diary.data.repository.PlaceSearchRepositoryImpl
 import com.taetae98.diary.domain.repository.DeveloperRepository
 import com.taetae98.diary.domain.repository.FileRepository
+import com.taetae98.diary.domain.repository.FolderRepository
 import com.taetae98.diary.domain.repository.MemoPlaceRepository
 import com.taetae98.diary.domain.repository.MemoRepository
 import com.taetae98.diary.domain.repository.PlaceRepository
@@ -44,4 +46,8 @@ abstract class RepositoryBindsViewModelModule {
     @Binds
     @ViewModelScoped
     abstract fun bindsFileRepository(repository: FileRepositoryImpl): FileRepository
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindsFolderRepository(repository: FolderRepositoryImpl): FolderRepository
 }

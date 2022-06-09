@@ -170,8 +170,8 @@ private fun MemoLayout(
 ) {
     Card(modifier = modifier) {
         Column {
-            TitleInput(modifier = Modifier.fillMaxWidth())
-            DescriptionInput(modifier = Modifier.fillMaxWidth())
+            TitleInput()
+            DescriptionInput()
         }
     }
 }

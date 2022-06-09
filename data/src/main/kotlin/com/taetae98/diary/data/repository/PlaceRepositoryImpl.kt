@@ -14,8 +14,9 @@ class PlaceRepositoryImpl @Inject constructor(
     override suspend fun findById(id: Long) = placeRoomDataSource.findById(id) ?: PlaceEntity()
     override suspend fun findRelationById(id: Long) = placeRoomDataSource.findRelationById(id) ?: PlaceRelation()
 
-    override suspend fun insert(entity: PlaceEntity) = placeRoomDataSource.insert(entity)
+    override suspend fun update(entity: PlaceEntity) = placeRoomDataSource.update(entity)
 
+    override suspend fun insert(entity: PlaceEntity) = placeRoomDataSource.insert(entity)
     override suspend fun insert(entity: Collection<PlaceEntity>) = placeRoomDataSource.insert(entity)
 
     override suspend fun deleteById(id: Long) = placeRoomDataSource.deleteById(id)

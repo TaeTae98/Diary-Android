@@ -12,6 +12,8 @@ interface PlaceRepository {
     suspend fun insert(entity: PlaceEntity): Long
     suspend fun insert(entity: Collection<PlaceEntity>): LongArray
 
+    suspend fun update(entity: PlaceEntity): Int
+
     suspend fun deleteById(id: Long): Int
 
     fun pagingByTagIds(ids: Collection<Long>): Flow<PagingData<PlaceEntity>>

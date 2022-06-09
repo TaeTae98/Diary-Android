@@ -33,4 +33,10 @@ class RoomDataSourceProvidesViewModelModule {
     fun providesFileRoomDataSource(
         diaryDatabase: DiaryDatabase
     ) = diaryDatabase.fileRoomDataSource()
+
+    @Provides
+    @ViewModelScoped
+    fun providesFolderRoomDataSource(
+        diaryDatabase: DiaryDatabase
+    ) = diaryDatabase.folderRoomDataSource()
 }

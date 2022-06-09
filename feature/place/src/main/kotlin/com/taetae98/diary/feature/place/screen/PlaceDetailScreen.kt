@@ -2,7 +2,6 @@ package com.taetae98.diary.feature.place.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -174,7 +173,6 @@ private fun TitleInput(
 
     ClearTextField(
         modifier = modifier
-            .fillMaxWidth()
             .focusRequester(focusRequester),
         value = placeDetailViewModel.title.collectAsState().value,
         onValueChange = placeDetailViewModel::setTitle,
@@ -207,7 +205,7 @@ private fun AddressInput(
     placeDetailViewModel: PlaceDetailViewModel = hiltViewModel()
 ) {
     ClearTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = placeDetailViewModel.address.collectAsState().value,
         onValueChange = placeDetailViewModel::setAddress,
         label = stringResource(id = StringResource.address),
@@ -222,7 +220,7 @@ private fun LinkInput(
     placeDetailViewModel: PlaceDetailViewModel = hiltViewModel()
 ) {
     ClearTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = placeDetailViewModel.link.collectAsState().value,
         onValueChange = placeDetailViewModel::setLink,
         label = stringResource(id = StringResource.link),
@@ -237,7 +235,7 @@ private fun DescriptionInput(
     placeDetailViewModel: PlaceDetailViewModel = hiltViewModel()
 ) {
     ClearTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = placeDetailViewModel.description.collectAsState().value,
         onValueChange = placeDetailViewModel::setDescription,
         label = stringResource(id = StringResource.description)
@@ -282,10 +280,10 @@ private fun FAB(
     FloatingActionButton(
         modifier = modifier,
         onClick = {
-            placeDetailViewModel.edit()
+            placeDetailViewModel.execute()
         }
     ) {
-        if (placeDetailViewModel.isEditMode()) {
+        if (placeDetailViewModel.isUpdateMode()) {
             Icon(
                 imageVector = Icons.Rounded.Check,
                 contentDescription = stringResource(id = StringResource.edit)

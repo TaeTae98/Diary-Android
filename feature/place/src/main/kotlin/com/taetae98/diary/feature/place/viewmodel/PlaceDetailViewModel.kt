@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.taetae98.diary.domain.model.place.PlaceEntity
 import com.taetae98.diary.domain.usecase.place.FindPlaceByIdUseCase
 import com.taetae98.diary.domain.usecase.place.InsertPlaceUseCase
+import com.taetae98.diary.domain.usecase.place.UpdatePlaceUseCase
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.common.util.isFalse
 import com.taetae98.diary.feature.common.util.isNullOrFalse
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 class PlaceDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val insertPlaceUseCase: InsertPlaceUseCase,
-    private val findPlaceByIdUseCase: FindPlaceByIdUseCase
+    private val findPlaceByIdUseCase: FindPlaceByIdUseCase,
+    private val updatePlaceUseCase: UpdatePlaceUseCase,
 ) : ViewModel() {
     private val id = MutableStateFlow(savedStateHandle[Parameter.ID] ?: 0L)
     private val latitude = MutableStateFlow(savedStateHandle[Parameter.LATITUDE] ?: 0.0)
@@ -38,7 +40,7 @@ class PlaceDetailViewModel @Inject constructor(
     val pin = MutableStateFlow<PlaceEntity?>(savedStateHandle[Parameter.PLACE])
 
     init {
-        if (savedStateHandle.get<Boolean>(Parameter.IS_INITIALIZED).isNullOrFalse()) {
+        if (savedStateHandle.get<Boolean>(Parameter.IS_INITIALIZED).isNullOrFalse() && id.value != 0L) {
             viewModelScope.launch {
                 findPlaceByIdUseCase(FindPlaceByIdUseCase.Id(id.value)).onSuccess {
                     update(it)
@@ -50,7 +52,7 @@ class PlaceDetailViewModel @Inject constructor(
         }
     }
 
-    fun isEditMode(): Boolean {
+    fun isUpdateMode(): Boolean {
         return id.value != 0L
     }
 
@@ -133,7 +135,7 @@ class PlaceDetailViewModel @Inject constructor(
         setPin(entity)
     }
 
-    fun edit() {
+    fun execute() {
         if (title.value.isEmpty()) {
             viewModelScope.launch { event.emit(PlaceDetailEvent.NoTitle) }
             return
@@ -144,18 +146,13 @@ class PlaceDetailViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            val entity = PlaceEntity(
-                id = id.value,
-                title = title.value,
-                address = address.value,
-                link = link.value.takeIf { it.isNotBlank() },
-                description = description.value,
-                password = password.value.takeIf { hasPassword.value },
-                latitude = latitude.value,
-                longitude = longitude.value
-            )
+        if (isUpdateMode()) update()
+        else insert()
+    }
 
+    private fun insert() {
+        val entity = buildEntity()
+        viewModelScope.launch {
             insertPlaceUseCase(
                 entity
             ).onSuccess {
@@ -165,6 +162,30 @@ class PlaceDetailViewModel @Inject constructor(
             }
         }
     }
+
+    private fun update() {
+        val entity = buildEntity()
+        viewModelScope.launch {
+            updatePlaceUseCase(
+                entity
+            ).onSuccess {
+                event.emit(PlaceDetailEvent.Edit(entity))
+            }.onFailure {
+                event.emit(PlaceDetailEvent.Error(it))
+            }
+        }
+    }
+
+    private fun buildEntity() = PlaceEntity(
+        id = id.value,
+        title = title.value,
+        address = address.value,
+        link = link.value.takeIf { it.isNotBlank() },
+        description = description.value,
+        password = password.value.takeIf { hasPassword.value },
+        latitude = latitude.value,
+        longitude = longitude.value
+    )
 
     private fun hasPlace() = latitude.value != 0.0 && longitude.value != 0.0
 }

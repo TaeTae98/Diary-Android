@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FileRepository {
     suspend fun insert(entity: FileEntity, uri: Uri): Long
-    fun pagingByTagIds(ids: Collection<Long>): Flow<PagingData<FileEntity>>
+    fun pagingByFolderIdAndTagIds(folderId: Long?, tagIds: Collection<Long>): Flow<PagingData<FileEntity>>
 }

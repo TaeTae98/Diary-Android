@@ -8,6 +8,9 @@ import com.taetae98.diary.domain.model.file.FileEntity
 
 @Dao
 interface FileRoomDataSource : BaseDao<FileEntity> {
-    @Query("SELECT * FROM FileEntity ORDER BY updatedAt DESC")
-    fun findAll(): PagingSource<Int, FileEntity>
+    @Query("SELECT * FROM FileEntity WHERE folderId = :folderId ORDER BY title, updatedAt DESC")
+    fun pagingByFolderId(folderId: Long): PagingSource<Int, FileEntity>
+
+    @Query("SELECT * FROM FileEntity WHERE folderId IS NULL ORDER BY title, updatedAt DESC")
+    fun pagingByFolderIdIsNull(): PagingSource<Int, FileEntity>
 }

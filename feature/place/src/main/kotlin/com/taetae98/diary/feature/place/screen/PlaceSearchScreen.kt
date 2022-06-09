@@ -81,8 +81,7 @@ private fun PlaceSearchTopBar(
         title = {
             ClearTextField(
                 modifier = Modifier
-                    .focusRequester(focusRequester)
-                    .fillMaxWidth(),
+                    .focusRequester(focusRequester),
                 value = placeSearchViewModel.input.collectAsState().value,
                 onValueChange = placeSearchViewModel::setInput,
                 singleLine = true,

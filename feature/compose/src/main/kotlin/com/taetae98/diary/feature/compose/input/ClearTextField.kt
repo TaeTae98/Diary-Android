@@ -1,5 +1,6 @@
 package com.taetae98.diary.feature.compose.input
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -34,6 +35,7 @@ fun ClearTextField(
 
     DiaryTextField(
         modifier = modifier
+            .fillMaxWidth()
             .focusRequester(focusRequester),
         value = value,
         onValueChange = onValueChange,

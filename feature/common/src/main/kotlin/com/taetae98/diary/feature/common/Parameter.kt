@@ -3,11 +3,10 @@ package com.taetae98.diary.feature.common
 object Parameter {
     const val IS_INITIALIZED = "isInitialized"
 
-    const val INPUT = "input"
     const val ID = "id"
+    const val PARENT_ID = "parentId"
 
-    const val PLACE = "place"
-
+    const val INPUT = "input"
     const val TITLE = "title"
     const val ADDRESS = "address"
     const val LINK = "link"
@@ -16,4 +15,5 @@ object Parameter {
     const val PASSWORD = "password"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
+    const val PLACE = "place"
 }

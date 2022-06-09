@@ -8,12 +8,19 @@ import com.taetae98.diary.domain.usecase.ParamUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class PagingFileByTagIdsUseCase @Inject constructor(
+class PagingFileByFolderIdAndTagIdsUseCase @Inject constructor(
     exceptionRepository: ExceptionRepository,
     private val fileRepository: FileRepository
-) : ParamUseCase<PagingFileByTagIdsUseCase.Ids, Flow<PagingData<FileEntity>>>(exceptionRepository) {
-    @JvmInline
-    value class Ids(val ids: Collection<Long>)
+) : ParamUseCase<PagingFileByFolderIdAndTagIdsUseCase.Parameter, Flow<PagingData<FileEntity>>>(
+    exceptionRepository
+) {
+    data class Parameter(
+        val folderId: Long?,
+        val tagIds: Collection<Long>
+    )
 
-    override fun execute(parameter: Ids) = fileRepository.pagingByTagIds(parameter.ids)
+    override fun execute(parameter: Parameter) = fileRepository.pagingByFolderIdAndTagIds(
+        folderId = parameter.folderId,
+        tagIds = parameter.tagIds
+    )
 }

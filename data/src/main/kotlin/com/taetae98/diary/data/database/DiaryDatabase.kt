@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.taetae98.diary.data.converter.UriConverter
 import com.taetae98.diary.data.datasource.FileRoomDataSource
+import com.taetae98.diary.data.datasource.FolderRoomDataSource
 import com.taetae98.diary.data.datasource.MemoPlaceRoomDataSource
 import com.taetae98.diary.data.datasource.MemoRoomDataSource
 import com.taetae98.diary.data.datasource.PlaceRoomDataSource
@@ -33,4 +34,5 @@ abstract class DiaryDatabase : RoomDatabase() {
     abstract fun placeRoomDataSource(): PlaceRoomDataSource
 
     abstract fun fileRoomDataSource(): FileRoomDataSource
+    abstract fun folderRoomDataSource(): FolderRoomDataSource
 }

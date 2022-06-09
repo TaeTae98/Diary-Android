@@ -35,12 +35,13 @@ class FileRepositoryImpl @Inject constructor(
         }.getOrThrow()
     }
 
-    override fun pagingByTagIds(ids: Collection<Long>) = Pager(
+    override fun pagingByFolderIdAndTagIds(folderId: Long?, tagIds: Collection<Long>) = Pager(
         config = PagingConfig(
             pageSize = 20,
             maxSize = 300
         )
     ) {
-        fileRoomDataSource.findAll()
+        if (folderId == null) fileRoomDataSource.pagingByFolderIdIsNull()
+        else fileRoomDataSource.pagingByFolderId(folderId)
     }.flow
 }
