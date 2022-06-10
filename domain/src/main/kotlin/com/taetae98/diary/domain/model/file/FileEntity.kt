@@ -5,6 +5,10 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.taetae98.diary.feature.common.util.isAudio
+import com.taetae98.diary.feature.common.util.isImage
+import com.taetae98.diary.feature.common.util.isVideo
+import java.io.File
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -33,6 +37,17 @@ data class  FileEntity(
     val state: State = State.WRITING,
     val updatedAt: Long = System.currentTimeMillis()
 ) : Parcelable {
+    fun getName() = "$title.${getExtension()}"
+
+    private fun getExtension() = File(path).extension
+
+    fun getMimeType() = when {
+        path.isVideo() -> "video/*"
+        path.isImage() -> "image/*"
+        path.isAudio() -> "audio/*"
+        else -> "application/${getExtension()}"
+    }
+
     enum class State {
         WRITING, NORMAL
     }

@@ -19,4 +19,8 @@ object Parameter {
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val PLACE = "place"
+
+    const val VIEW_MODE = "viewMode"
+    const val SELECTED_FOLDER = "selectedFolder"
+    const val SELECTED_FILE = "selectedFile"
 }

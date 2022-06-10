@@ -1,6 +1,6 @@
 package com.taetae98.diary.domain.usecase.setting
 
-import com.taetae98.diary.domain.call.RunOnUnlockCall
+import com.taetae98.diary.domain.service.RunOnUnlockService
 import com.taetae98.diary.domain.repository.ExceptionRepository
 import com.taetae98.diary.domain.repository.SettingRepository
 import com.taetae98.diary.domain.usecase.SuspendParamUseCase
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.first
 class SetRunOnUnlockNotificationVisibleUseCase @Inject constructor(
     exceptionRepository: ExceptionRepository,
     private val settingRepository: SettingRepository,
-    private val runOnUnlockCall: RunOnUnlockCall,
+    private val runOnUnlockService: RunOnUnlockService,
 ) : SuspendParamUseCase<SetRunOnUnlockNotificationVisibleUseCase.IsVisible, Unit>(
     exceptionRepository
 ) {
@@ -20,9 +20,9 @@ class SetRunOnUnlockNotificationVisibleUseCase @Inject constructor(
     override suspend fun execute(parameter: IsVisible) {
         settingRepository.setRunOnUnlockNotificationVisible(parameter.isVisible)
         if (settingRepository.isRunOnUnlockEnable().first()) {
-            runOnUnlockCall.startService()
+            runOnUnlockService.startService()
         } else {
-            runOnUnlockCall.stopService()
+            runOnUnlockService.stopService()
         }
     }
 }

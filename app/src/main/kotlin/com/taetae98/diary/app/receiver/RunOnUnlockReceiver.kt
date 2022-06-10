@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.TaskStackBuilder
-import com.taetae98.diary.app.service.RunOnUnlockService
+import com.taetae98.diary.app.service.RunOnUnlockAndroidService
 import com.taetae98.diary.feature.common.DeepLink
 
 class RunOnUnlockReceiver : BroadcastReceiver() {
@@ -18,7 +18,7 @@ class RunOnUnlockReceiver : BroadcastReceiver() {
     }
 
     private fun onInit(context: Context) {
-        Intent(context, RunOnUnlockService::class.java).also {
+        Intent(context, RunOnUnlockAndroidService::class.java).also {
             context.startService(it)
         }
     }

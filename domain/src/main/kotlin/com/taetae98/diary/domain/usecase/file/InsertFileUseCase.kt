@@ -10,13 +10,13 @@ import javax.inject.Inject
 class InsertFileUseCase @Inject constructor(
     exceptionRepository: ExceptionRepository,
     private val fileRepository: FileRepository
-) : SuspendParamUseCase<InsertFileUseCase.Params, Long>(exceptionRepository) {
-    data class Params(
+) : SuspendParamUseCase<InsertFileUseCase.Parameter, Long>(exceptionRepository) {
+    data class Parameter(
         val entity: FileEntity,
         val uri: Uri
     )
 
-    override suspend fun execute(parameter: Params) = fileRepository.insert(
+    override suspend fun execute(parameter: Parameter) = fileRepository.insert(
         entity = parameter.entity,
         uri = parameter.uri
     )

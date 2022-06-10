@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import com.taetae98.diary.feature.compose.diary.DiaryTextField
 import com.taetae98.diary.feature.resource.StringResource
 
@@ -23,6 +25,33 @@ fun ClearTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
+    label: String? = null,
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    singleLine: Boolean = false,
+    maxLines: Int = Int.MAX_VALUE,
+    colors: TextFieldColors = DiaryTextField.colors()
+) {
+    ClearTextField(
+        modifier = modifier,
+        value = TextFieldValue(text = value, selection = TextRange(value.length)),
+        onValueChange = { onValueChange(it.text) },
+        label = label,
+        isError = isError,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = singleLine,
+        maxLines = maxLines,
+        colors = colors
+    )
+}
+
+@Composable
+fun ClearTextField(
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     label: String? = null,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -44,13 +73,13 @@ fun ClearTextField(
         } else {
             { Text(text = label) }
         },
-        trailingIcon = if (value.isEmpty()) {
+        trailingIcon = if (value.text.isEmpty()) {
             null
         } else {
             {
                 IconButton(
                     onClick = {
-                        onValueChange("")
+                        onValueChange(TextFieldValue(text = ""))
                         focusRequester.requestFocus()
                     }
                 ) {

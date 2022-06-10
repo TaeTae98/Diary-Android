@@ -14,12 +14,21 @@ interface FolderRoomDataSource : BaseDao<FolderEntity> {
     @Query("SELECT * FROM FolderEntity WHERE id = :id")
     suspend fun findById(id: Long): FolderEntity?
 
+    @Query("SELECT * FROM FolderEntity WHERE id IN (:ids)")
+    suspend fun findByIds(ids: Collection<Long>): List<FolderEntity>
+
+    @Query("SELECT * FROM FolderEntity WHERE parentId = :parentId")
+    suspend fun findByParentId(parentId: Long?): List<FolderEntity>
+
     @Transaction
     @Query("SELECT * FROM FolderEntity WHERE id = :id")
     suspend fun findRelationById(id: Long): FolderRelation?
 
     @Query("SELECT * FROM FolderEntity WHERE id = :id")
     fun findFlowById(id: Long): Flow<FolderEntity>
+
+    @Query("UPDATE FolderEntity SET parentId = :parentId WHERE id in (:ids)")
+    suspend fun updateParentIdByIds(parentId: Long?, ids: Collection<Long>): Int
 
     @Query("DELETE FROM FolderEntity WHERE id = :id")
     suspend fun deleteById(id: Long): Int

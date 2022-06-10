@@ -4,12 +4,14 @@ import com.taetae98.diary.domain.model.file.FileEntity
 
 data class FilePreviewUiState(
     val entity: FileEntity,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
+    val onLongClick: () -> Unit
 ) {
     companion object {
-        fun from(entity: FileEntity, onClick: () -> Unit) = FilePreviewUiState(
+        fun from(entity: FileEntity, onClick: () -> Unit, onLongClick: () -> Unit) = FilePreviewUiState(
             entity = entity,
-            onClick = onClick
+            onClick = onClick,
+            onLongClick = onLongClick
         )
     }
 }

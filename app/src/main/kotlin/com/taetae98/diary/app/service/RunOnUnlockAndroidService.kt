@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RunOnUnlockService : Service() {
+class RunOnUnlockAndroidService : Service() {
     private val runOnUnlockReceiver = RunOnUnlockReceiver()
 
     @Inject

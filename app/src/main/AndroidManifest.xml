@@ -50,7 +50,7 @@
         </activity>
 
         <service
-            android:name=".app.service.RunOnUnlockService" />
+            android:name=".app.service.RunOnUnlockAndroidService" />
 
         <receiver
             android:exported="true"

@@ -1,4 +1,4 @@
-package com.taetae98.diary.domain.usecase.folder
+package com.taetae98.diary.domain.usecase.file
 
 import com.taetae98.diary.domain.model.file.FolderRelation
 import com.taetae98.diary.domain.repository.ExceptionRepository
@@ -7,18 +7,24 @@ import com.taetae98.diary.domain.repository.FolderRepository
 import com.taetae98.diary.domain.usecase.SuspendParamUseCase
 import javax.inject.Inject
 
-class DeleteFolderByIdUseCase @Inject constructor(
+class DeleteFileUseCase @Inject constructor(
     exceptionRepository: ExceptionRepository,
     private val folderRepository: FolderRepository,
     private val fileRepository: FileRepository,
-) : SuspendParamUseCase<DeleteFolderByIdUseCase.Id, FolderRelation>(exceptionRepository) {
-    @JvmInline
-    value class Id(val id: Long)
+) : SuspendParamUseCase<DeleteFileUseCase.Parameter, Unit>(exceptionRepository) {
+    data class Parameter(
+        val folderIds: Collection<Long>,
+        val fileIds: Collection<Long>
+    )
 
-    override suspend fun execute(parameter: Id) = folderRepository.findRelationById(
-        parameter.id
-    ).also {
-        delete(it)
+    override suspend fun execute(parameter: Parameter) {
+        parameter.folderIds.forEach {
+            delete(folderRepository.findRelationById(it))
+        }
+
+        parameter.fileIds.forEach {
+            fileRepository.deleteById(it)
+        }
     }
 
     private suspend fun delete(relation: FolderRelation) {

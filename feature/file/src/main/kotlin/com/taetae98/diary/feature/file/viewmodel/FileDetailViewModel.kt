@@ -103,7 +103,7 @@ class FileDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             insertFileUseCase(
-                InsertFileUseCase.Params(
+                InsertFileUseCase.Parameter(
                     entity = buildEntity(),
                     uri = uri
                 )

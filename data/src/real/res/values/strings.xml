@@ -1,0 +1,3 @@
+<resources>
+    <string name="diary_file_provider">com.taetae98.diary.real.FileProvider</string>
+</resources>
