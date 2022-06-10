@@ -32,6 +32,10 @@ object DiaryTheme {
         @Composable
         get() = Color(0xFF242424)
 
+    val errorColor: Color
+        @Composable
+        get() = Color.Red
+
     val colors: Colors
         @Composable
         get() = if (isSystemInDarkTheme()) {

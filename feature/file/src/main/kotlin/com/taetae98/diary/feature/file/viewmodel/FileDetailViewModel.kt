@@ -129,7 +129,7 @@ class FileDetailViewModel @Inject constructor(
         }
     }
 
-    private fun isTitleEmpty(): Boolean {
+    fun isTitleEmpty(): Boolean {
         return title.value.isEmpty().also {
             if (it) {
                 viewModelScope.launch {

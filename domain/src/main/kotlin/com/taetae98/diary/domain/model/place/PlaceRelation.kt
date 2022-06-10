@@ -14,7 +14,7 @@ data class PlaceRelation(
         parentColumn = "id",
         entityColumn = "id",
         associateBy = Junction(
-            MemoPlaceEntity::class,
+            value = MemoPlaceEntity::class,
             parentColumn = "placeId",
             entityColumn = "memoId"
         )

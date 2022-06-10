@@ -36,24 +36,4 @@ data class  FileEntity(
     enum class State {
         WRITING, NORMAL
     }
-
-    fun isImage() = path
-        .substringAfterLast(".")
-        .lowercase()
-        .matches(Regex("(jpg)|(jpeg)|(png)|(gif)"))
-
-    fun isVideo() = path
-        .substringAfterLast(".")
-        .lowercase()
-        .matches(Regex("(mp4)|(avi)"))
-
-    fun isAudio() = path
-        .substringAfterLast(".")
-        .lowercase()
-        .matches(Regex("(mp3)"))
-
-    fun isApk() = path
-        .substringAfterLast(".")
-        .lowercase()
-        .matches(Regex("(apk)"))
 }

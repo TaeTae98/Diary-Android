@@ -14,6 +14,9 @@ interface FileRoomDataSource : BaseDao<FileEntity> {
     @Query("SELECT * FROM FileEntity WHERE folderId = :folderId ORDER BY title, updatedAt DESC")
     fun pagingByFolderId(folderId: Long): PagingSource<Int, FileEntity>
 
+    @Query("SELECT COUNT(*) >= 1 FROM FileEntity WHERE path = :path")
+    suspend fun containByPath(path: String): Boolean
+
     @Query("SELECT * FROM FileEntity WHERE folderId IS NULL ORDER BY title, updatedAt DESC")
     fun pagingByFolderIdIsNull(): PagingSource<Int, FileEntity>
 }

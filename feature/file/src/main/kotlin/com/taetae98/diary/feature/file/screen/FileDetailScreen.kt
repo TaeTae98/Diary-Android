@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.taetae98.diary.feature.common.util.isFalse
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
 import com.taetae98.diary.feature.compose.input.ClearTextField
@@ -198,7 +199,9 @@ private fun FAB(
             if (fileDetailViewModel.isUpdateMode()) {
                 fileDetailViewModel.update()
             } else {
-                launcher.launch("*/*")
+                if (fileDetailViewModel.isTitleEmpty().isFalse()) {
+                    launcher.launch("*/*")
+                }
             }
         }
     ) {

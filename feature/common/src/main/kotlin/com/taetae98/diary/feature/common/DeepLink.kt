@@ -49,6 +49,7 @@ object DeepLink {
     object Developer {
         const val DEVELOPER_URL = "$APP_URL/developer"
         const val EXCEPTION_LOG_URL = "$DEVELOPER_URL/exception/log"
+        const val FILE_EXPLORER_URL = "$DEVELOPER_URL/file/explorer"
     }
 
     object More {

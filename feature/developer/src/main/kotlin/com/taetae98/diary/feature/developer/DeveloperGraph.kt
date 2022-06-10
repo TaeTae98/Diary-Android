@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.developer.screen.DeveloperScreen
 import com.taetae98.diary.feature.developer.screen.ExceptionLogScreen
+import com.taetae98.diary.feature.developer.screen.FileExplorerScreen
 
 object DeveloperGraph {
     const val ROUTE = "DeveloperGraph"
@@ -33,6 +34,12 @@ fun NavGraphBuilder.developerGraph(
             route = DeepLink.Developer.EXCEPTION_LOG_URL
         ) {
             ExceptionLogScreen(navController = navController)
+        }
+
+        composable(
+            route = DeepLink.Developer.FILE_EXPLORER_URL
+        ) {
+            FileExplorerScreen(navController = navController)
         }
     }
 }

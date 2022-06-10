@@ -9,6 +9,7 @@ import androidx.security.crypto.MasterKeys
 import com.taetae98.diary.feature.common.Const
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import java.io.FileFilter
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
@@ -24,6 +25,12 @@ class FileManager @Inject constructor(
     @ApplicationContext
     private val context: Context
 ) {
+    fun getFileList() = File(context.getFileDirectory()).listFiles(
+        FileFilter {
+            it.isFile
+        }
+    )?.toList() ?: emptyList()
+
     suspend fun write(uri: Uri) = context.buildFile(uri).also { file ->
         file.write(uri)
     }
@@ -32,8 +39,10 @@ class FileManager @Inject constructor(
         file.securityWrite(uri)
     }
 
+    private fun Context.getFileDirectory() = "${filesDir.path}${File.separator}fileEntity"
+
     private suspend fun Context.buildFile(uri: Uri) = File(
-        "${filesDir.path}${File.separator}fileEntity",
+        getFileDirectory(),
         "${UUID.randomUUID()}.${getDisplayName(uri).substringAfterLast(".")}"
     ).apply {
         parentFile?.mkdirs()
@@ -97,8 +106,8 @@ class FileManager @Inject constructor(
     }
 
     companion object {
-        private const val STREAM_BUFFER_SIZE = 10 * Const.MB
-        private const val BUFFER_SIZE = 2 * Const.MB
+        private const val STREAM_BUFFER_SIZE = (10 * Const.MB).toInt()
+        private const val BUFFER_SIZE = (2 * Const.MB).toInt()
 
         private val KEY_ALIAS = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     }

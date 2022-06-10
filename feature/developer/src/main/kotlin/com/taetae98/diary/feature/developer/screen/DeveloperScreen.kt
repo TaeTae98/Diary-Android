@@ -151,7 +151,7 @@ private fun FileExplorer(
         icon = Icons.Rounded.SdCard,
         title = stringResource(id = R.string.file_explorer)
     ) {
-
+        navController.navigate(DeepLink.Developer.FILE_EXPLORER_URL)
     }
 }
 
