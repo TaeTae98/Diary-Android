@@ -2,6 +2,7 @@ package com.taetae98.diary.feature.memo.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -162,7 +163,12 @@ private fun Content(
 private fun Loading(
     modifier: Modifier = Modifier
 ) {
-    CircularProgressIndicator(modifier = modifier)
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
@@ -179,7 +185,9 @@ private fun UiState(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                modifier = Modifier.weight(1F).padding(start = 8.dp),
+                modifier = Modifier
+                    .weight(1F)
+                    .padding(start = 8.dp),
                 text = entity.title
             )
             IconButton(onClick = { setMapVisible(isMapVisible.not()) }) {

@@ -119,10 +119,4 @@ class FolderDetailViewModel @Inject constructor(
     )
 
     fun isUpdateMode() = id.value != 0L
-
-    fun clear() {
-        setTitle("")
-        setPassword("")
-        setHasPassword(false)
-    }
 }

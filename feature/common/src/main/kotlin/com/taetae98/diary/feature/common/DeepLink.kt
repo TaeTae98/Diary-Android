@@ -29,9 +29,13 @@ object DeepLink {
     }
 
     object File {
-        private const val FOLDER_URL = "$APP_URL/folder"
         const val FILE_URL = "$APP_URL/file"
+        private const val FILE_DETAIL_URL_PREFIX = "$FILE_URL/detail"
+        const val FILE_DETAIL_URL = "$FILE_DETAIL_URL_PREFIX/{${Parameter.ID}}?${Parameter.FOLDER_ID}={${Parameter.FOLDER_ID}}"
 
+        fun getFileDetailAction(id: Long = 0L, parentId: Long? = null) = "$FILE_DETAIL_URL_PREFIX/$id?${Parameter.FOLDER_ID}=${parentId ?: 0L}"
+
+        private const val FOLDER_URL = "$APP_URL/folder"
         private const val FOLDER_DETAIL_URL_PREFIX = "$FOLDER_URL/detail"
         const val FOLDER_DETAIL_URL = "$FOLDER_DETAIL_URL_PREFIX/{${Parameter.ID}}?${Parameter.PARENT_ID}={${Parameter.PARENT_ID}}"
 

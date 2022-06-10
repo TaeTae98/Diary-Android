@@ -15,6 +15,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -31,7 +32,6 @@ import com.taetae98.diary.feature.compose.input.PasswordInputCompose
 import com.taetae98.diary.feature.file.event.FolderDetailEvent
 import com.taetae98.diary.feature.file.viewmodel.FolderDetailViewModel
 import com.taetae98.diary.feature.resource.StringResource
-import kotlinx.coroutines.launch
 
 @Composable
 fun FolderDetailScreen(
@@ -68,7 +68,7 @@ private fun CollectEvent(
     navController: NavController,
     folderDetailViewModel: FolderDetailViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
+    LocalContext.current
     LaunchedEffect(Unit) {
         folderDetailViewModel.event.collect {
             when (it) {
@@ -76,18 +76,7 @@ private fun CollectEvent(
                     message = "Error ${it.throwable.message}",
                 )
                 FolderDetailEvent.Edit -> {
-                    if (folderDetailViewModel.isUpdateMode()) {
-                        navController.navigateUp()
-                    } else {
-                        launch {
-                            snackbarHostState.currentSnackbarData?.dismiss()
-                            snackbarHostState.showSnackbar(
-                                context.getString(StringResource.add)
-                            )
-                        }
-
-                        folderDetailViewModel.clear()
-                    }
+                    navController.navigateUp()
                 }
                 else -> Unit
             }
@@ -114,12 +103,20 @@ private fun FolderLayout(
     folderDetailViewModel: FolderDetailViewModel = hiltViewModel()
 ) {
     val focusRequester = remember { FocusRequester() }
+    val (isError, setError) = remember { mutableStateOf(false) }
+
     Card(modifier = modifier) {
         ClearTextField(
             modifier = Modifier.focusRequester(focusRequester),
             value = folderDetailViewModel.title.collectAsState().value,
-            onValueChange = folderDetailViewModel::setTitle,
-            label = stringResource(id = StringResource.title)
+            onValueChange = {
+                setError(false)
+                folderDetailViewModel.setTitle(it)
+            },
+            label = stringResource(id = StringResource.title),
+            isError = isError,
+            singleLine = true,
+            maxLines = 1
         )
     }
 
@@ -127,6 +124,7 @@ private fun FolderLayout(
         focusRequester.requestFocus()
         folderDetailViewModel.event.collect {
             if (it == FolderDetailEvent.NoTitle) {
+                setError(true)
                 focusRequester.requestFocus()
             }
         }

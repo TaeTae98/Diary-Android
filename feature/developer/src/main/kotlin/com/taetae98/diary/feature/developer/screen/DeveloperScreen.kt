@@ -13,12 +13,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.SdCard
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +34,6 @@ import com.taetae98.diary.feature.developer.R
 import com.taetae98.diary.feature.developer.event.DeveloperEvent
 import com.taetae98.diary.feature.developer.viewmodel.DeveloperViewModel
 import com.taetae98.diary.feature.resource.StringResource
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun DeveloperScreen(
@@ -55,6 +56,7 @@ fun DeveloperScreen(
             DeveloperModeEnable()
             DeveloperModePassword()
             ExceptionLog(navController = navController)
+            FileExplorer(navController = navController)
         }
     }
 
@@ -130,6 +132,36 @@ private fun ExceptionLog(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    DeveloperMenu(
+        modifier = modifier,
+        icon = Icons.Rounded.BugReport,
+        title = stringResource(id = R.string.exception_log)
+    ) {
+        navController.navigate(DeepLink.Developer.EXCEPTION_LOG_URL)
+    }
+}
+
+@Composable
+private fun FileExplorer(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
+    DeveloperMenu(
+        modifier = modifier,
+        icon = Icons.Rounded.SdCard,
+        title = stringResource(id = R.string.file_explorer)
+    ) {
+
+    }
+}
+
+@Composable
+private fun DeveloperMenu(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    title: String,
+    onClick: () -> Unit
+) {
     Card(
         modifier = modifier
     ) {
@@ -139,21 +171,19 @@ private fun ExceptionLog(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Rounded.BugReport,
-                contentDescription = stringResource(id = R.string.exception_log)
+                imageVector = icon,
+                contentDescription = title
             )
             Text(
                 modifier = Modifier.weight(1F),
-                text = stringResource(id = R.string.exception_log)
+                text = title
             )
             IconButton(
-                onClick = {
-                    navController.navigate(DeepLink.Developer.EXCEPTION_LOG_URL)
-                }
+                onClick = onClick
             ) {
                 Icon(
                     imageVector = Icons.Rounded.ChevronRight,
-                    contentDescription = stringResource(id = R.string.exception_log)
+                    contentDescription = title
                 )
             }
         }

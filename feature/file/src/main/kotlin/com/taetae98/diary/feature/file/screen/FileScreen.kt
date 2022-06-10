@@ -1,8 +1,6 @@
 package com.taetae98.diary.feature.file.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,7 +55,7 @@ fun FileScreen(
         modifier = modifier,
         scaffoldState = scaffoldState,
         topBar = { FileTopAppBar(navController = navController) },
-        floatingActionButton = { AddButton() }
+        floatingActionButton = { AddButton(navController = navController) }
     ) {
         Content(
             modifier = Modifier
@@ -66,12 +64,16 @@ fun FileScreen(
         )
     }
 
-    CollectEvent(snackbarHostState = scaffoldState.snackbarHostState)
+    CollectEvent(
+        snackbarHostState = scaffoldState.snackbarHostState,
+        navController = navController
+    )
 }
 
 @Composable
 private fun CollectEvent(
     snackbarHostState: SnackbarHostState,
+    navController: NavController,
     fileViewModel: FileViewModel = hiltViewModel()
 ) {
     val (event, setEvent) = remember { mutableStateOf<FileEvent.SecurityAction?>(null) }
@@ -81,6 +83,11 @@ private fun CollectEvent(
             when (it) {
                 is FileEvent.Error -> snackbarHostState.showSnackbar("Error : ${it.throwable.message}")
                 is FileEvent.SecurityAction -> setEvent(it)
+                is FileEvent.OnClickFile -> navController.navigate(
+                    DeepLink.File.getFileDetailAction(
+                        id = it.entity.id
+                    )
+                )
             }
         }
     }
@@ -219,17 +226,18 @@ private fun Content(
 @Composable
 private fun AddButton(
     modifier: Modifier = Modifier,
+    navController: NavController,
     fileViewModel: FileViewModel = hiltViewModel()
 ) {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) {
-//        it.let { fileViewModel.save(it) }
-    }
-
     FloatingActionButton(
         modifier = modifier,
-        onClick = { launcher.launch("*/*") }
+        onClick = {
+            navController.navigate(
+                DeepLink.File.getFileDetailAction(
+                    parentId = fileViewModel.folder.value?.id
+                )
+            )
+        }
     ) {
         Icon(
             imageVector = Icons.Rounded.Add,

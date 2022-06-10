@@ -24,26 +24,19 @@ class FileManager @Inject constructor(
     @ApplicationContext
     private val context: Context
 ) {
-    suspend fun write(uri: Uri) = File(
-        context.filesDir,
-        "${UUID.randomUUID()}.${context.getDisplayName(uri).substringAfterLast(".")}"
-    ).also { file ->
-        runCatching {
-            file.write(uri)
-        }.onFailure {
-            file.deleteRecursively()
-        }.getOrThrow()
+    suspend fun write(uri: Uri) = context.buildFile(uri).also { file ->
+        file.write(uri)
     }
 
-    suspend fun securityWrite(uri: Uri) = File(
-        context.filesDir,
-        "${UUID.randomUUID()}.${context.getDisplayName(uri).substringAfterLast(".")}"
-    ).also { file ->
-        runCatching {
-            file.securityWrite(uri)
-        }.onFailure {
-            file.deleteRecursively()
-        }.getOrThrow()
+    suspend fun securityWrite(uri: Uri) = context.buildFile(uri).also { file ->
+        file.securityWrite(uri)
+    }
+
+    private suspend fun Context.buildFile(uri: Uri) = File(
+        "${filesDir.path}${File.separator}fileEntity",
+        "${UUID.randomUUID()}.${getDisplayName(uri).substringAfterLast(".")}"
+    ).apply {
+        parentFile?.mkdirs()
     }
 
     private suspend fun Context.getDisplayName(uri: Uri) = withContext(Dispatchers.IO) {

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -44,8 +43,6 @@ import com.taetae98.diary.feature.developer.event.ExceptionLogEvent
 import com.taetae98.diary.feature.developer.model.ExceptionLogUiState
 import com.taetae98.diary.feature.developer.viewmodel.ExceptionLogViewModel
 import com.taetae98.diary.feature.resource.StringResource
-import com.taetae98.diary.feature.theme.DiaryTheme
-import kotlinx.coroutines.flow.collect
 
 
 @Composable
@@ -208,8 +205,10 @@ private fun ExceptionLogCompose(
 private fun Loading(
     modifier: Modifier = Modifier,
 ) {
-    CircularProgressIndicator(
-        modifier = modifier.wrapContentSize(),
-        color = DiaryTheme.onSurfaceColor,
-    )
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 }

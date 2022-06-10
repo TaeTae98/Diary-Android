@@ -3,6 +3,7 @@ package com.taetae98.diary.feature.file.compose
 import android.media.MediaMetadataRetriever
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,14 +40,32 @@ fun FilePreviewCompose(
     uiState: FilePreviewUiState?
 ) {
     Card(
-        modifier = modifier,
-        shape = RectangleShape
+        modifier = modifier.clickable(
+            enabled = uiState != null,
+            onClickLabel = uiState?.entity?.title
+        ) {
+            uiState?.onClick?.invoke()
+        },
+        shape = RectangleShape,
+        elevation = 0.dp
     ) {
         if (uiState == null) {
-            CircularProgressIndicator()
+            Loading()
         } else {
             UiState(uiState = uiState)
         }
+    }
+}
+
+@Composable
+private fun Loading(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 

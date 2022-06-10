@@ -14,14 +14,14 @@ import com.taetae98.diary.feature.common.util.getDefaultName
 )
 data class ExceptionEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    val cause: String?,
-    val stackTrace: String,
-    val type: String,
+    val id: Long = 0L,
+    val cause: String? = null,
+    val stackTrace: String = "",
+    val type: String = "",
     val createdAt: Long = System.currentTimeMillis()
 ) {
     constructor(throwable: Throwable) : this(
-        id = 0,
+        id = 0L,
         cause = throwable.cause?.toString(),
         stackTrace = throwable.stackTraceToString(),
         type = throwable::class.getDefaultName()

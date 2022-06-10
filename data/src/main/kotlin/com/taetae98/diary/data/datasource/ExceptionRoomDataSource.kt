@@ -15,7 +15,7 @@ interface ExceptionRoomDataSource : BaseDao<ExceptionEntity> {
     fun findAll(): List<ExceptionEntity>
 
     @Query("SELECT * FROM ExceptionEntity WHERE id = :id")
-    suspend fun findById(id: Long): ExceptionEntity
+    suspend fun findById(id: Long): ExceptionEntity?
 
     @Query("DELETE FROM ExceptionEntity WHERE id = :id")
     suspend fun deleteById(id: Long): Int

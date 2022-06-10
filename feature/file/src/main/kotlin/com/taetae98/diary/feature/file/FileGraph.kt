@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
+import com.taetae98.diary.feature.file.screen.FileDetailScreen
 import com.taetae98.diary.feature.file.screen.FileScreen
 import com.taetae98.diary.feature.file.screen.FolderDetailScreen
 
@@ -40,6 +41,22 @@ fun NavGraphBuilder.fileGraph(navController: NavController) {
             )
         ) {
             FolderDetailScreen(navController = navController)
+        }
+
+        composable(
+            route = DeepLink.File.FILE_DETAIL_URL,
+            arguments = listOf(
+                navArgument(Parameter.ID) {
+                    type = NavType.LongType
+                    defaultValue = 0L
+                },
+                navArgument(Parameter.FOLDER_ID) {
+                    type = NavType.LongType
+                    defaultValue = 0L
+                }
+            )
+        ) {
+            FileDetailScreen(navController = navController)
         }
     }
 }

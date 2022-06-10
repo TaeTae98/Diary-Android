@@ -22,7 +22,7 @@ import kotlinx.parcelize.Parcelize
         )
     ]
 )
-data class FileEntity(
+data class  FileEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val folderId: Long? = null,

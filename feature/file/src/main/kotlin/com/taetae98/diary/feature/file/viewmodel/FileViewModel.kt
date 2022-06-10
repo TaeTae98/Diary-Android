@@ -91,7 +91,23 @@ class FileViewModel @Inject constructor(
     }.map { pagingData ->
         pagingData.map {
             FilePreviewUiState.from(
-                entity = it
+                entity = it,
+                onClick = {
+                    viewModelScope.launch {
+                        val password = it.password
+                        if (password == null) {
+                            event.emit(FileEvent.OnClickFile(it))
+                        } else {
+                            event.emit(
+                                FileEvent.SecurityAction(password) {
+                                    viewModelScope.launch {
+                                        event.emit(FileEvent.OnClickFile(it))
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
             )
         }
     }.cachedIn(viewModelScope)
