@@ -44,7 +44,7 @@ class FileViewModel @Inject constructor(
     private val exportFileUseCase: ExportFileUseCase,
 ) : ViewModel() {
     val event = MutableSharedFlow<FileEvent>()
-asdhfaksjdfhakjsdhfk
+asdhfaksjdfhakjsdhfkadf
     private val id = MutableStateFlow(savedStateHandle.get<Long>(Parameter.ID))
     val viewMode = MutableStateFlow(savedStateHandle[Parameter.VIEW_MODE] ?: FileViewMode.VIEW)
     val selectedFolder = MutableStateFlow(
