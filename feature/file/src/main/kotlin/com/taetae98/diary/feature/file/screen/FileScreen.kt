@@ -47,9 +47,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.taetae98.diary.domain.model.file.FolderEntity
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
+import com.taetae98.diary.feature.compose.file.FilePreviewCompose
 import com.taetae98.diary.feature.compose.input.PasswordDialog
 import com.taetae98.diary.feature.file.R
-import com.taetae98.diary.feature.file.compose.FilePreviewCompose
 import com.taetae98.diary.feature.file.compose.FolderPreviewCompose
 import com.taetae98.diary.feature.file.event.FileEvent
 import com.taetae98.diary.feature.file.model.FileViewMode

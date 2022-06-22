@@ -1,10 +1,13 @@
 package com.taetae98.diary.domain.model.exception
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.taetae98.diary.feature.common.util.getDefaultName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     indices = [
         Index(
@@ -19,7 +22,7 @@ data class ExceptionEntity(
     val stackTrace: String = "",
     val type: String = "",
     val createdAt: Long = System.currentTimeMillis()
-) {
+) : Parcelable {
     constructor(throwable: Throwable) : this(
         id = 0L,
         cause = throwable.cause?.toString(),

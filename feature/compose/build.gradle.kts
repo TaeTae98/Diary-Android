@@ -4,6 +4,7 @@ plugins {
     id("navigation-config")
     id("hilt-config")
     id("map-config")
+    id("paging-config")
 }
 
 dependencies {

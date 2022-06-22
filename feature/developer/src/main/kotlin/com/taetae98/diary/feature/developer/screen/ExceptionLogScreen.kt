@@ -164,7 +164,7 @@ private fun ExceptionLogColumn(
     ) {
         items(
             items = lazyPagingItems,
-            key = { it.id }
+            key = { it.entity }
         ) {
             ExceptionLogCompose(
                 modifier = Modifier
@@ -192,10 +192,10 @@ private fun ExceptionLogCompose(
         } else {
             Column {
                 Text(text = uiState.cause)
-                Text(text = uiState.type)
+                Text(text = uiState.entity.type)
                 Text(text = uiState.createdAt)
                 Divider()
-                Text(text = uiState.stackTrace)
+                Text(text = uiState.entity.stackTrace)
             }
         }
     }

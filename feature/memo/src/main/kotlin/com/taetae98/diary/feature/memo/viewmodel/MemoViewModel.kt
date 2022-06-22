@@ -32,7 +32,7 @@ class MemoViewModel @Inject constructor(
             emptyFlow()
         }.map { pagingData ->
             pagingData.map {
-                MemoPreviewUiState.from(
+                MemoPreviewUiState(
                     entity = it,
                     onClick = {
                         viewModelScope.launch {

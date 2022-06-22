@@ -37,7 +37,6 @@ import com.taetae98.diary.feature.memo.event.MemoEvent
 import com.taetae98.diary.feature.memo.viewmodel.MemoViewModel
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun MemoScreen(
@@ -157,7 +156,7 @@ private fun MemoLazyColumn(
     ) {
         items(
             items = items,
-            key = { it.id }
+            key = { it.entity }
         ) {
             MemoPreviewCompose(
                 modifier = modifier

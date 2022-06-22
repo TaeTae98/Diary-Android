@@ -9,12 +9,12 @@ object DeepLink {
 
         private const val MEMO_DETAIL_URL_PREFIX = "$MEMO_URL/detail"
         const val MEMO_DETAIL_URL = "$MEMO_DETAIL_URL_PREFIX/{${Parameter.ID}}"
+        const val PLACE_SELECT_URL = "$MEMO_URL/place/select"
+        const val FILE_SELECT_URL = "$MEMO_URL/file/select"
 
         fun getMemoDetailAction(id: Long = 0L) = "$MEMO_DETAIL_URL_PREFIX/$id"
-
-        const val PLACE_SELECT_URL = "$APP_URL/memo/place/select"
-
         fun getPlaceSelectAction() = PLACE_SELECT_URL
+        fun getFileSelectAction() = FILE_SELECT_URL
     }
 
     object Place {

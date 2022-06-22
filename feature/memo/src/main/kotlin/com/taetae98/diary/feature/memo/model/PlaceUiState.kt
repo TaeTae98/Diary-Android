@@ -6,12 +6,4 @@ data class PlaceUiState(
     val entity: PlaceEntity,
     val onClick: () -> Unit,
     val onDelete: () -> Unit
-) {
-    companion object {
-        fun from(entity: PlaceEntity, onClick: () -> Unit, onDelete: () -> Unit) = PlaceUiState(
-            entity = entity,
-            onClick = onClick,
-            onDelete = onDelete
-        )
-    }
-}
+)

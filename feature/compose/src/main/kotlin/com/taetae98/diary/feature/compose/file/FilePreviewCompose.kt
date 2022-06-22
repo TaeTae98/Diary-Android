@@ -1,4 +1,4 @@
-package com.taetae98.diary.feature.file.compose
+package com.taetae98.diary.feature.compose.file
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -23,8 +23,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.taetae98.diary.feature.compose.file.FilePreview
-import com.taetae98.diary.feature.file.model.FilePreviewUiState
 import com.taetae98.diary.feature.resource.StringResource
 import com.taetae98.diary.feature.theme.DiaryTheme
 

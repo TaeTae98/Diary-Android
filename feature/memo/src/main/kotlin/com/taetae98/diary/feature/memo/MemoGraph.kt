@@ -11,8 +11,9 @@ import androidx.navigation.navigation
 import com.taetae98.diary.feature.common.DeepLink
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.memo.screen.MemoDetailScreen
+import com.taetae98.diary.feature.memo.screen.MemoFileSelectScreen
 import com.taetae98.diary.feature.memo.screen.MemoScreen
-import com.taetae98.diary.feature.memo.screen.PlaceSelectScreen
+import com.taetae98.diary.feature.memo.screen.MemoPlaceSelectScreen
 
 object MemoGraph {
     const val ROUTE = "MemoGraph"
@@ -52,11 +53,17 @@ fun NavGraphBuilder.memoGraph(
         ) {
             MemoDetailScreen(navController = navController)
         }
-        
+
         composable(
             route = DeepLink.Memo.PLACE_SELECT_URL
         ) {
-            PlaceSelectScreen(navController = navController)
+            MemoPlaceSelectScreen(navController = navController)
+        }
+
+        composable(
+            route = DeepLink.Memo.FILE_SELECT_URL
+        ) {
+            MemoFileSelectScreen(navController = navController)
         }
     }
 }

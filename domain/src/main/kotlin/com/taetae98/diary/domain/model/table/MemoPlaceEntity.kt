@@ -1,8 +1,9 @@
-package com.taetae98.diary.domain.model.memo
+package com.taetae98.diary.domain.model.table
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import com.taetae98.diary.domain.model.memo.MemoEntity
 import com.taetae98.diary.domain.model.place.PlaceEntity
 
 @Entity(

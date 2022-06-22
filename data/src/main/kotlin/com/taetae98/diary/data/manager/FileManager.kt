@@ -93,7 +93,9 @@ class FileManager @Inject constructor(
                 else null
             } ?: continuation.resumeWithException(IllegalStateException("Invalid Uri : $uri"))
 
-            File(getInternalDirectory(), "${UUID.randomUUID()}.$displayName").also { file ->
+            File(getInternalDirectory(), "${UUID.randomUUID()}.$displayName").apply {
+                parentFile?.mkdirs()
+            }.also { file ->
                 context.contentResolver.openInputStream(uri)?.buffered(STREAM_BUFFER_SIZE)?.use { inputStream ->
                     file.outputStream().buffered(STREAM_BUFFER_SIZE).use { outputStream ->
                         outputStream.write(inputStream)

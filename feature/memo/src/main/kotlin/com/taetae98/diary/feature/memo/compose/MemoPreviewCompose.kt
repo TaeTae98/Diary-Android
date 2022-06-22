@@ -22,7 +22,7 @@ fun MemoPreviewCompose(
             .height(60.dp)
             .clickable(
                 enabled = uiState != null,
-                onClickLabel = uiState?.title,
+                onClickLabel = uiState?.entity?.title,
             ) {
                 uiState?.onClick?.invoke()
             },
@@ -54,7 +54,7 @@ private fun UiState(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = uiState.title,
+            text = uiState.entity.title,
             maxLines = 1,
         )
     }

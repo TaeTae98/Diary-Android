@@ -3,11 +3,13 @@ package com.taetae98.diary.feature.memo.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,8 +19,10 @@ import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
@@ -28,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -47,6 +52,7 @@ import com.taetae98.diary.feature.common.util.removeResult
 import com.taetae98.diary.feature.compose.diary.DiaryMap
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBar
 import com.taetae98.diary.feature.compose.diary.DiaryTopAppBarNavigationIcon
+import com.taetae98.diary.feature.compose.file.FilePreviewCompose
 import com.taetae98.diary.feature.compose.input.ClearTextField
 import com.taetae98.diary.feature.compose.input.PasswordInputCompose
 import com.taetae98.diary.feature.compose.modifier.swipeable
@@ -80,6 +86,7 @@ fun MemoDetailScreen(
             MemoLayout()
             PasswordLayout()
             MapLayout(navController = navController)
+            FileLayout(navController = navController)
         }
     }
 
@@ -316,6 +323,71 @@ private fun PlaceAddButton(
             imageVector = Icons.Rounded.Add,
             contentDescription = stringResource(id = StringResource.add)
         )
+    }
+}
+
+@Composable
+private fun FileLayout(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+) {
+    Card(
+        modifier = modifier
+    ) {
+        Column {
+            FileHeader(navController = navController)
+            FileListCompose(navController = navController)
+        }
+    }
+}
+
+@Composable
+private fun FileHeader(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.weight(1F).padding(8.dp),
+            text = stringResource(id = StringResource.file)
+        )
+        IconButton(
+            onClick = {
+                navController.navigate(DeepLink.Memo.getFileSelectAction())
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Add,
+                contentDescription = stringResource(id = StringResource.add)
+            )
+        }
+    }
+}
+
+@Composable
+private fun FileListCompose(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    memoDetailViewModel: MemoDetailViewModel = hiltViewModel()
+) {
+    val file = memoDetailViewModel.fileUiState.collectAsState().value
+    LazyRow(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        items(
+            items = file,
+            key = { it }
+        ) {
+            FilePreviewCompose(
+                uiState = it,
+                isSelectMode = false,
+                isSelected = false
+            )
+        }
     }
 }
 

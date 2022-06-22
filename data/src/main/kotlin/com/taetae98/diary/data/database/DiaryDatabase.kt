@@ -12,12 +12,14 @@ import com.taetae98.diary.data.datasource.PlaceRoomDataSource
 import com.taetae98.diary.domain.model.file.FileEntity
 import com.taetae98.diary.domain.model.file.FolderEntity
 import com.taetae98.diary.domain.model.memo.MemoEntity
-import com.taetae98.diary.domain.model.memo.MemoPlaceEntity
 import com.taetae98.diary.domain.model.place.PlaceEntity
+import com.taetae98.diary.domain.model.table.MemoFileEntity
+import com.taetae98.diary.domain.model.table.MemoPlaceEntity
 
 @Database(
     entities = [
-        MemoEntity::class, MemoPlaceEntity::class,
+        MemoPlaceEntity::class, MemoFileEntity::class,
+        MemoEntity::class,
         PlaceEntity::class,
         FileEntity::class, FolderEntity::class
     ],

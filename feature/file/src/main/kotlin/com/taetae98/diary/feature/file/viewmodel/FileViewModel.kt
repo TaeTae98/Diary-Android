@@ -15,8 +15,8 @@ import com.taetae98.diary.domain.usecase.file.UpdateFileFolderIdUseCase
 import com.taetae98.diary.domain.usecase.folder.FindFolderFlowByIdUseCase
 import com.taetae98.diary.domain.usecase.folder.PagingFolderByParentIdUseCase
 import com.taetae98.diary.feature.common.Parameter
+import com.taetae98.diary.feature.compose.file.FilePreviewUiState
 import com.taetae98.diary.feature.file.event.FileEvent
-import com.taetae98.diary.feature.file.model.FilePreviewUiState
 import com.taetae98.diary.feature.file.model.FileViewMode
 import com.taetae98.diary.feature.file.model.FolderPreviewUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -79,7 +79,7 @@ class FileViewModel @Inject constructor(
         }
     }.map { pagingData ->
         pagingData.map {
-            FolderPreviewUiState.from(
+            FolderPreviewUiState(
                 entity = it,
                 onClick = {
                     val password = it.password
@@ -140,7 +140,7 @@ class FileViewModel @Inject constructor(
         }
     }.map { pagingData ->
         pagingData.map {
-            FilePreviewUiState.from(
+            FilePreviewUiState(
                 entity = it,
                 onClick = {
                     val password = it.password

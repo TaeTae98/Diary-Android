@@ -56,7 +56,7 @@ class PlaceSearchViewModel @Inject constructor(
             emptyFlow()
         }.map { pagingData ->
             pagingData.map {
-                PlaceUiState.from(
+                PlaceUiState(
                     entity = it,
                     onClick = {
                         viewModelScope.launch {

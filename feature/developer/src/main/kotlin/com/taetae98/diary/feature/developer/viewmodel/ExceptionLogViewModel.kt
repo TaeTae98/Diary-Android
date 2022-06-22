@@ -31,7 +31,7 @@ class ExceptionLogViewModel @Inject constructor(
         emptyFlow()
     }.map { pagingData ->
         pagingData.map {
-            ExceptionLogUiState.from(
+            ExceptionLogUiState(
                 entity = it,
                 onDelete = { deleteById(it.id) }
             )

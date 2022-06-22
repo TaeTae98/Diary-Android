@@ -27,7 +27,7 @@ class FileDetailViewModel @Inject constructor(
     val event = MutableSharedFlow<FileDetailEvent>()
 
     private val fileEntity =
-        MutableStateFlow(savedStateHandle[Parameter.FILE_ENTITY] ?: FileEntity())
+        MutableStateFlow(savedStateHandle[Parameter.FILE] ?: FileEntity())
     private val folderId =
         MutableStateFlow(savedStateHandle.get<Long>(Parameter.FOLDER_ID)?.takeIf { it != 0L })
 
@@ -59,7 +59,7 @@ class FileDetailViewModel @Inject constructor(
     private fun setFileEntity(value: FileEntity) {
         viewModelScope.launch {
             fileEntity.emit(value)
-            savedStateHandle[Parameter.FILE_ENTITY] = value
+            savedStateHandle[Parameter.FILE] = value
         }
     }
 

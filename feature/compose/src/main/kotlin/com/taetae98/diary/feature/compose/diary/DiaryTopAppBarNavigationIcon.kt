@@ -15,11 +15,21 @@ fun DiaryTopAppBarNavigationIcon(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    DiaryTopAppBarNavigationIcon(
+        modifier = modifier
+    ) {
+        navController.navigateUp()
+    }
+}
+
+@Composable
+fun DiaryTopAppBarNavigationIcon(
+    modifier: Modifier = Modifier,
+    onNavigateUp: () -> Unit
+) {
     IconButton(
         modifier = modifier,
-        onClick = {
-            navController.navigateUp()
-        }
+        onClick = onNavigateUp
     ) {
         Icon(
             imageVector = Icons.Rounded.ArrowBack,

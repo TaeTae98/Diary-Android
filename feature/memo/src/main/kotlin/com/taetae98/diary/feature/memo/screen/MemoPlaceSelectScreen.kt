@@ -47,7 +47,7 @@ import com.taetae98.diary.feature.memo.viewmodel.PlaceSelectViewModel
 import com.taetae98.diary.feature.resource.StringResource
 
 @Composable
-fun PlaceSelectScreen(
+fun MemoPlaceSelectScreen(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {

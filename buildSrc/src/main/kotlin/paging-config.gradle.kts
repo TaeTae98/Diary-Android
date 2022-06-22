@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation("androidx.paging:paging-compose:1.0.0-alpha14")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha15")
 }

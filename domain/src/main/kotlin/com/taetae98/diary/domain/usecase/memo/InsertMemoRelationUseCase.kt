@@ -1,6 +1,6 @@
 package com.taetae98.diary.domain.usecase.memo
 
-import com.taetae98.diary.domain.model.memo.MemoPlaceEntity
+import com.taetae98.diary.domain.model.table.MemoPlaceEntity
 import com.taetae98.diary.domain.model.memo.MemoRelation
 import com.taetae98.diary.domain.repository.ExceptionRepository
 import com.taetae98.diary.domain.repository.MemoPlaceRepository

@@ -1,7 +1,7 @@
 package com.taetae98.diary.data.repository
 
 import com.taetae98.diary.data.datasource.MemoPlaceRoomDataSource
-import com.taetae98.diary.domain.model.memo.MemoPlaceEntity
+import com.taetae98.diary.domain.model.table.MemoPlaceEntity
 import com.taetae98.diary.domain.repository.MemoPlaceRepository
 import javax.inject.Inject
 

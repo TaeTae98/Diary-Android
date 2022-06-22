@@ -3,13 +3,16 @@ package com.taetae98.diary.feature.memo.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.taetae98.diary.domain.model.file.FileEntity
 import com.taetae98.diary.domain.model.memo.MemoEntity
 import com.taetae98.diary.domain.model.memo.MemoRelation
 import com.taetae98.diary.domain.model.place.PlaceEntity
+import com.taetae98.diary.domain.usecase.file.ExplorerFileUseCase
 import com.taetae98.diary.domain.usecase.memo.FindMemoRelationByIdUseCase
 import com.taetae98.diary.domain.usecase.memo.InsertMemoRelationUseCase
 import com.taetae98.diary.feature.common.Parameter
 import com.taetae98.diary.feature.common.util.isNullOrFalse
+import com.taetae98.diary.feature.compose.file.FilePreviewUiState
 import com.taetae98.diary.feature.memo.event.MemoDetailEvent
 import com.taetae98.diary.feature.memo.model.PlaceUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +30,7 @@ class MemoDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val findMemoRelationByIdUseCase: FindMemoRelationByIdUseCase,
     private val insertMemoRelationUseCase: InsertMemoRelationUseCase,
+    private val explorerFileUseCase: ExplorerFileUseCase
 ) : ViewModel() {
     val event = MutableSharedFlow<MemoDetailEvent>()
 
@@ -36,11 +40,12 @@ class MemoDetailViewModel @Inject constructor(
     val password = MutableStateFlow(savedStateHandle[Parameter.PASSWORD] ?: "")
     val hasPassword = MutableStateFlow(savedStateHandle[Parameter.HAS_PASSWORD] ?: false)
 
-    val place = MutableStateFlow<Collection<PlaceEntity>>(emptyList())
-    val camera = MutableStateFlow(place.value.lastOrNull())
+    val place =
+        MutableStateFlow<Collection<PlaceEntity>>(savedStateHandle[Parameter.PLACE] ?: emptyList())
+    val camera = MutableStateFlow(savedStateHandle[Parameter.CAMERA] ?: place.value.lastOrNull())
     val placeUiState = place.map { collection ->
         collection.map {
-            PlaceUiState.from(
+            PlaceUiState(
                 entity = it,
                 onClick = { setCamera(it) },
                 onDelete = { delete(it) }
@@ -52,8 +57,28 @@ class MemoDetailViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
+    private val file = MutableStateFlow<Collection<FileEntity>>(emptyList())
+    val fileUiState = file.map {
+        it.map { entity ->
+            FilePreviewUiState(
+                entity = entity,
+                onClick = {
+
+                },
+                onLongClick = {
+
+                }
+            )
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
     init {
-        if (savedStateHandle.get<Boolean>(Parameter.IS_INITIALIZED).isNullOrFalse() && id.value != 0L) {
+        if (savedStateHandle.get<Boolean>(Parameter.IS_INITIALIZED)
+                .isNullOrFalse() && id.value != 0L
+        ) {
             viewModelScope.launch {
                 findMemoRelationByIdUseCase(FindMemoRelationByIdUseCase.Id(id.value)).onSuccess {
                     setTitle(it.memo.title)
@@ -70,54 +95,44 @@ class MemoDetailViewModel @Inject constructor(
         }
     }
 
-    fun setTitle(value: String) {
-        viewModelScope.launch {
-            title.emit(value)
-            savedStateHandle[Parameter.TITLE] = value
-        }
+    fun setTitle(value: String) = viewModelScope.launch {
+        title.emit(value)
+        savedStateHandle[Parameter.TITLE] = value
     }
 
-    fun setDescription(value: String) {
-        viewModelScope.launch {
-            description.emit(value)
-            savedStateHandle[Parameter.DESCRIPTION] = value
-        }
+    fun setDescription(value: String) = viewModelScope.launch {
+        description.emit(value)
+        savedStateHandle[Parameter.DESCRIPTION] = value
     }
 
-    fun setPassword(value: String) {
-        viewModelScope.launch {
-            password.emit(value)
-            savedStateHandle[Parameter.PASSWORD] = value
-        }
+    fun setPassword(value: String) = viewModelScope.launch {
+        password.emit(value)
+        savedStateHandle[Parameter.PASSWORD] = value
     }
 
-    fun setHasPassword(value: Boolean) {
-        viewModelScope.launch {
-            hasPassword.emit(value)
-            savedStateHandle[Parameter.HAS_PASSWORD] = value
-        }
+    fun setHasPassword(value: Boolean) = viewModelScope.launch {
+        hasPassword.emit(value)
+        savedStateHandle[Parameter.HAS_PASSWORD] = value
     }
 
-    fun edit() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (title.value.isEmpty()) {
-                event.emit(MemoDetailEvent.NoTitle)
-            } else {
-                insertMemoRelationUseCase(
-                    MemoRelation(
-                        memo = MemoEntity(
-                            id = id.value,
-                            title = title.value,
-                            description = description.value,
-                            password = password.value.takeIf { hasPassword.value }
-                        ),
-                        place = place.value.toList()
-                    )
-                ).onSuccess {
-                    event.emit(MemoDetailEvent.Edit)
-                }.onFailure {
-                    event.emit(MemoDetailEvent.Error(it))
-                }
+    fun edit() = viewModelScope.launch(Dispatchers.IO) {
+        if (title.value.isEmpty()) {
+            event.emit(MemoDetailEvent.NoTitle)
+        } else {
+            insertMemoRelationUseCase(
+                MemoRelation(
+                    memo = MemoEntity(
+                        id = id.value,
+                        title = title.value,
+                        description = description.value,
+                        password = password.value.takeIf { hasPassword.value }
+                    ),
+                    place = place.value.toList()
+                )
+            ).onSuccess {
+                event.emit(MemoDetailEvent.Edit)
+            }.onFailure {
+                event.emit(MemoDetailEvent.Error(it))
             }
         }
     }
@@ -129,19 +144,23 @@ class MemoDetailViewModel @Inject constructor(
         setHasPassword(false)
         setPlace(emptyList())
         setCamera(null)
+        setFile(emptyList())
     }
 
-    private fun setPlace(value: Collection<PlaceEntity>) {
-        viewModelScope.launch {
-            place.emit(value)
-            camera.emit(value.lastOrNull())
-        }
+    private fun setPlace(value: Collection<PlaceEntity>) = viewModelScope.launch {
+        place.emit(value)
+        savedStateHandle[Parameter.PLACE] = value
+        setCamera(value.lastOrNull())
     }
 
-    private fun setCamera(value: PlaceEntity?) {
-        viewModelScope.launch {
-            camera.emit(value)
-        }
+    private fun setCamera(value: PlaceEntity?) = viewModelScope.launch {
+        camera.emit(value)
+        savedStateHandle[Parameter.CAMERA] = value
+    }
+
+    private fun setFile(value: Collection<FileEntity>) = viewModelScope.launch {
+        file.emit(value)
+        savedStateHandle[Parameter.FILE] = value
     }
 
     fun add(value: PlaceEntity) {
